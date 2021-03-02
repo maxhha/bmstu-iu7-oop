@@ -1,6 +1,12 @@
 #include "manager.hpp"
 
-resp_t request_model_manager(void)
+resp_t request_model_manager(request_t req)
 {
-    return UNKNOWN_COMMAND;
+    switch (req.type)
+    {
+    case LOAD:
+        return OK;
+    default:
+        return UNKNOWN_COMMAND;
+    }
 }

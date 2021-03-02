@@ -7,6 +7,16 @@ enum resp_t
     UNKNOWN_COMMAND,
 };
 
-resp_t request_model_manager(void);
+enum request_type_t
+{
+    LOAD,
+};
+
+typedef struct request_s
+{
+    request_type_t type;
+} request_t;
+
+resp_t request_model_manager(request_t req);
 
 #endif // __MANAGER_H__
