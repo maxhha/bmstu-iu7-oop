@@ -1,9 +1,9 @@
-require("dotenv").config();
-const child_process = require("child_process");
-const path = require("path");
-const fs = require("fs");
+require("dotenv").config()
+const child_process = require("child_process")
+const path = require("path")
+const fs = require("fs")
 
-const pathSrc = path.resolve(__dirname, "..", "model", "src");
+const pathSrc = path.resolve(__dirname, "..", "model", "src")
 
 child_process.exec(
   [
@@ -19,8 +19,8 @@ child_process.exec(
     ...fs.readdirSync(pathSrc).map((x) => path.resolve(pathSrc, x)),
   ].join(" "),
   (error, stdout, stderr) => {
-    if (error) return console.error(error);
-    if (stdout) console.log(stdout);
-    if (stderr) console.error(stderr);
+    if (error) return console.error(error)
+    if (stdout) console.log(stdout)
+    if (stderr) console.error(stderr)
   }
-);
+)
