@@ -1,48 +1,64 @@
 #include "model.hpp"
 #include <stdlib.h>
 
-static model_t *create_model(void)
+model_t empty_model(void)
 {
-    model_t *model = (model_t *) malloc(sizeof(model_t));
-
-    if (model == NULL)
-    {
-        return NULL;
-    }
-
-    init_vectors_array(model->vertecies);
-    init_lines_array(model->lines);
+    model_t model;
+    init_vectors_array(model.vertecies);
+    init_lines_array(model.lines);
 
     return model;
 }
 
-static err_t read_model(model_t *&model, FILE *f)
+static bool is_empty_model(const model_t &model)
 {
-    model = create_model();
+    return (
+        is_empty_vectors_array(model.vertecies) &&
+        is_empty_lines_array(model.lines)
+    );
+}
 
-    if (model == NULL)
-    {
-        return ALLOC_ERR;
-    }
+static err_t read_model(model_t &model, FILE *f)
+{
+    model = empty_model();
 
-    err_t rc = load_vectors(model->vertecies, f);
+    err_t rc = load_vectors(model.vertecies, f);
 
     if (rc != OK)
     {
         free_model(model);
+        return rc == NONPOS_ERR ? VERTECIESN_ERR : rc;
+    }
+
+    if ((rc = load_lines(model.lines, f)) != OK)
+    {
+        free_model(model);
+        return rc == NONPOS_ERR ? LINESN_ERR : rc;
+    }
+
+    return rc;
+}
+
+static err_t validate_model(model_t &model)
+{
+    err_t rc = validate_vertecies(model.vertecies);
+
+    if (rc != OK)
+    {
         return rc;
     }
 
-    if ((rc = load_lines(model->lines, f)) != OK)
+    int vertecies_n = vectors_array_size(model.vertecies);
+
+    if ((rc = validate_lines(model.lines, vertecies_n)) != OK)
     {
-        free_model(model);
         return rc;
     }
 
     return rc;
 }
 
-err_t load_model(model_t *&model, const char *name)
+err_t load_model(model_t &model, const char *name)
 {
     FILE *f = fopen(name, "r");
 
@@ -51,10 +67,15 @@ err_t load_model(model_t *&model, const char *name)
         return FILE_ERR;
     }
 
-    model_t *temp = NULL;
+    model_t temp;
     err_t rc = read_model(temp, f);
 
     fclose(f);
+
+    if (rc == OK)
+    {
+        rc = validate_model(temp);
+    }
 
     if (rc == OK)
     {
@@ -65,110 +86,56 @@ err_t load_model(model_t *&model, const char *name)
     return rc;
 }
 
-static void draw_line(const drawer_t &drawer, const line_t &link, const vector_t *const vertecies)
+err_t draw_model(model_t &model, const drawer_t &drawer)
 {
-    vector_t pt1 = vertecies[link.p1];
-    vector_t pt2 = vertecies[link.p2];
-
-    drawer.draw_line(
-                drawer.data,
-                pt1,
-                pt2
-                );
-}
-
-static void draw_links(const drawer_t &drawer, const larray_t &lines, const varray_t &vertecies)
-{
-    for (int i = 0; i < lines.size; i++)
-    {
-        draw_line(drawer, lines.array[i], vertecies.array);
-    }
-}
-
-err_t draw_model(model_t *&model, const drawer_t &drawer)
-{
-    if (model == NULL)
+    if (is_empty_model(model))
     {
         return NO_MODEL;
     }
 
-    draw_links(drawer, model->lines, model->vertecies);
+    draw_lines(drawer, model.lines, model.vertecies);
 
     return OK;
 }
 
-static void move_vertecies(varray_t &vertecies, const vector_t &coeffs)
+err_t move_model(model_t &model, const vector_t &coeffs)
 {
-    for (int i = 0; i < vertecies.size; i++)
-    {
-        move_vector(vertecies.array[i], coeffs);
-    }
-}
-
-err_t move_model(model_t *&model, const vector_t &coeffs)
-{
-    if (model == NULL)
+    if (is_empty_model(model))
     {
         return NO_MODEL;
     }
 
-    move_vertecies(model->vertecies, coeffs);
+    move_vectors_array(model.vertecies, coeffs);
 
     return OK;
 }
 
-static void scale_vertecies(varray_t &vertecies, const vector_t &coeffs)
+err_t scale_model(model_t &model, const vector_t &coeffs)
 {
-    for (int i = 0; i < vertecies.size; i++)
-    {
-        scale_vector(vertecies.array[i], coeffs);
-    }
-}
-
-err_t scale_model(model_t *&model, const vector_t &coeffs)
-{
-    if (model == NULL)
+    if (is_empty_model(model))
     {
         return NO_MODEL;
     }
 
-    scale_vertecies(model->vertecies, coeffs);
+    scale_vectors_array(model.vertecies, coeffs);
 
     return OK;
 }
 
-static void turn_vertecies(varray_t &vertecies, const vector_t &coeffs)
+err_t rotate_model(model_t &model, const vector_t &coeffs)
 {
-    for (int i = 0; i < vertecies.size; i++)
-    {
-        turnx_vector(vertecies.array[i], coeffs.x);
-        turny_vector(vertecies.array[i], coeffs.y);
-        turnz_vector(vertecies.array[i], coeffs.z);
-    }
-}
-
-err_t turn_model(model_t *&model, const vector_t &coeffs)
-{
-    if (model == NULL)
+    if (is_empty_model(model))
     {
         return NO_MODEL;
     }
 
-    turn_vertecies(model->vertecies, coeffs);
+    rotate_vectors_array(model.vertecies, coeffs);
 
     return OK;
 }
 
-void free_model(model_t *&model)
+void free_model(model_t &model)
 {
-    if (model == NULL)
-    {
-        return;
-    }
-
-    free_vectors(model->vertecies);
-    free_lines(model->lines);
-    free(model);
-
-    model = NULL;
+    free_vectors(model.vertecies);
+    free_lines(model.lines);
 }

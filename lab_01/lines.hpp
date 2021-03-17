@@ -1,12 +1,10 @@
-#ifndef __LINES_HPP__
-#define __LINES_HPP__
+#ifndef LINES_HPP
+#define LINES_HPP
 
 #include <stdio.h>
 #include <stdlib.h>
 
-#include "ui_mainwindow.h"
 #include "errors.hpp"
-#include "vectors.hpp"
 
 struct line_s
 {
@@ -25,7 +23,9 @@ struct lines_array_s
 using larray_t = struct lines_array_s;
 
 void init_lines_array(larray_t &lines);
+bool is_empty_lines_array(const larray_t &lines);
 err_t load_lines(larray_t &lines, FILE *f);
-void free_lines(const larray_t &links);
+err_t validate_lines(const larray_t &lines, const int vertecies_n);
+void free_lines(larray_t &links);
 
-#endif // __LINES_HPP__
+#endif // LINES_HPP

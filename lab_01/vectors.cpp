@@ -1,9 +1,24 @@
+#include <stdlib.h>
+#define _USE_MATH_DEFINES
+#include <math.h>
+
 #include "vectors.hpp"
 
 void init_vectors_array(varray_t &vectors)
 {
     vectors.array = NULL;
     vectors.size = 0;
+}
+
+
+bool is_empty_vectors_array(const varray_t &vectors)
+{
+    return vectors.size == 0;
+}
+
+int vectors_array_size(const varray_t &vectors)
+{
+    return vectors.size;
 }
 
 static err_t read_amount(varray_t &vectors, FILE *f)
@@ -13,28 +28,35 @@ static err_t read_amount(varray_t &vectors, FILE *f)
         return READ_ERR;
     }
 
-    if (vectors.size < 2)
+    if (vectors.size < 1)
     {
-        return PSIZE_ERR;
+        return NONPOS_ERR;
     }
 
+    return OK;
+}
+
+static err_t read_vector(vector_t &vec, FILE *f)
+{
+    if ((fscanf(f, "%lf %lf %lf", &vec.x, &vec.y, &vec.z)) != 3)
+    {
+        return READ_ERR;
+    }
     return OK;
 }
 
 static err_t read_vectors(vector_t *const array, const int size, FILE *f)
 {
-    for (int i = 0; i < size; i++)
+    err_t rc = OK;
+    for (int i = 0; rc == OK && i < size; i++)
     {
-        if ((fscanf(f, "%lf %lf %lf", &array[i].x, &array[i].y, &array[i].z)) != 3)
-        {
-            return READ_ERR;
-        }
+        rc = read_vector(array[i], f);
     }
 
-    return OK;
+    return rc;
 }
 
-static err_t allocate_links(varray_t &vectors)
+static err_t allocate_vectors(varray_t &vectors)
 {
     vector_t *temp_array = (vector_t *)malloc(vectors.size * sizeof(vector_t));
 
@@ -48,12 +70,15 @@ static err_t allocate_links(varray_t &vectors)
     return OK;
 }
 
-void free_vectors(const varray_t &vectors)
+void free_vectors(varray_t &vectors)
 {
     if (vectors.array != NULL)
     {
         free(vectors.array);
+        vectors.array = NULL;
     }
+
+    vectors.size = 0;
 }
 
 err_t load_vectors(varray_t &vectors, FILE *f)
@@ -65,7 +90,7 @@ err_t load_vectors(varray_t &vectors, FILE *f)
         return rc;
     }
 
-    if ((rc = allocate_links(vectors)) != OK)
+    if ((rc = allocate_vectors(vectors)) != OK)
     {
         return rc;
     }
@@ -78,11 +103,24 @@ err_t load_vectors(varray_t &vectors, FILE *f)
     return rc;
 }
 
+err_t validate_vertecies(const varray_t &vertecies)
+{
+    return vertecies.size < 2 ? VERTECIESN_ERR : OK;
+}
+
 void move_vector(vector_t &vector, const vector_t &coeffs)
 {
     vector.x += coeffs.x;
     vector.y += coeffs.y;
     vector.z += coeffs.z;
+}
+
+void move_vectors_array(varray_t &vertecies, const vector_t &coeffs)
+{
+    for (int i = 0; i < vertecies.size; i++)
+    {
+        move_vector(vertecies.array[i], coeffs);
+    }
 }
 
 void scale_vector(vector_t &vector, const vector_t &coeffs)
@@ -92,12 +130,20 @@ void scale_vector(vector_t &vector, const vector_t &coeffs)
     vector.z *= coeffs.z;
 }
 
-static inline double to_radians(const double &angle)
+void scale_vectors_array(varray_t &vertecies, const vector_t &coeffs)
 {
-    return angle * PI / 180;
+    for (int i = 0; i < vertecies.size; i++)
+    {
+        scale_vector(vertecies.array[i], coeffs);
+    }
 }
 
-void turnx_vector(vector_t &vector, const double &angle)
+static inline double to_radians(const double &angle)
+{
+    return angle * M_PI / 180;
+}
+
+void rotatex_vector(vector_t &vector, const double &angle)
 {
     double rad = to_radians(angle);
     double c = cos(rad);
@@ -110,7 +156,7 @@ void turnx_vector(vector_t &vector, const double &angle)
     vector.z = -y * s + z * c;
 }
 
-void turny_vector(vector_t &vector, const double &angle)
+void rotatey_vector(vector_t &vector, const double &angle)
 {
     double rad = to_radians(angle);
     double c = cos(rad);
@@ -123,15 +169,25 @@ void turny_vector(vector_t &vector, const double &angle)
     vector.z = -x * s + z * c;
 }
 
-void turnz_vector(vector_t &vector, const double &angle)
+void rotatez_vector(vector_t &vector, const double &angle)
 {
     double rad = to_radians(angle);
     double c = cos(rad);
     double s = sin(rad);
 
     double x = vector.x;
-    double y = vector.z;
+    double y = vector.y;
 
     vector.x = x * c + y * s;
-    vector.z = -x * s + y * c;
+    vector.y = -x * s + y * c;
+}
+
+void rotate_vectors_array(varray_t &vertecies, const vector_t &coeffs)
+{
+    for (int i = 0; i < vertecies.size; i++)
+    {
+        rotatex_vector(vertecies.array[i], coeffs.x);
+        rotatey_vector(vertecies.array[i], coeffs.y);
+        rotatez_vector(vertecies.array[i], coeffs.z);
+    }
 }

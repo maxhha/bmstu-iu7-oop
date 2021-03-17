@@ -6,6 +6,11 @@ void init_lines_array(larray_t &lines)
     lines.size = 0;
 }
 
+bool is_empty_lines_array(const larray_t &lines)
+{
+    return lines.size == 0;
+}
+
 static err_t read_amount(larray_t &lines, FILE *f)
 {
     if ((fscanf(f, "%d", &lines.size)) != 1)
@@ -15,7 +20,17 @@ static err_t read_amount(larray_t &lines, FILE *f)
 
     if (lines.size < 1)
     {
-        return LSIZE_ERR;
+        return NONPOS_ERR;
+    }
+
+    return OK;
+}
+
+static err_t read_line(line_t &line, FILE *f)
+{
+    if ((fscanf(f, "%d %d", &line.p1, &line.p2)) != 2)
+    {
+        return READ_ERR;
     }
 
     return OK;
@@ -23,12 +38,11 @@ static err_t read_amount(larray_t &lines, FILE *f)
 
 static err_t read_lines(line_t *const array, const int &size, FILE *f)
 {
-    for (int i = 0; i < size; i++)
+    err_t rc = OK;
+
+    for (int i = 0; rc == OK && i < size; i++)
     {
-        if ((fscanf(f, "%d %d", &array[i].p1, &array[i].p2)) != 2)
-        {
-            return READ_ERR;
-        }
+        rc = read_line(array[i], f);
     }
 
     return OK;
@@ -48,12 +62,15 @@ static err_t allocate_lines(larray_t &lines)
     return OK;
 }
 
-void free_lines(const larray_t &lines)
+void free_lines(larray_t &lines)
 {
     if (lines.array != NULL)
     {
         free(lines.array);
+        lines.array = NULL;
     }
+
+    lines.size = 0;
 }
 
 err_t load_lines(larray_t &lines, FILE *f)
@@ -76,4 +93,27 @@ err_t load_lines(larray_t &lines, FILE *f)
      }
 
      return rc;
+}
+
+static err_t validate_line(const line_t &line, const int vertecies_n)
+{
+    if (line.p1 < 0 || line.p1 >= vertecies_n)
+        return LINEPTS_ERR;
+
+    if (line.p2 < 0 || line.p2 >= vertecies_n)
+        return LINEPTS_ERR;
+
+    return OK;
+}
+
+err_t validate_lines(const larray_t &lines, const int vertecies_n)
+{
+    err_t rc = OK;
+
+    for (int i = 0; rc == OK && i < lines.size; i++)
+    {
+        rc = validate_line(lines.array[i], vertecies_n);
+    }
+
+    return rc;
 }

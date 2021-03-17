@@ -3,6 +3,7 @@
 
 #include <QMainWindow>
 
+#include "ui_mainwindow.h"
 #include "model_manager.hpp"
 
 #define WIN_X 989

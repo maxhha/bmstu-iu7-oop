@@ -1,5 +1,5 @@
-#ifndef __MODEL_MANAGER_HPP__
-#define __MODEL_MANAGER_HPP__
+#ifndef MODEL_MANAGER_HPP
+#define MODEL_MANAGER_HPP
 
 #include "model.hpp"
 
@@ -7,7 +7,7 @@ enum request_type
 {
     LOAD,
     SCALE,
-    TURN,
+    ROTATE,
     MOVE,
     DRAW,
     QUIT
@@ -28,4 +28,4 @@ using request_t = struct request_s;
 
 err_t request_model_manager(const request_t &request);
 
-#endif // __MODEL_MANAGER_HPP__
+#endif // MODEL_MANAGER_HPP

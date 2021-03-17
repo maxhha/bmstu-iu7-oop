@@ -22,26 +22,6 @@ MainWindow::~MainWindow(void)
     delete ui;
 }
 
-static void scene_draw_line(const void *data, const vector_t &p1, const vector_t &p2)
-{
-    QGraphicsScene *scene = (QGraphicsScene *) data;
-
-    double hh = scene->height() / 2;
-    double hw = scene->width() / 2;
-
-    double x1 = p1.x;
-    double y1 = p1.y;
-    double x2 = p2.x;
-    double y2 = p2.y;
-
-    scene->addLine(
-                x1 + hw,
-                y1 + hh,
-                x2 + hw,
-                y2 + hh
-                );
-}
-
 err_t MainWindow::draw_actions(void)
 {
     QGraphicsScene *scene = ui->graphicsView->scene();
@@ -49,8 +29,7 @@ err_t MainWindow::draw_actions(void)
     request_t request = {
         .type = DRAW,
         .drawer = {
-            .data = scene,
-            .draw_line= scene_draw_line,
+            .scene = scene,
         }
     };
 
@@ -63,7 +42,7 @@ err_t MainWindow::draw_actions(void)
 
 void MainWindow::on_load_button_clicked(void)
 {
-    const char *name = "C:\\Users\\devma\\Projects\\oop\\lab_01\\dataOR.csv";
+    const char *name = "..\\lab_01\\cube.txt";
     request_t request = {
         .type = LOAD,
         .file_name = name,
@@ -131,6 +110,7 @@ void MainWindow::on_scale_button_clicked(void)
     }
 
     rc = draw_actions();
+
     if (rc != OK)
     {
         handle_error(rc);
@@ -146,11 +126,12 @@ void MainWindow::on_turn_button_clicked(void)
     };
 
     request_t request = {
-        .type = TURN,
+        .type = ROTATE,
         .coeffs = coeffs,
     };
 
     err_t rc = request_model_manager(request);
+
     if (rc != OK)
     {
         handle_error(rc);
@@ -158,6 +139,7 @@ void MainWindow::on_turn_button_clicked(void)
     }
 
     rc = draw_actions();
+
     if (rc != OK)
     {
         handle_error(rc);

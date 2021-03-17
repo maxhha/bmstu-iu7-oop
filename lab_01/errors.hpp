@@ -1,5 +1,5 @@
-#ifndef __ERRORS_HPP__
-#define __ERRORS_HPP__
+#ifndef ERRORS_HPP
+#define ERRORS_HPP
 
 #include <QMessageBox>
 
@@ -10,9 +10,10 @@ enum errors
     FILE_ERR,
     ALLOC_ERR,
     READ_ERR,
-    LSIZE_ERR,
-    PSIZE_ERR,
-    MEMORY_ERR,
+    LINESN_ERR,
+    LINEPTS_ERR,
+    NONPOS_ERR,
+    VERTECIESN_ERR,
     UNKNOWN_COMMAND
 };
 
@@ -20,4 +21,4 @@ using err_t = enum errors;
 
 void handle_error(const err_t &code);
 
-#endif // __ERRORS_HPP__
+#endif // ERRORS_HPP

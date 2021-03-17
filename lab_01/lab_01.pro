@@ -16,6 +16,7 @@ DEFINES += QT_DEPRECATED_WARNINGS
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
+    draw.cpp \
     errors.cpp \
     lines.cpp \
     main.cpp \
@@ -25,6 +26,7 @@ SOURCES += \
     vectors.cpp
 
 HEADERS += \
+    draw.hpp \
     errors.hpp \
     lines.hpp \
     mainwindow.h \

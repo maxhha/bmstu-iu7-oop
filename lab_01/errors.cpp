@@ -8,22 +8,22 @@ void handle_error(const err_t &code)
             QMessageBox::critical(NULL, "Ошибка", "Нет загруженной модели.");
             break;
         case FILE_ERR:
-            QMessageBox::critical(NULL, "Ошибка", "При открытии файла произошла ошибка.");
+            QMessageBox::critical(NULL, "Ошибка", "Не получилось открыть файл.");
             break;
         case ALLOC_ERR:
-            QMessageBox::critical(NULL, "Ошибка", "При выделении памяти произошла ошибка.");
+            QMessageBox::critical(NULL, "Ошибка", "Не получилось выделить память.");
             break;
         case READ_ERR:
-            QMessageBox::critical(NULL, "Ошибка", "При чтении файла произошла ошибка.");
+            QMessageBox::critical(NULL, "Ошибка", "Не получилось прочитать файл.");
             break;
-        case PSIZE_ERR:
+        case VERTECIESN_ERR:
             QMessageBox::critical(NULL, "Ошибка", "Некорретный размер количества точек.");
             break;
-        case LSIZE_ERR:
+        case LINESN_ERR:
             QMessageBox::critical(NULL, "Ошибка", "Некорректный размер количества линий.");
             break;
-        case MEMORY_ERR:
-            QMessageBox::critical(NULL, "Ошибка", "Ошибка при обращении к данным.");
+        case LINEPTS_ERR:
+            QMessageBox::critical(NULL, "Ошибка", "Некорректный индекс вершины в линии.");
             break;
         default:
             QMessageBox::critical(NULL, "Ошибка", "Неизвестная комманда.");
