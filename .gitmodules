@@ -1,0 +1,4 @@
+[submodule "lab_02/lib/catch"]
+	path = lab_02/lib/catch
+	url = https://github.com/catchorg/Catch2.git
+	branch = v2.x
