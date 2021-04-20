@@ -10,6 +10,17 @@ void init_vectors_array(varray_t &vectors)
     vectors.size = 0;
 }
 
+err_t get_vector(vector_t &res, const varray_t &vectors, int index)
+{
+    if (index < 0 || index >= vectors.size)
+    {
+        return READ_ERR;
+    }
+
+    res = vectors.array[index];
+
+    return OK;
+}
 
 bool is_empty_vectors_array(const varray_t &vectors)
 {
@@ -21,22 +32,26 @@ int vectors_array_size(const varray_t &vectors)
     return vectors.size;
 }
 
-static err_t read_amount(varray_t &vectors, FILE *f)
+static err_t read_amount(int &size, FILE *f)
 {
-    if ((fscanf(f, "%d", &vectors.size)) != 1)
+    int x;
+
+    if ((fscanf(f, "%d", &x)) != 1)
     {
         return READ_ERR;
     }
 
-    if (vectors.size < 1)
+    if (x < 1)
     {
         return NONPOS_ERR;
     }
 
+    size = x;
+
     return OK;
 }
 
-static err_t read_vector(vector_t &vec, FILE *f)
+err_t read_vector(vector_t &vec, FILE *f)
 {
     if ((fscanf(f, "%lf %lf %lf", &vec.x, &vec.y, &vec.z)) != 3)
     {
@@ -48,6 +63,7 @@ static err_t read_vector(vector_t &vec, FILE *f)
 static err_t read_vectors(vector_t *const array, const int size, FILE *f)
 {
     err_t rc = OK;
+
     for (int i = 0; rc == OK && i < size; i++)
     {
         rc = read_vector(array[i], f);
@@ -83,7 +99,7 @@ void free_vectors(varray_t &vectors)
 
 err_t load_vectors(varray_t &vectors, FILE *f)
 {
-    err_t rc = read_amount(vectors, f);
+    err_t rc = read_amount(vectors.size, f);
 
     if (rc != OK)
     {

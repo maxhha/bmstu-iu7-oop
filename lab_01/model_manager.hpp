@@ -2,6 +2,7 @@
 #define MODEL_MANAGER_HPP
 
 #include "model.hpp"
+#include "draw.hpp"
 
 enum request_type
 {

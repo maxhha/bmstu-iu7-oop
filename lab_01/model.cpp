@@ -10,7 +10,7 @@ model_t empty_model(void)
     return model;
 }
 
-static bool is_empty_model(const model_t &model)
+bool is_empty_model(const model_t &model)
 {
     return (
         is_empty_vectors_array(model.vertecies) &&
@@ -18,22 +18,43 @@ static bool is_empty_model(const model_t &model)
     );
 }
 
+static void convert_vertecies_err(err_t &rc)
+{
+    if (rc == NONPOS_ERR)
+    {
+        rc = VERTECIESN_ERR;
+    }
+}
+
+static void convert_lines_err(err_t &rc)
+{
+    if (rc == NONPOS_ERR)
+    {
+        rc = LINESN_ERR;
+    }
+}
+
 static err_t read_model(model_t &model, FILE *f)
 {
     model = empty_model();
 
-    err_t rc = load_vectors(model.vertecies, f);
+    err_t rc = read_vector(model.origin, f);
 
-    if (rc != OK)
+    if (rc == OK)
     {
-        free_model(model);
-        return rc == NONPOS_ERR ? VERTECIESN_ERR : rc;
+        rc = load_vectors(model.vertecies, f);
+        convert_vertecies_err(rc);
     }
 
-    if ((rc = load_lines(model.lines, f)) != OK)
+    if (rc == OK)
     {
-        free_model(model);
-        return rc == NONPOS_ERR ? LINESN_ERR : rc;
+        rc = load_lines(model.lines, f);
+        convert_lines_err(rc);
+
+        if (rc != OK)
+        {
+            free_vectors(model.vertecies);
+        }
     }
 
     return rc;
@@ -72,9 +93,9 @@ err_t load_model(model_t &model, const char *name)
 
     fclose(f);
 
-    if (rc == OK)
+    if (rc == OK && (rc = validate_model(temp)) != OK)
     {
-        rc = validate_model(temp);
+        free_model(temp);
     }
 
     if (rc == OK)
@@ -86,18 +107,6 @@ err_t load_model(model_t &model, const char *name)
     return rc;
 }
 
-err_t draw_model(model_t &model, const drawer_t &drawer)
-{
-    if (is_empty_model(model))
-    {
-        return NO_MODEL;
-    }
-
-    draw_lines(drawer, model.lines, model.vertecies);
-
-    return OK;
-}
-
 err_t move_model(model_t &model, const vector_t &coeffs)
 {
     if (is_empty_model(model))
@@ -105,7 +114,7 @@ err_t move_model(model_t &model, const vector_t &coeffs)
         return NO_MODEL;
     }
 
-    move_vectors_array(model.vertecies, coeffs);
+    move_vector(model.origin, coeffs);
 
     return OK;
 }

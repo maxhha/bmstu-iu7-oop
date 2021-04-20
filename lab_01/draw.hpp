@@ -1,9 +1,8 @@
 #ifndef DRAW_HPP
 #define DRAW_HPP
 
-#include "mainwindow.h"
-#include "vectors.hpp"
-#include "lines.hpp"
+#include "ui_mainwindow.h"
+#include "model.hpp"
 
 struct drawer_s
 {
@@ -12,6 +11,6 @@ struct drawer_s
 
 using drawer_t = struct drawer_s;
 
-void draw_lines(const drawer_t &drawer, const larray_t &lines, const varray_t &vertecies);
+err_t draw_model(const model_t &model, const drawer_t &drawer);
 
 #endif // DRAW_HPP

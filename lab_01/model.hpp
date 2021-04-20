@@ -4,10 +4,10 @@
 #include "vectors.hpp"
 #include "lines.hpp"
 #include "errors.hpp"
-#include "draw.hpp"
 
 struct model_s
 {
+    vector_t origin;
     varray_t vertecies;
     larray_t lines;
 };
@@ -15,8 +15,8 @@ struct model_s
 using model_t = struct model_s;
 
 model_t empty_model(void);
+bool is_empty_model(const model_t &model);
 err_t load_model(model_t &model, const char *name);
-err_t draw_model(model_t &model, const drawer_t &drawer);
 err_t move_model(model_t &model, const vector_t &coeffs);
 err_t scale_model(model_t &model, const vector_t &coeffs);
 err_t rotate_model(model_t &model, const vector_t &coeffs);

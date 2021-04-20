@@ -11,17 +11,21 @@ bool is_empty_lines_array(const larray_t &lines)
     return lines.size == 0;
 }
 
-static err_t read_amount(larray_t &lines, FILE *f)
+static err_t read_amount(int &size, FILE *f)
 {
-    if ((fscanf(f, "%d", &lines.size)) != 1)
+    int x;
+
+    if ((fscanf(f, "%d", &x)) != 1)
     {
         return READ_ERR;
     }
 
-    if (lines.size < 1)
+    if (x < 1)
     {
         return NONPOS_ERR;
     }
+
+    size = x;
 
     return OK;
 }
@@ -75,7 +79,7 @@ void free_lines(larray_t &lines)
 
 err_t load_lines(larray_t &lines, FILE *f)
 {
-     err_t rc = read_amount(lines, f);
+     err_t rc = read_amount(lines.size, f);
 
      if (rc != OK)
      {

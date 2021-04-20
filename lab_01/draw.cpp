@@ -1,25 +1,83 @@
 #include "draw.hpp"
 
-static void draw_line(QGraphicsScene *scene, const line_t &line, const vector_t *const vertecies)
+static void draw_line_on_scene(const drawer_t &drawer, vector_t &p1, vector_t &p2)
 {
-    vector_t p1 = vertecies[line.p1];
-    vector_t p2 = vertecies[line.p2];
-
-    double hh = scene->height() / 2;
-    double hw = scene->width() / 2;
-
-    scene->addLine(
-        p1.x + hw,
-        p1.y + hh,
-        p2.x + hw,
-        p2.y + hh
+    drawer.scene->addLine(
+        p1.x,
+        p1.y,
+        p2.x,
+        p2.y
         );
 }
 
-void draw_lines(const drawer_t &drawer, const larray_t &lines, const varray_t &vertecies)
+static vector_t centered_point(const vector_t &p, const drawer_t &drawer)
 {
-    for (int i = 0; i < lines.size; i++)
+    double hh = drawer.scene->height() / 2;
+    double hw = drawer.scene->width() / 2;
+
+    vector_t centered = {
+        .x = p.x + hw,
+        .y = p.y + hh,
+        .z = p.z,
+    };
+
+    return centered;
+}
+
+static void draw_line_in_center(const drawer_t &drawer, const vector_t &p1, const vector_t p2)
+{
+    vector_t centered_p1 = centered_point(p1, drawer);
+    vector_t centered_p2 = centered_point(p2, drawer);
+
+    draw_line_on_scene(
+        drawer,
+        centered_p1,
+        centered_p2
+    );
+}
+
+static err_t draw_line(const model_t &model, const drawer_t &drawer, const line_t &line)
+{
+    vector_t p1;
+    vector_t p2;
+    err_t rc = get_vector(p1, model.vertecies, line.p1);
+
+    if (rc != OK)
     {
-        draw_line(drawer.scene, lines.array[i], vertecies.array);
+        return rc;
     }
+
+    if ((rc = get_vector(p2, model.vertecies, line.p2)) != OK)
+    {
+        return rc;
+    }
+
+    move_vector(p1, model.origin);
+    move_vector(p2, model.origin);
+
+    draw_line_in_center(drawer, p1, p2);
+
+    return rc;
+}
+
+static err_t draw_lines(const model_t &model, const drawer_t &drawer, const larray_t &lines)
+{
+    err_t rc = OK;
+
+    for (int i = 0; rc == OK && i < lines.size; i++)
+    {
+        rc = draw_line(model, drawer, lines.array[i]);
+    }
+
+    return rc;
+}
+
+err_t draw_model(const model_t &model, const drawer_t &drawer)
+{
+    if (is_empty_model(model))
+    {
+        return NO_MODEL;
+    }
+
+    return draw_lines(model, drawer, model.lines);
 }

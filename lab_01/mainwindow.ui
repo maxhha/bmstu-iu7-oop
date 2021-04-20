@@ -17,18 +17,18 @@
    <widget class="QGraphicsView" name="graphicsView">
     <property name="geometry">
      <rect>
-      <x>30</x>
+      <x>330</x>
       <y>20</y>
-      <width>1001</width>
-      <height>571</height>
+      <width>701</width>
+      <height>701</height>
      </rect>
     </property>
    </widget>
    <widget class="QPushButton" name="load_button">
     <property name="geometry">
      <rect>
-      <x>420</x>
-      <y>690</y>
+      <x>60</x>
+      <y>300</y>
       <width>211</width>
       <height>25</height>
      </rect>
@@ -40,8 +40,8 @@
    <widget class="QFrame" name="frame">
     <property name="geometry">
      <rect>
-      <x>30</x>
-      <y>610</y>
+      <x>20</x>
+      <y>20</y>
       <width>291</width>
       <height>61</height>
      </rect>
@@ -70,8 +70,8 @@
       <rect>
        <x>0</x>
        <y>0</y>
-       <width>291</width>
-       <height>31</height>
+       <width>709</width>
+       <height>32</height>
       </rect>
      </property>
      <layout class="QGridLayout" name="gridLayout">
@@ -132,9 +132,9 @@
    <widget class="QFrame" name="frame_2">
     <property name="geometry">
      <rect>
-      <x>380</x>
-      <y>610</y>
-      <width>301</width>
+      <x>20</x>
+      <y>120</y>
+      <width>291</width>
       <height>61</height>
      </rect>
     </property>
@@ -162,8 +162,8 @@
       <rect>
        <x>0</x>
        <y>0</y>
-       <width>301</width>
-       <height>31</height>
+       <width>704</width>
+       <height>32</height>
       </rect>
      </property>
      <layout class="QGridLayout" name="gridLayout_2">
@@ -224,8 +224,8 @@
    <widget class="QFrame" name="frame_3">
     <property name="geometry">
      <rect>
-      <x>740</x>
-      <y>610</y>
+      <x>20</x>
+      <y>220</y>
       <width>291</width>
       <height>61</height>
      </rect>
@@ -254,8 +254,8 @@
       <rect>
        <x>0</x>
        <y>0</y>
-       <width>291</width>
-       <height>31</height>
+       <width>707</width>
+       <height>32</height>
       </rect>
      </property>
      <layout class="QGridLayout" name="gridLayout_4">
