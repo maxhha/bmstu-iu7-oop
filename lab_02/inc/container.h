@@ -1,8 +1,6 @@
 #ifndef __CONTAINER_HPP__
 #define __CONTAINER_HPP__
 
-#include <cstddef>
-
 class Container
 {
 public:
@@ -14,10 +12,12 @@ public:
         return size;
     };
 
-    virtual ~Container() = default;
+    virtual ~Container() = 0;
 
 protected:
     size_t size = 0;
 };
+
+Container::~Container() { }
 
 #endif // __CONTAINER_HPP__
