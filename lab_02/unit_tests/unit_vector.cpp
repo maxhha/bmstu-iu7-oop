@@ -24,6 +24,18 @@ TEST_CASE("Vectors are created and sized", "[Vector]")
             REQUIRE(*it == 0);
         }
     }
+
+    SECTION("vector from list")
+    {
+        Vector<int> c({1, 5, 3, 10});
+
+        auto it = c.begin();
+        REQUIRE(*it == 1);
+        REQUIRE(*(++it) == 5);
+        REQUIRE(*(++it) == 3);
+        REQUIRE(*(++it) == 10);
+        REQUIRE_THROWS_AS(*(++it), OutOfRangeException);
+    }
 }
 
 TEST_CASE("Vector iterators are iterating", "[VectorIterator]")

@@ -73,7 +73,7 @@ T &VectorIterator<T>::operator[](const size_t index)
         throw OutOfRangeException(__FILE__, __LINE__);
     }
 
-    return *(this + index)
+    return *(this + index);
 }
 
 template <typename T>
@@ -86,7 +86,7 @@ const T &VectorIterator<T>::operator[](const size_t index) const
         throw OutOfRangeException(__FILE__, __LINE__);
     }
 
-    return *(this + index)
+    return *(this + index);
 }
 
 /**************************************************************************/

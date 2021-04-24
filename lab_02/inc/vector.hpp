@@ -3,9 +3,9 @@
 
 #include "vector.h"
 
-/* ********************************************************************** */
-/* *                         Vector Constructors                        * */
-/* ********************************************************************** */
+/**************************************************************************/
+/*                           Vector Constructors                          */
+/**************************************************************************/
 
 template <typename T>
 Vector<T>::Vector()
@@ -26,9 +26,24 @@ Vector<T>::Vector(size_t _size)
     }
 };
 
-/* ********************************************************************** */
-/* *                           Vector Iterators                         * */
-/* ********************************************************************** */
+template <typename T>
+Vector<T>::Vector(const std::initializer_list<T> &items)
+{
+    size = items.size();
+    resetData();
+
+    auto it = this->begin();
+
+    for (auto &item : items)
+    {
+        *it = item;
+        ++it;
+    }
+}
+
+/**************************************************************************/
+/*                             Vector Iterators                           */
+/**************************************************************************/
 
 template <typename T>
 VectorIterator<T> Vector<T>::begin() noexcept
@@ -44,9 +59,58 @@ VectorIterator<T> Vector<T>::end() noexcept
     return it + size;
 }
 
-/* ********************************************************************** */
-/* *                        Vector Private methods                      * */
-/* ********************************************************************** */
+/**************************************************************************/
+/*                          Vector Assign operators                       */
+/**************************************************************************/
+
+template <typename T>
+Vector<T> &Vector<T>::operator=(const Vector<T> &vector)
+{
+    size = vector.size;
+    resetData();
+
+    VectorIterator<T> it(*this);
+    VectorIterator<T> itOther(vector);
+
+    for (; it; ++it, ++itFrom)
+    {
+        *it = *itFrom;
+    }
+
+    return *this;
+}
+
+template <typename T>
+Vector<T> &Vector<T>::operator=(const std::initializer_list<T> &items)
+{
+    size = vector.size;
+    resetData();
+
+    auto it = begin();
+    for (auto &item : items)
+    {
+        *it = item;
+        ++it;
+    }
+
+    return *this;
+}
+
+template <typename T>
+Vector<T> &Vector<T>::operator=(Vector<T> &&vector)
+{
+    size = vector.size;
+    resetData();
+
+    data = vector.data;
+    vector.data.reset();
+
+    return *this;
+}
+
+/**************************************************************************/
+/*                          Vector Private methods                        */
+/**************************************************************************/
 
 template <typename T>
 void Vector<T>::resetData(void)
