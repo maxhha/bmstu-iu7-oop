@@ -3,25 +3,43 @@
 
 #include <cstddef>
 #include "container.h"
+#include "iterator.h"
 
-template<class T>
-class Vector: public Container
+template <typename T>
+class Vector : public Container
 {
+    friend class VectorIterator<T>;
+
 public:
+    /* ********************************************************************** */
+    /* *                         Vector Constructors                        * */
+    /* ********************************************************************** */
     Vector();
 
     explicit Vector(size_t size);
-    // Vector(const std::initializer_list<Type> &elements);
+    // explicit Vector(const std::initializer_list<Type> &elements);
 
     // explicit Vector(const Vector<Type> &vector);
     // Vector(Vector<Type> &&vector) noexcept;
 
+    /* ********************************************************************** */
+    /* *                         Vector Deconstructor                       * */
+    /* ********************************************************************** */
     virtual ~Vector() = default;
 
-protected:
+    /* ********************************************************************** */
+    /* *                           Vector Iterators                         * */
+    /* ********************************************************************** */
+    VectorIterator<T> begin() noexcept;
+    VectorIterator<T> end() noexcept;
 
+protected:
 private:
-    // std::unique_ptr<T[]> data;
+    std::shared_ptr<T[]> data;
+
+    void resetData(size_t _size);
 };
+
+#include "vector.hpp"
 
 #endif // __VECTOR_H__
