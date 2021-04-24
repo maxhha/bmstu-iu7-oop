@@ -36,6 +36,11 @@ public:
     VectorIterator<T> &operator++();
     VectorIterator<T> operator++(int);
 
+    VectorIterator<T> &operator-=(size_t n);
+    VectorIterator<T> operator-(size_t n) const;
+    VectorIterator<T> &operator--();
+    VectorIterator<T> operator--(int);
+
     /**************************************************************************/
     /*                     VectorIterator Logic operators                     */
     /**************************************************************************/
@@ -46,13 +51,6 @@ public:
     bool operator!=(const VectorIterator<T> &other) const;
     bool operator>=(const VectorIterator<T> &other) const;
     bool operator>(const VectorIterator<T> &other) const;
-
-    // VectorIterator<T> &operator=(const VectorIterator<T> &iterator) noexcept;
-
-    // VectorIterator<T> &operator-=(size_t number);
-    // VectorIterator<T> operator-(size_t number) const;
-    // VectorIterator<T> &operator--();
-    // VectorIterator<T> operator--(int);
 
     // T &operator[](const size_t index);
     // const T &operator[](const size_t index) const;

@@ -104,6 +104,43 @@ VectorIterator<T> VectorIterator<T>::operator++(int)
     return *this;
 }
 
+template <typename T>
+VectorIterator<T> &VectorIterator<T>::operator-=(size_t n)
+{
+    validateDataPointer(__LINE__);
+    idx -= n;
+
+    return *this;
+}
+
+template <typename T>
+VectorIterator<T> VectorIterator<T>::operator-(size_t n) const
+{
+    validateDataPointer(__LINE__);
+    VectorIterator<T> it(*this);
+    it -= n;
+
+    return it;
+}
+
+template <typename T>
+VectorIterator<T> &VectorIterator<T>::operator--()
+{
+    validateDataPointer(__LINE__);
+    idx--;
+
+    return *this;
+}
+
+template <typename T>
+VectorIterator<T> VectorIterator<T>::operator--(int)
+{
+    validateDataPointer(__LINE__);
+    --(*this);
+
+    return *this;
+}
+
 /**************************************************************************/
 /*                     VectorIterator Logic operators                     */
 /**************************************************************************/

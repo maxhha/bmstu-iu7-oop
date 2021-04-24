@@ -7,7 +7,8 @@ VectorException::VectorException(std::string file,
                                  int line,
                                  std::string msg = "Unknown error")
 {
-    message = std::string() + "\n" + typeid(*this).name() + " at " + file + ":" + std::to_string(line) +
+    message = std::string() +
+              "\n" + typeid(*this).name() + " at " + file + ":" + std::to_string(line) +
               "\n" + msg;
 }
 
