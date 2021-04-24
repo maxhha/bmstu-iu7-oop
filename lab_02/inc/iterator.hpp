@@ -24,6 +24,46 @@ VectorIterator<T>::VectorIterator(const Vector<T> &vector) noexcept
 }
 
 /**************************************************************************/
+/*                   VectorIterator Reference operators                   */
+/**************************************************************************/
+
+template <typename T>
+T &VectorIterator<T>::operator*()
+{
+    validateDataPointer(__LINE__);
+    validateIndex(__LINE__);
+
+    return *getRawPointer();
+}
+
+template <typename T>
+const T &VectorIterator<T>::operator*() const
+{
+    validateDataPointer(__LINE__);
+    validateIndex(__LINE__);
+
+    return *getRawPointer();
+}
+
+template <typename T>
+T *VectorIterator<T>::operator->()
+{
+    validateDataPointer(__LINE__);
+    validateIndex(__LINE__);
+
+    return getRawPointer();
+}
+
+template <typename T>
+const T *VectorIterator<T>::operator->() const
+{
+    validateDataPointer(__LINE__);
+    validateIndex(__LINE__);
+
+    return getRawPointer();
+}
+
+/**************************************************************************/
 /*                     VectorIterator Math operators                      */
 /**************************************************************************/
 
@@ -46,6 +86,24 @@ VectorIterator<T> VectorIterator<T>::operator+(size_t n) const
     return it;
 }
 
+template <typename T>
+VectorIterator<T> &VectorIterator<T>::operator++()
+{
+    validateDataPointer(__LINE__);
+    idx++;
+
+    return *this;
+}
+
+template <typename T>
+VectorIterator<T> VectorIterator<T>::operator++(int)
+{
+    validateDataPointer(__LINE__);
+    ++(*this);
+
+    return *this;
+}
+
 /**************************************************************************/
 /*                     VectorIterator Logic operators                     */
 /**************************************************************************/
@@ -56,6 +114,46 @@ bool VectorIterator<T>::operator==(const VectorIterator<T> &other) const
     validateDataPointer(__LINE__);
 
     return this->idx == other.idx;
+}
+
+template <typename T>
+bool VectorIterator<T>::operator!=(const VectorIterator<T> &other) const
+{
+    validateDataPointer(__LINE__);
+
+    return this->idx != other.idx;
+}
+
+template <typename T>
+bool VectorIterator<T>::operator<=(const VectorIterator<T> &other) const
+{
+    validateDataPointer(__LINE__);
+
+    return this->idx <= other.idx;
+}
+
+template <typename T>
+bool VectorIterator<T>::operator>=(const VectorIterator<T> &other) const
+{
+    validateDataPointer(__LINE__);
+
+    return this->idx >= other.idx;
+}
+
+template <typename T>
+bool VectorIterator<T>::operator<(const VectorIterator<T> &other) const
+{
+    validateDataPointer(__LINE__);
+
+    return this->idx < other.idx;
+}
+
+template <typename T>
+bool VectorIterator<T>::operator>(const VectorIterator<T> &other) const
+{
+    validateDataPointer(__LINE__);
+
+    return this->idx > other.idx;
 }
 
 /**************************************************************************/
@@ -69,6 +167,23 @@ void VectorIterator<T>::validateDataPointer(int line) const
     {
         throw ExpiredPointerException(__FILE__, line);
     }
+}
+
+template <typename T>
+void VectorIterator<T>::validateIndex(int line) const
+{
+    if (idx >= size)
+    {
+        throw OutOfRangeException(__FILE__, line);
+    }
+}
+
+template <typename T>
+T *VectorIterator<T>::getRawPointer() const
+{
+    auto p = data.lock();
+
+    return p.get() + idx;
 }
 
 #endif // __ITERATOR_HPP__

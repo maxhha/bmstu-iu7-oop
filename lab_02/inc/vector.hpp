@@ -11,14 +11,19 @@ template <typename T>
 Vector<T>::Vector()
 {
     size = 0;
-    resetData(0);
+    resetData();
 };
 
 template <typename T>
 Vector<T>::Vector(size_t _size)
 {
     size = _size;
-    resetData(10);
+    resetData();
+
+    for (auto it = begin(); it < end(); ++it)
+    {
+        *it = 0;
+    }
 };
 
 /* ********************************************************************** */
@@ -44,11 +49,11 @@ VectorIterator<T> Vector<T>::end() noexcept
 /* ********************************************************************** */
 
 template <typename T>
-void Vector<T>::resetData(size_t _size)
+void Vector<T>::resetData(void)
 {
     try
     {
-        data.reset(new T[_size]);
+        data.reset(new T[size]);
     }
     catch (std::bad_alloc &e)
     {

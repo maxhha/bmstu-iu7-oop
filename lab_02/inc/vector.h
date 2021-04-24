@@ -37,7 +37,7 @@ protected:
 private:
     std::shared_ptr<T[]> data;
 
-    void resetData(size_t _size);
+    void resetData(void);
 };
 
 #include "vector.hpp"

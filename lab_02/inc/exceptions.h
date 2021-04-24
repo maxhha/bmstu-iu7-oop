@@ -17,4 +17,11 @@ public:
         : VectorException(file, line, msg){};
 };
 
+class OutOfRangeException : public VectorException
+{
+public:
+    OutOfRangeException(std::string file, int line, std::string msg = "")
+        : VectorException(file, line, msg){};
+};
+
 #endif // __EXCEPTIONS_H__

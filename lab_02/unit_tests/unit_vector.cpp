@@ -14,6 +14,16 @@ TEST_CASE("Vectors are created and sized", "[Vector]")
         auto c = Vector<int>(10);
         REQUIRE(c.getSize() == 10);
     }
+
+    SECTION("zero vector")
+    {
+        auto c = Vector<int>(10);
+
+        for (auto it = c.begin(); it < c.end(); ++it)
+        {
+            REQUIRE(*it == 0);
+        }
+    }
 }
 
 TEST_CASE("Vector iterators are iterating", "[VectorIterator]")
@@ -32,5 +42,13 @@ TEST_CASE("Vector iterators are iterating", "[VectorIterator]")
         b.reset(new Vector<int>(0));
 
         REQUIRE_THROWS_AS(it += 1, ExpiredPointerException);
+    }
+
+    SECTION("out of range index")
+    {
+        auto c = Vector<int>(10);
+        auto it = c.begin() + 10;
+
+        REQUIRE_THROWS_AS(*it, OutOfRangeException);
     }
 }

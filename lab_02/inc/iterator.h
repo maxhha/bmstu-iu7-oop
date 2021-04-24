@@ -19,23 +19,33 @@ public:
     VectorIterator(const Vector<T> &vector) noexcept;
 
     /**************************************************************************/
+    /*                   VectorIterator Reference operators                   */
+    /**************************************************************************/
+
+    T &operator*();
+    const T &operator*() const;
+    T *operator->();
+    const T *operator->() const;
+
+    /**************************************************************************/
     /*                     VectorIterator Math operators                      */
     /**************************************************************************/
 
     VectorIterator<T> &operator+=(size_t n);
     VectorIterator<T> operator+(size_t n) const;
+    VectorIterator<T> &operator++();
+    VectorIterator<T> operator++(int);
 
     /**************************************************************************/
     /*                     VectorIterator Logic operators                     */
     /**************************************************************************/
 
+    bool operator<(const VectorIterator<T> &other) const;
+    bool operator<=(const VectorIterator<T> &other) const;
     bool operator==(const VectorIterator<T> &other) const;
-
-    // T &operator*();
-    // const T &operator*() const;
-    // T *operator->();
-    // const T *operator->() const;
-    // operator bool() const;
+    bool operator!=(const VectorIterator<T> &other) const;
+    bool operator>=(const VectorIterator<T> &other) const;
+    bool operator>(const VectorIterator<T> &other) const;
 
     // VectorIterator<T> &operator=(const VectorIterator<T> &iterator) noexcept;
 
@@ -43,18 +53,6 @@ public:
     // VectorIterator<T> operator-(size_t number) const;
     // VectorIterator<T> &operator--();
     // VectorIterator<T> operator--(int);
-
-    // VectorIterator<T> &operator+=(size_t number); // done
-    // VectorIterator<T> operator+(size_t number) const; // done
-    // VectorIterator<T> &operator++();
-    // VectorIterator<T> operator++(int);
-
-    // bool operator<=(const VectorIterator<T> &compareTo) const;
-    // bool operator<(const VectorIterator<T> &compareTo) const;
-    // bool operator>=(const VectorIterator<T> &compareTo) const;
-    // bool operator>(const VectorIterator<T> &compareTo) const;
-    // bool operator==(const VectorIterator<T> &compareTo) const; // done
-    // bool operator!=(const VectorIterator<T> &compareTo) const;
 
     // T &operator[](const size_t index);
     // const T &operator[](const size_t index) const;
@@ -65,6 +63,8 @@ private:
     size_t size = 0;
 
     void validateDataPointer(int line) const;
+    void validateIndex(int line) const;
+    T *getRawPointer() const;
 };
 
 #include "iterator.hpp"
