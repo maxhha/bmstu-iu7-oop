@@ -63,6 +63,32 @@ const T *VectorIterator<T>::operator->() const
     return getRawPointer();
 }
 
+template <typename T>
+T &VectorIterator<T>::operator[](const size_t index)
+{
+    validateDataPointer(__LINE__);
+
+    if (idx + index >= size)
+    {
+        throw OutOfRangeException(__FILE__, __LINE__);
+    }
+
+    return *(this + index)
+}
+
+template <typename T>
+const T &VectorIterator<T>::operator[](const size_t index) const
+{
+    validateDataPointer(__LINE__);
+
+    if (idx + index >= size)
+    {
+        throw OutOfRangeException(__FILE__, __LINE__);
+    }
+
+    return *(this + index)
+}
+
 /**************************************************************************/
 /*                     VectorIterator Math operators                      */
 /**************************************************************************/

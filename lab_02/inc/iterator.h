@@ -27,6 +27,9 @@ public:
     T *operator->();
     const T *operator->() const;
 
+    T &operator[](const size_t index);
+    const T &operator[](const size_t index) const;
+
     /**************************************************************************/
     /*                     VectorIterator Math operators                      */
     /**************************************************************************/
@@ -52,13 +55,18 @@ public:
     bool operator>=(const VectorIterator<T> &other) const;
     bool operator>(const VectorIterator<T> &other) const;
 
-    // T &operator[](const size_t index);
-    // const T &operator[](const size_t index) const;
-protected:
 private:
+    /**************************************************************************/
+    /*                      VectorIterator Private data                       */
+    /**************************************************************************/
+
     std::weak_ptr<T[]> data;
     size_t idx = 0;
     size_t size = 0;
+
+    /**************************************************************************/
+    /*                     VectorIterator Private methods                     */
+    /**************************************************************************/
 
     void validateDataPointer(int line) const;
     void validateIndex(int line) const;
