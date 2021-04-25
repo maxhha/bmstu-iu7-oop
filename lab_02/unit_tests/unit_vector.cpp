@@ -134,9 +134,9 @@ TEST_CASE("Vector operations are tested", "[Vector]")
         Vector<int> a({1, 6, 0});
         int b = 2;
 
-        REQUIRE(a.add(b) == Vector<int>({3, 8, 2}));
+        REQUIRE(a.addScalar(b) == Vector<int>({3, 8, 2}));
         REQUIRE(a == Vector<int>({1, 6, 0}));
-        REQUIRE(a.addUpdate(b) == Vector<int>({3, 8, 2}));
+        REQUIRE(a.addScalarUpdate(b) == Vector<int>({3, 8, 2}));
         REQUIRE(a == Vector<int>({3, 8, 2}));
     }
 
@@ -156,9 +156,9 @@ TEST_CASE("Vector operations are tested", "[Vector]")
         Vector<int> a({1, 6, 0});
         int b = 6;
 
-        REQUIRE(a.sub(b) == Vector<int>({-5, 0, -6}));
+        REQUIRE(a.subScalar(b) == Vector<int>({-5, 0, -6}));
         REQUIRE(a == Vector<int>({1, 6, 0}));
-        REQUIRE(a.subUpdate(b) == Vector<int>({-5, 0, -6}));
+        REQUIRE(a.subScalarUpdate(b) == Vector<int>({-5, 0, -6}));
         REQUIRE(a == Vector<int>({-5, 0, -6}));
     }
 
@@ -178,9 +178,9 @@ TEST_CASE("Vector operations are tested", "[Vector]")
         Vector<int> a({1, 6, 0});
         int b = 2;
 
-        REQUIRE(a.mul(b) == Vector<int>({2, 12, 0}));
+        REQUIRE(a.mulScalar(b) == Vector<int>({2, 12, 0}));
         REQUIRE(a == Vector<int>({1, 6, 0}));
-        REQUIRE(a.mulUpdate(b) == Vector<int>({2, 12, 0}));
+        REQUIRE(a.mulScalarUpdate(b) == Vector<int>({2, 12, 0}));
         REQUIRE(a == Vector<int>({2, 12, 0}));
     }
 
@@ -192,7 +192,7 @@ TEST_CASE("Vector operations are tested", "[Vector]")
         REQUIRE(a == Vector<int>({1, 6, 0}));
         REQUIRE_THROWS_AS(b.div(a), ZeroDivisionException);
         REQUIRE(a == Vector<int>({1, 6, 0}));
-        REQUIRE(a.divUpdate(b) == Vector<int>({1, -3, 0}));
+        REQUIRE(a.divScalarUpdate(b) == Vector<int>({1, -3, 0}));
         REQUIRE(a == Vector<int>({1, -3, 0}));
         REQUIRE_THROWS_AS(a.div(d), MismatchSizeException);
     }
@@ -201,10 +201,10 @@ TEST_CASE("Vector operations are tested", "[Vector]")
     {
         Vector<int> a({1, 6, 0});
 
-        REQUIRE(a.div(2) == Vector<int>({0, 3, 0}));
+        REQUIRE(a.divScalar(2) == Vector<int>({0, 3, 0}));
         REQUIRE(a == Vector<int>({1, 6, 0}));
-        REQUIRE_THROWS_AS(a.div(0), ZeroDivisionException);
-        REQUIRE(a.divUpdate(2) == Vector<int>({0, 3, 0}));
+        REQUIRE_THROWS_AS(a.divScalar(0), ZeroDivisionException);
+        REQUIRE(a.divScalarUpdate(2) == Vector<int>({0, 3, 0}));
         REQUIRE(a == Vector<int>({0, 3, 0}));
     }
 

@@ -78,8 +78,8 @@ public:
     /**************************************************************************/
 
     bool isZero() const;
-    bool isEqual(const Vector<T> &other) const;
-    bool isNotEqual(const Vector<T> &other) const;
+    bool isEqual(const Vector<T> &vector) const;
+    bool isNotEqual(const Vector<T> &vector) const;
 
     bool hasZero() const;
 
@@ -87,8 +87,8 @@ public:
     /*                          Vector Logic operators                        */
     /**************************************************************************/
 
-    bool operator==(const Vector<T> &other) const;
-    bool operator!=(const Vector<T> &other) const;
+    bool operator==(const Vector<T> &vector) const; // = isEqual
+    bool operator!=(const Vector<T> &vector) const; // = isNotEqual
 
     /**************************************************************************/
     /*                            Vector Math methods                         */
@@ -97,93 +97,66 @@ public:
     Vector<T> neg() const;
     Vector<T> &negUpdate();
 
-    Vector<T> add(const Vector<T> &other) const;
-    Vector<T> &addUpdate(const Vector<T> &other);
-    Vector<T> add(const T &scalar) const;
-    Vector<T> &addUpdate(const T &scalar);
+    Vector<T> add(const Vector<T> &vector) const;
+    Vector<T> &addUpdate(const Vector<T> &vector);
+    Vector<T> addScalar(const T &scalar) const;
+    Vector<T> &addScalarUpdate(const T &scalar);
 
-    Vector<T> sub(const Vector<T> &other) const;
-    Vector<T> &subUpdate(const Vector<T> &other);
-    Vector<T> sub(const T &scalar) const;
-    Vector<T> &subUpdate(const T &scalar);
+    Vector<T> sub(const Vector<T> &vector) const;
+    Vector<T> &subUpdate(const Vector<T> &vector);
+    Vector<T> subScalar(const T &scalar) const;
+    Vector<T> &subScalarUpdate(const T &scalar);
 
-    Vector<T> mul(const Vector<T> &other) const;
-    Vector<T> &mulUpdate(const Vector<T> &other);
-    Vector<T> mul(const T &scalar) const;
-    Vector<T> &mulUpdate(const T &scalar);
+    Vector<T> mul(const Vector<T> &vector) const;
+    Vector<T> &mulUpdate(const Vector<T> &vector);
+    Vector<T> mulScalar(const T &scalar) const;
+    Vector<T> &mulScalarUpdate(const T &scalar);
 
-    Vector<T> div(const Vector<T> &other) const;
-    Vector<T> &divUpdate(const Vector<T> &other);
-    Vector<T> div(const T &scalar) const;
-    Vector<T> &divUpdate(const T &scalar);
+    Vector<T> div(const Vector<T> &vector) const;
+    Vector<T> &divScalarUpdate(const Vector<T> &vector);
+    Vector<T> divScalar(const T &scalar) const;
+    Vector<T> &divScalarUpdate(const T &scalar);
 
-    T dot(const Vector<T> &other) const;
+    T dot(const Vector<T> &vector) const;
 
-    Vector<T> cross(const Vector<T> &other) const;
-    Vector<T> &crossUpdate(const Vector<T> &other);
+    Vector<T> cross(const Vector<T> &vector) const;
+    Vector<T> &crossUpdate(const Vector<T> &vector);
 
     /**************************************************************************/
     /*                           Vector Math operators                        */
     /**************************************************************************/
 
+    Vector<T> operator-(); // = neg
+
+    Vector<T> &operator+=(const Vector<T> &vector);     // = addUpdate
+    Vector<T> &operator+=(const T &scalar);             // = addScalarUpdate
+    Vector<T> operator+(const Vector<T> &vector) const; // = add
+    Vector<T> operator+(const T &scalar) const;         // = addScalar
+
+    Vector<T> &operator-=(const Vector<T> &vector);     // = subUpdate
+    Vector<T> &operator-=(const T &scalar);             // = subScalarUpdate
+    Vector<T> operator-(const Vector<T> &vector) const; // = sub
+    Vector<T> operator-(const T &scalar) const;         // = subScalar
+
+    Vector<T> &operator*=(const Vector<T> &vector);     // = mulUpdate
+    Vector<T> &operator*=(const T &scalar);             // = mulScalarUpdate
+    Vector<T> operator*(const Vector<T> &vector) const; // = mul
+    Vector<T> operator*(const T &scalar) const;         // = mulScalar
+
+    Vector<T> &operator/=(const Vector<T> &vector);     // = divUpdate
+    Vector<T> &operator/=(const T &scalar);             // = divScalarUpdate
+    Vector<T> operator/(const Vector<T> &vector) const; // = div
+    Vector<T> operator/(const T &scalar) const;         // = divScalar
+
+    T operator&(const Vector<T> &vector) const; // = dot
+
+    Vector<T> operator^(const Vector<T> &vector) const; // = cross
+    Vector<T> &operator^=(const Vector<T> &vector);     // = crossUpdate
+
     // //! Two vectors methods
     // bool collinear(const Vector<Type> &vector) const;
     // bool orthgonal(const Vector<Type> &vector) const; //! Переименовано
     // //< End
-
-    // Type &at(size_t index);
-    // const Type &at(size_t index) const;
-
-    // //! Operators overloads
-
-    // Vector<Type> &operator+=(const Vector<Type> &vector);
-    // Vector<Type> &operator+=(const Type &element);
-    // void sumEq(const Vector<Type> &vector);
-    // void sumEq(const Type &element);
-    // Vector<Type> operator+(const Vector<Type> &vector) const; //! перенести к +=
-    // Vector<Type> operator+(const Type &element) const;
-    // Vector<Type> vecSum(const Vector<Type> &vector) const;
-    // Vector<Type> sumEl(const Type &element) const;
-
-    // Vector<Type> &operator-=(const Vector<Type> &vector);
-    // Vector<Type> &operator-=(const Type &element);
-    // void difEq(const Vector<Type> &vector);
-    // void difEq(const Type &element);
-    // Vector<Type> operator-(const Vector<Type> &vector) const;
-    // Vector<Type> operator-(const Type &element) const;
-    // Vector<Type> vecDif(const Vector<Type> &vector) const;
-    // Vector<Type> difEl(const Type &element) const;
-
-    // Vector<Type> &operator*=(const Vector<Type> &vector);
-    // Vector<Type> &operator*=(const Type &element);
-    // void mulEq(const Vector<Type> &vector);
-    // void mulEq(const Type &element);
-    // Vector<Type> operator*(const Vector<Type> &vector) const; //! В новую функцию
-    // Vector<Type> operator*(const Type &element) const;
-    // Vector<Type> vecMultip(const Vector<Type> &vector) const;
-    // Vector<Type> mulEl(const Type &element) const;
-
-    // Type operator&(const Vector<Type> &vector) const; //! Вынесено!
-    // Type scalarMult(const Vector<Type> &vector) const;
-
-    // Vector<Type> operator^(const Vector<Type> &vector) const; //! Добавлено векторное произведение
-    // Vector<Type> &operator^=(const Vector<Type> &vector);
-    // Vector<Type> VectorMult(const Vector<Type> &vector) const;
-    // void VectorEq(const Vector<Type> &vector);
-
-    // Vector<Type> &operator/=(const Vector<Type> &vector);
-    // Vector<Type> &operator/=(const Type &element);
-    // void divEq(const Vector<Type> &vector);
-    // void divEq(const Type &element);
-    // Vector<Type> operator/(const Vector<Type> &vector) const;
-    // Vector<Type> operator/(const Type &element) const;
-    // Vector<Type> vecDivid(const Vector<Type> &vector) const;
-    // Vector<Type> divEl(const Type &element) const;
-
-    // Vector<Type> operator-();
-    // Vector<Type> negative();
-
-    std::string toString() const;
 
 private:
     /**************************************************************************/
@@ -198,7 +171,7 @@ private:
 
     void resetData(int line);
     void validateSize(int line) const;
-    void validateSameSize(int line, const Vector<T> &other) const;
+    void validateSameSize(int line, const Vector<T> &vector) const;
 };
 
 #include "vector.hpp"

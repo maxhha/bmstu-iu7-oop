@@ -241,7 +241,7 @@ Vector<S> Vector<T>::normalized() const
 }
 
 // template <typename T>
-// double Vector<T>::angle(const Vector<T> &other) const
+// double Vector<T>::angle(const Vector<T> &vector) const
 // {
 //     validateSize(__LINE__)
 // }
@@ -256,15 +256,15 @@ bool Vector<T>::isZero() const
 }
 
 template <typename T>
-bool Vector<T>::isEqual(const Vector<T> &other) const
+bool Vector<T>::isEqual(const Vector<T> &vector) const
 {
-    if (size != other.size)
+    if (size != vector.size)
     {
         return false;
     }
 
     auto it = cbegin();
-    for (const auto &x : other)
+    for (const auto &x : vector)
     {
         if (std::fabs(x - *it) >= __DBL_EPSILON__)
         {
@@ -278,9 +278,9 @@ bool Vector<T>::isEqual(const Vector<T> &other) const
 }
 
 template <typename T>
-bool Vector<T>::isNotEqual(const Vector<T> &other) const
+bool Vector<T>::isNotEqual(const Vector<T> &vector) const
 {
-    return !isEqual(other);
+    return !isEqual(vector);
 }
 
 template <typename T>
@@ -302,15 +302,15 @@ bool Vector<T>::hasZero() const
 /**************************************************************************/
 
 template <typename T>
-bool Vector<T>::operator==(const Vector<T> &other) const
+bool Vector<T>::operator==(const Vector<T> &vector) const
 {
-    return isEqual(other);
+    return isEqual(vector);
 }
 
 template <typename T>
-bool Vector<T>::operator!=(const Vector<T> &other) const
+bool Vector<T>::operator!=(const Vector<T> &vector) const
 {
-    return !isEqual(other);
+    return !isEqual(vector);
 }
 
 /**************************************************************************/
@@ -337,21 +337,21 @@ Vector<T> &Vector<T>::negUpdate()
 }
 
 template <typename T>
-Vector<T> Vector<T>::add(const Vector<T> &other) const
+Vector<T> Vector<T>::add(const Vector<T> &vector) const
 {
     Vector<T> v(*this);
-    v.addUpdate(other);
+    v.addUpdate(vector);
 
     return v;
 }
 
 template <typename T>
-Vector<T> &Vector<T>::addUpdate(const Vector<T> &other)
+Vector<T> &Vector<T>::addUpdate(const Vector<T> &vector)
 {
-    validateSameSize(__LINE__, other);
+    validateSameSize(__LINE__, vector);
 
     auto it = begin();
-    for (const auto &x : other)
+    for (const auto &x : vector)
     {
         *it += x;
         ++it;
@@ -361,7 +361,7 @@ Vector<T> &Vector<T>::addUpdate(const Vector<T> &other)
 }
 
 template <typename T>
-Vector<T> Vector<T>::add(const T &scalar) const
+Vector<T> Vector<T>::addScalar(const T &scalar) const
 {
     Vector<T> v(*this);
     v.addUpdate(scalar);
@@ -370,7 +370,7 @@ Vector<T> Vector<T>::add(const T &scalar) const
 }
 
 template <typename T>
-Vector<T> &Vector<T>::addUpdate(const T &scalar)
+Vector<T> &Vector<T>::addScalarUpdate(const T &scalar)
 {
     for (auto &x : *this)
     {
@@ -381,21 +381,21 @@ Vector<T> &Vector<T>::addUpdate(const T &scalar)
 }
 
 template <typename T>
-Vector<T> Vector<T>::sub(const Vector<T> &other) const
+Vector<T> Vector<T>::sub(const Vector<T> &vector) const
 {
     Vector<T> v(*this);
-    v.subUpdate(other);
+    v.subUpdate(vector);
 
     return v;
 }
 
 template <typename T>
-Vector<T> &Vector<T>::subUpdate(const Vector<T> &other)
+Vector<T> &Vector<T>::subUpdate(const Vector<T> &vector)
 {
-    validateSameSize(__LINE__, other);
+    validateSameSize(__LINE__, vector);
 
     auto it = begin();
-    for (const auto &x : other)
+    for (const auto &x : vector)
     {
         *it -= x;
         ++it;
@@ -405,7 +405,7 @@ Vector<T> &Vector<T>::subUpdate(const Vector<T> &other)
 }
 
 template <typename T>
-Vector<T> Vector<T>::sub(const T &scalar) const
+Vector<T> Vector<T>::subScalar(const T &scalar) const
 {
     Vector<T> v(*this);
     v.subUpdate(scalar);
@@ -414,7 +414,7 @@ Vector<T> Vector<T>::sub(const T &scalar) const
 }
 
 template <typename T>
-Vector<T> &Vector<T>::subUpdate(const T &scalar)
+Vector<T> &Vector<T>::subScalarUpdate(const T &scalar)
 {
     for (auto &x : *this)
     {
@@ -425,21 +425,21 @@ Vector<T> &Vector<T>::subUpdate(const T &scalar)
 }
 
 template <typename T>
-Vector<T> Vector<T>::mul(const Vector<T> &other) const
+Vector<T> Vector<T>::mul(const Vector<T> &vector) const
 {
     Vector<T> v(*this);
-    v.mulUpdate(other);
+    v.mulUpdate(vector);
 
     return v;
 }
 
 template <typename T>
-Vector<T> &Vector<T>::mulUpdate(const Vector<T> &other)
+Vector<T> &Vector<T>::mulUpdate(const Vector<T> &vector)
 {
-    validateSameSize(__LINE__, other);
+    validateSameSize(__LINE__, vector);
 
     auto it = begin();
-    for (const auto &x : other)
+    for (const auto &x : vector)
     {
         *it *= x;
         ++it;
@@ -449,7 +449,7 @@ Vector<T> &Vector<T>::mulUpdate(const Vector<T> &other)
 }
 
 template <typename T>
-Vector<T> Vector<T>::mul(const T &scalar) const
+Vector<T> Vector<T>::mulScalar(const T &scalar) const
 {
     Vector<T> v(*this);
     v.mulUpdate(scalar);
@@ -458,7 +458,7 @@ Vector<T> Vector<T>::mul(const T &scalar) const
 }
 
 template <typename T>
-Vector<T> &Vector<T>::mulUpdate(const T &scalar)
+Vector<T> &Vector<T>::mulScalarUpdate(const T &scalar)
 {
     for (auto &x : *this)
     {
@@ -469,20 +469,20 @@ Vector<T> &Vector<T>::mulUpdate(const T &scalar)
 }
 
 template <typename T>
-Vector<T> Vector<T>::div(const Vector<T> &other) const
+Vector<T> Vector<T>::div(const Vector<T> &vector) const
 {
     Vector<T> v(*this);
-    v.divUpdate(other);
+    v.divUpdate(vector);
 
     return v;
 }
 
 template <typename T>
-Vector<T> &Vector<T>::divUpdate(const Vector<T> &other)
+Vector<T> &Vector<T>::divUpdate(const Vector<T> &vector)
 {
-    validateSameSize(__LINE__, other);
+    validateSameSize(__LINE__, vector);
 
-    if (other.hasZero())
+    if (vector.hasZero())
     {
         throw ZeroDivisionException(
             __FILE__,
@@ -491,7 +491,7 @@ Vector<T> &Vector<T>::divUpdate(const Vector<T> &other)
     }
 
     auto it = begin();
-    for (const auto &x : other)
+    for (const auto &x : vector)
     {
         *it /= x;
         ++it;
@@ -501,7 +501,7 @@ Vector<T> &Vector<T>::divUpdate(const Vector<T> &other)
 }
 
 template <typename T>
-Vector<T> Vector<T>::div(const T &scalar) const
+Vector<T> Vector<T>::divScalar(const T &scalar) const
 {
     Vector<T> v(*this);
     v.divUpdate(scalar);
@@ -510,7 +510,7 @@ Vector<T> Vector<T>::div(const T &scalar) const
 }
 
 template <typename T>
-Vector<T> &Vector<T>::divUpdate(const T &scalar)
+Vector<T> &Vector<T>::divScalarUpdate(const T &scalar)
 {
     if (std::fabs(scalar) < __DBL_EPSILON__)
     {
@@ -526,13 +526,13 @@ Vector<T> &Vector<T>::divUpdate(const T &scalar)
 }
 
 template <typename T>
-T Vector<T>::dot(const Vector<T> &other) const
+T Vector<T>::dot(const Vector<T> &vector) const
 {
-    validateSameSize(__LINE__, other);
+    validateSameSize(__LINE__, vector);
     T sum = 0;
 
     auto it = cbegin();
-    for (const auto &x : other)
+    for (const auto &x : vector)
     {
         sum += *it * x;
         ++it;
@@ -542,18 +542,18 @@ T Vector<T>::dot(const Vector<T> &other) const
 }
 
 template <typename T>
-Vector<T> Vector<T>::cross(const Vector<T> &other) const
+Vector<T> Vector<T>::cross(const Vector<T> &vector) const
 {
     Vector<T> v(*this);
-    v.crossUpdate(other);
+    v.crossUpdate(vector);
 
     return v;
 }
 
 template <typename T>
-Vector<T> &Vector<T>::crossUpdate(const Vector<T> &other)
+Vector<T> &Vector<T>::crossUpdate(const Vector<T> &vector)
 {
-    validateSameSize(__LINE__, other);
+    validateSameSize(__LINE__, vector);
 
     if (size != 3)
     {
@@ -563,9 +563,9 @@ Vector<T> &Vector<T>::crossUpdate(const Vector<T> &other)
             "Cross product exists only for vectors of size 3");
     }
 
-    T x = this->y() * other.z() - this->z() * other.y();
-    T y = this->z() * other.x() - this->x() * other.z();
-    T z = this->x() * other.y() - this->y() * other.x();
+    T x = this->y() * vector.z() - this->z() * vector.y();
+    T y = this->z() * vector.x() - this->x() * vector.z();
+    T z = this->x() * vector.y() - this->y() * vector.x();
 
     this->x() = x;
     this->y() = y;
@@ -574,17 +574,157 @@ Vector<T> &Vector<T>::crossUpdate(const Vector<T> &other)
     return *this;
 }
 
-template <>
-std::string Vector<int>::toString() const
-{
-    auto items = std::string();
+/**************************************************************************/
+/*                           Vector Math operators                        */
+/**************************************************************************/
 
-    for (const auto &x : *this)
+template <typename T>
+Vector<T> Vector<T>::operator-()
+{
+    return this->neg();
+}
+
+template <typename T>
+Vector<T> &Vector<T>::operator+=(const Vector<T> &vector)
+{
+    this->addUpdate(vector);
+    return *this;
+}
+
+template <typename T>
+Vector<T> &Vector<T>::operator+=(const T &scalar)
+{
+    this.addScalarUpdate(scalar);
+    return *this;
+}
+
+template <typename T>
+Vector<T> Vector<T>::operator+(const Vector<T> &vector) const
+{
+    return this->add(vector);
+}
+
+template <typename T>
+Vector<T> Vector<T>::operator+(const T &scalar) const
+{
+    return this->addScalar(scalar);
+}
+
+template <typename T>
+Vector<T> &Vector<T>::operator-=(const Vector<T> &vector)
+{
+    this->subUpdate(vector);
+    return *this;
+}
+
+template <typename T>
+Vector<T> &Vector<T>::operator-=(const T &scalar)
+{
+    this.subScalarUpdate(scalar);
+    return *this;
+}
+
+template <typename T>
+Vector<T> Vector<T>::operator-(const Vector<T> &vector) const
+{
+    return this->sub(vector);
+}
+
+template <typename T>
+Vector<T> Vector<T>::operator-(const T &scalar) const
+{
+    return this->subScalar(scalar);
+}
+
+template <typename T>
+Vector<T> &Vector<T>::operator*=(const Vector<T> &vector)
+{
+    this->mulUpdate(vector);
+    return *this;
+}
+
+template <typename T>
+Vector<T> &Vector<T>::operator*=(const T &scalar)
+{
+    this.mulScalarUpdate(scalar);
+    return *this;
+}
+
+template <typename T>
+Vector<T> Vector<T>::operator*(const Vector<T> &vector) const
+{
+    return this->mul(vector);
+}
+
+template <typename T>
+Vector<T> Vector<T>::operator*(const T &scalar) const
+{
+    return this->mulScalar(scalar);
+}
+
+template <typename T>
+Vector<T> &Vector<T>::operator/=(const Vector<T> &vector)
+{
+    this->divUpdate(vector);
+    return *this;
+}
+
+template <typename T>
+Vector<T> &Vector<T>::operator/=(const T &scalar)
+{
+    this.divScalarUpdate(scalar);
+    return *this;
+}
+
+template <typename T>
+Vector<T> Vector<T>::operator/(const Vector<T> &vector) const
+{
+    return this->div(vector);
+}
+
+template <typename T>
+Vector<T> Vector<T>::operator/(const T &scalar) const
+{
+    return this->divScalar(scalar);
+}
+
+template <typename T>
+T Vector<T>::operator&(const Vector<T> &vector) const
+{
+    return this.dot(vector);
+}
+
+template <typename T>
+Vector<T> Vector<T>::operator^(const Vector<T> &vector) const
+{
+    return this->cross(vector);
+}
+
+template <typename T>
+Vector<T> &Vector<T>::operator^=(const Vector<T> &vector)
+{
+    this->crossUpdate(vector);
+    return *this;
+}
+
+template <typename T>
+std::ostream &operator<<(std::ostream &os, const Vector<T> &vector)
+{
+    os << "Vector(";
+
+    auto it = vector.cbegin();
+    for (; it < vector.cend(); ++it)
     {
-        items = format("%s; %d", items.c_str(), x);
+        os << *it;
+        if (it + 1 < vector.cend())
+        {
+            os << "; ";
+        }
     }
 
-    return format("Vector(%s)", items.c_str() + 2);
+    os << ")";
+
+    return os;
 }
 
 /**************************************************************************/
@@ -614,14 +754,14 @@ void Vector<T>::validateSize(int line) const
 }
 
 template <typename T>
-void Vector<T>::validateSameSize(int line, const Vector<T> &other) const
+void Vector<T>::validateSameSize(int line, const Vector<T> &vector) const
 {
-    if (size != other.size)
+    if (size != vector.size)
     {
         throw MismatchSizeException(
             __FILE__,
             line,
-            format("this.size = %zu, other.size = %zu", size, other.size));
+            format("this.size = %zu, vector.size = %zu", size, vector.size));
     }
 }
 
