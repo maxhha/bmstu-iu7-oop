@@ -4,11 +4,13 @@
 #include <cstddef>
 #include "container.h"
 #include "iterator.h"
+#include "const_iterator.h"
 
 template <typename T>
 class Vector : public Container
 {
     friend class VectorIterator<T>;
+    friend class ConstVectorIterator<T>;
 
 public:
     /**************************************************************************/
@@ -33,6 +35,10 @@ public:
 
     VectorIterator<T> begin() noexcept;
     VectorIterator<T> end() noexcept;
+    ConstVectorIterator<T> begin() const noexcept;
+    ConstVectorIterator<T> end() const noexcept;
+    ConstVectorIterator<T> cbegin() const noexcept;
+    ConstVectorIterator<T> cend() const noexcept;
 
     /**************************************************************************/
     /*                          Vector Assign operators                       */
@@ -42,23 +48,20 @@ public:
     Vector<T> &operator=(const std::initializer_list<T> &items);
     Vector<T> &operator=(Vector<T> &&vector) noexcept;
 
-    // Vector(size_t size, const Type *arrayFrom);
-    // Vector(size_t size, Type element);
+    /**************************************************************************/
+    /*                           Vector Public methods                        */
+    /**************************************************************************/
 
-    // //< End
+    template <typename S>
+    S length() const;
+    // template <typename s>
+    // Vector<S> normalized() const;
 
-    // //! Vector bool funcs
-    // bool isZeroV() const noexcept;
-    // bool isSingleV() const noexcept; //! Переименовано
-    // //< End
+    /**************************************************************************/
+    /*                           Vector Logic methods                        */
+    /**************************************************************************/
 
-    // //! One vector methods
-    // template <typename TypeOut>
-    // TypeOut length() const; //! Сделана специализация для int
-    // //! Убрал push, pop
-    // template <typename TypeOut>
-    // Vector<TypeOut> getUnitV() const; //! Специализация
-    // //< End
+    bool isZero() const;
 
     // //! Two vectors methods
     // double angle(const Vector<Type> &vector) const;
@@ -143,7 +146,8 @@ private:
     /*                          Vector Private methods                        */
     /**************************************************************************/
 
-    void resetData(void);
+    void resetData();
+    void validateSize() const;
 };
 
 #include "vector.hpp"

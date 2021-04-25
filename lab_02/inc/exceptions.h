@@ -24,4 +24,11 @@ public:
         : VectorException(file, line, msg){};
 };
 
+class EmptyVectorException : public VectorException
+{
+public:
+    EmptyVectorException(std::string file, int line, std::string msg = "")
+        : VectorException(file, line, msg){};
+};
+
 #endif // __EXCEPTIONS_H__

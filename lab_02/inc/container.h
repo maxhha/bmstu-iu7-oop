@@ -12,12 +12,18 @@ public:
         return size;
     };
 
+    virtual bool
+    isEmpty() const noexcept
+    {
+        return size == 0;
+    }
+
     virtual ~Container() = 0;
 
 protected:
     size_t size = 0;
 };
 
-Container::~Container() { }
+Container::~Container() {}
 
 #endif // __CONTAINER_HPP__

@@ -64,3 +64,18 @@ TEST_CASE("Vector iterators are iterating", "[VectorIterator]")
         REQUIRE_THROWS_AS(*it, OutOfRangeException);
     }
 }
+
+TEST_CASE("Vector operations are tested", "[Vector]")
+{
+    SECTION("length")
+    {
+        auto c = Vector<int>({3, 4});
+        REQUIRE(c.length<int>() == 5);
+    }
+
+    SECTION("length of empty vec")
+    {
+        Vector<int> c;
+        REQUIRE_THROWS_AS(c.length<int>(), EmptyVectorException);
+    }
+}

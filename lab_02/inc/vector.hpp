@@ -1,6 +1,7 @@
 #ifndef __VECTOR_HPP__
 #define __VECTOR_HPP__
 
+#include <cmath>
 #include "vector.h"
 
 /**************************************************************************/
@@ -75,6 +76,32 @@ VectorIterator<T> Vector<T>::end() noexcept
     return it + size;
 }
 
+template <typename T>
+ConstVectorIterator<T> Vector<T>::begin() const noexcept
+{
+    return cbegin();
+}
+
+template <typename T>
+ConstVectorIterator<T> Vector<T>::end() const noexcept
+{
+    return cend();
+}
+
+template <typename T>
+ConstVectorIterator<T> Vector<T>::cbegin() const noexcept
+{
+    ConstVectorIterator<T> it(*this);
+    return it;
+}
+
+template <typename T>
+ConstVectorIterator<T> Vector<T>::cend() const noexcept
+{
+    ConstVectorIterator<T> it(*this);
+    return it + size;
+}
+
 /**************************************************************************/
 /*                          Vector Assign operators                       */
 /**************************************************************************/
@@ -88,9 +115,9 @@ Vector<T> &Vector<T>::operator=(const Vector<T> &vector)
     VectorIterator<T> it(*this);
     VectorIterator<T> itOther(vector);
 
-    for (; it; ++it, ++itFrom)
+    for (; it; ++it, ++itOther)
     {
-        *it = *itFrom;
+        *it = *itOther;
     }
 
     return *this;
@@ -99,7 +126,7 @@ Vector<T> &Vector<T>::operator=(const Vector<T> &vector)
 template <typename T>
 Vector<T> &Vector<T>::operator=(const std::initializer_list<T> &items)
 {
-    size = vector.size;
+    size = items.size;
     resetData();
 
     auto it = begin();
@@ -125,11 +152,36 @@ Vector<T> &Vector<T>::operator=(Vector<T> &&vector) noexcept
 }
 
 /**************************************************************************/
+/*                           Vector Public Methods                        */
+/**************************************************************************/
+
+template <typename T>
+bool Vector<T>::isZero() const
+{
+    return this->length<double>() < __DBL_EPSILON__;
+}
+
+template <typename T>
+template <typename S>
+S Vector<T>::length() const
+{
+    validateSize();
+
+    T sum = 0;
+    for (const auto &x : *this)
+    {
+        sum += x * x;
+    }
+
+    return sqrt(sum);
+}
+
+/**************************************************************************/
 /*                          Vector Private methods                        */
 /**************************************************************************/
 
 template <typename T>
-void Vector<T>::resetData(void)
+void Vector<T>::resetData()
 {
     try
     {
@@ -138,6 +190,15 @@ void Vector<T>::resetData(void)
     catch (std::bad_alloc &e)
     {
         throw BadAllocException(__FILE__, __LINE__, "Cant alloc for vector data");
+    }
+}
+
+template <typename T>
+void Vector<T>::validateSize() const
+{
+    if (isEmpty())
+    {
+        throw EmptyVectorException(__FILE__, __LINE__, "Cant get length of empty vector");
     }
 }
 
