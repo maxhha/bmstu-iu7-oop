@@ -68,10 +68,14 @@ public:
     template <typename S>
     S length() const;
     T lengthSquared() const;
+
     template <typename S>
     Vector<S> normalized() const;
-    // double angle() const;
-    // double angle(const Vector<T> &vector) const;
+    
+    double angleBetween(const Vector<T> &vector) const;
+    double angleX() const;
+    double angleY() const;
+    double angleZ() const;
 
     /**************************************************************************/
     /*                           Vector Logic methods                         */
@@ -80,6 +84,8 @@ public:
     bool isZero() const;
     bool isEqual(const Vector<T> &vector) const;
     bool isNotEqual(const Vector<T> &vector) const;
+    bool isCollinear(const Vector<T> &vector) const;
+    bool isPerpendicular(const Vector<T> &vector) const;
 
     bool hasZero() const;
 
@@ -152,11 +158,6 @@ public:
 
     Vector<T> operator^(const Vector<T> &vector) const; // = cross
     Vector<T> &operator^=(const Vector<T> &vector);     // = crossUpdate
-
-    // //! Two vectors methods
-    // bool collinear(const Vector<Type> &vector) const;
-    // bool orthgonal(const Vector<Type> &vector) const; //! Переименовано
-    // //< End
 
 private:
     /**************************************************************************/

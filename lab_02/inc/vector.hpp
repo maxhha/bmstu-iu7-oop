@@ -228,6 +228,15 @@ template <typename S>
 Vector<S> Vector<T>::normalized() const
 {
     S len = length<S>();
+
+    if (std::fabs(len) < __DBL_EPSILON__)
+    {
+        throw ZeroDivisionException(
+            __FILE__,
+            __LINE__,
+            "Cant normalize vector with zero length");
+    }
+
     Vector<S> vec(size);
 
     auto it = vec.begin();
@@ -240,11 +249,71 @@ Vector<S> Vector<T>::normalized() const
     return vec;
 }
 
-// template <typename T>
-// double Vector<T>::angle(const Vector<T> &vector) const
-// {
-//     validateSize(__LINE__)
-// }
+template <typename T>
+double Vector<T>::angleBetween(const Vector<T> &vector) const
+{
+    double l1 = length<double>();
+    double l2 = vector.length<double>();
+
+    if (l1 < __DBL_EPSILON__ || l2 < __DBL_EPSILON__)
+    {
+        throw ZeroDivisionException(
+            __FILE__,
+            __LINE__,
+            format("this.length() = %.3lf, other.length() - %.4lf", l1, l2));
+    }
+
+    return acos(dot(vector) / l1 / l2);
+}
+
+template <typename T>
+double Vector<T>::angleX() const
+{
+    double l = length<double>();
+
+    if (l < __DBL_EPSILON__)
+    {
+        throw ZeroDivisionException(
+            __FILE__,
+            __LINE__,
+            format("this.length() = %.3lf", l));
+    }
+
+    return acos(x() / l);
+}
+
+template <typename T>
+double Vector<T>::angleY() const
+{
+    double l = length<double>();
+
+    if (l < __DBL_EPSILON__)
+    {
+        throw ZeroDivisionException(
+            __FILE__,
+            __LINE__,
+            format("this.length() = %.3lf", l));
+    }
+
+    return acos(y() / l);
+}
+
+template <typename T>
+double Vector<T>::angleZ() const
+{
+    double l = length<double>();
+
+    if (l < __DBL_EPSILON__)
+    {
+        throw ZeroDivisionException(
+            __FILE__,
+            __LINE__,
+            format("this.length() = %.3lf", l));
+    }
+
+    return acos(z() / l);
+}
+
 /**************************************************************************/
 /*                           Vector Logic methods                         */
 /**************************************************************************/
@@ -281,6 +350,19 @@ template <typename T>
 bool Vector<T>::isNotEqual(const Vector<T> &vector) const
 {
     return !isEqual(vector);
+}
+
+template <typename T>
+bool Vector<T>::isCollinear(const Vector<T> &vector) const
+{
+    return std::fabs(angleBetween(vector)) < __DBL_EPSILON__;
+}
+
+template <typename T>
+bool Vector<T>::isPerpendicular(const Vector<T> &vector) const
+{
+    auto angle = std::fabs(angleBetween(vector));
+    return std::fabs(angle - M_PI_2) < __DBL_EPSILON__;
 }
 
 template <typename T>
