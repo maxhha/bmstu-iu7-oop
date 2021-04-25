@@ -90,4 +90,15 @@ TEST_CASE("Vector operations are tested", "[Vector]")
         Vector<int> c({8, 6, 0});
         REQUIRE(c.normalized<double>() == Vector<double>({0.8, 0.6, 0.0}));
     }
+
+    SECTION("x y z")
+    {
+        Vector<int> c({8, 6, 0});
+        REQUIRE(c.x() == 8);
+        REQUIRE(c.y() == 6);
+        REQUIRE(c.z() == 0);
+
+        c = Vector<int>({1, 2});
+        REQUIRE_THROWS_AS(c.z(), OutOfRangeException);
+    }
 }

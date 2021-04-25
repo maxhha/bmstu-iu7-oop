@@ -41,6 +41,19 @@ public:
     ConstVectorIterator<T> cend() const noexcept;
 
     /**************************************************************************/
+    /*                        Vector Reference operators                      */
+    /**************************************************************************/
+
+    T &operator[](size_t index);
+    const T &operator[](size_t index) const;
+    T &x();
+    const T &x() const;
+    T &y();
+    const T &y() const;
+    T &z();
+    const T &z() const;
+
+    /**************************************************************************/
     /*                          Vector Assign operators                       */
     /**************************************************************************/
 
@@ -56,6 +69,8 @@ public:
     S length() const;
     template <typename S>
     Vector<S> normalized() const;
+    // double angle() const;
+    // double angle(const Vector<T> &vector) const;
 
     /**************************************************************************/
     /*                           Vector Logic methods                         */
@@ -73,15 +88,12 @@ public:
     bool operator!=(const Vector<T> &other) const;
 
     // //! Two vectors methods
-    // double angle(const Vector<Type> &vector) const;
     // bool collinear(const Vector<Type> &vector) const;
     // bool orthgonal(const Vector<Type> &vector) const; //! Переименовано
     // //< End
 
     // Type &at(size_t index);
     // const Type &at(size_t index) const;
-    // Type &operator[](size_t index);
-    // const Type &operator[](size_t index) const;
 
     // //! Operators overloads
 

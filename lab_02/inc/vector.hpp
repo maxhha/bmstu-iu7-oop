@@ -103,6 +103,58 @@ ConstVectorIterator<T> Vector<T>::cend() const noexcept
 }
 
 /**************************************************************************/
+/*                        Vector Reference operators                      */
+/**************************************************************************/
+
+template <typename T>
+T &Vector<T>::operator[](size_t index)
+{
+    return *(begin() + index);
+}
+
+template <typename T>
+const T &Vector<T>::operator[](size_t index) const
+{
+    return *(cbegin() + index);
+}
+
+template <typename T>
+T &Vector<T>::x()
+{
+    return (*this)[0];
+}
+
+template <typename T>
+const T &Vector<T>::x() const
+{
+    return (*this)[0];
+}
+
+template <typename T>
+T &Vector<T>::y()
+{
+    return (*this)[1];
+}
+
+template <typename T>
+const T &Vector<T>::y() const
+{
+    return (*this)[1];
+}
+
+template <typename T>
+T &Vector<T>::z()
+{
+    return (*this)[2];
+}
+
+template <typename T>
+const T &Vector<T>::z() const
+{
+    return (*this)[2];
+}
+
+/**************************************************************************/
 /*                          Vector Assign operators                       */
 /**************************************************************************/
 
