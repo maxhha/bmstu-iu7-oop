@@ -71,7 +71,7 @@ public:
 
     template <typename S>
     Vector<S> normalized() const;
-    
+
     double angleBetween(const Vector<T> &vector) const;
     double angleX() const;
     double angleY() const;
@@ -119,7 +119,7 @@ public:
     Vector<T> &mulScalarUpdate(const T &scalar);
 
     Vector<T> div(const Vector<T> &vector) const;
-    Vector<T> &divScalarUpdate(const Vector<T> &vector);
+    Vector<T> &divUpdate(const Vector<T> &vector);
     Vector<T> divScalar(const T &scalar) const;
     Vector<T> &divScalarUpdate(const T &scalar);
 

@@ -192,7 +192,7 @@ TEST_CASE("Vector operations are tested", "[Vector]")
         REQUIRE(a == Vector<int>({1, 6, 0}));
         REQUIRE_THROWS_AS(b.div(a), ZeroDivisionException);
         REQUIRE(a == Vector<int>({1, 6, 0}));
-        REQUIRE(a.divScalarUpdate(b) == Vector<int>({1, -3, 0}));
+        REQUIRE(a.divUpdate(b) == Vector<int>({1, -3, 0}));
         REQUIRE(a == Vector<int>({1, -3, 0}));
         REQUIRE_THROWS_AS(a.div(d), MismatchSizeException);
     }

@@ -446,7 +446,7 @@ template <typename T>
 Vector<T> Vector<T>::addScalar(const T &scalar) const
 {
     Vector<T> v(*this);
-    v.addUpdate(scalar);
+    v.addScalarUpdate(scalar);
 
     return v;
 }
@@ -490,7 +490,7 @@ template <typename T>
 Vector<T> Vector<T>::subScalar(const T &scalar) const
 {
     Vector<T> v(*this);
-    v.subUpdate(scalar);
+    v.subScalarUpdate(scalar);
 
     return v;
 }
@@ -534,7 +534,7 @@ template <typename T>
 Vector<T> Vector<T>::mulScalar(const T &scalar) const
 {
     Vector<T> v(*this);
-    v.mulUpdate(scalar);
+    v.mulScalarUpdate(scalar);
 
     return v;
 }
@@ -586,7 +586,7 @@ template <typename T>
 Vector<T> Vector<T>::divScalar(const T &scalar) const
 {
     Vector<T> v(*this);
-    v.divUpdate(scalar);
+    v.divScalarUpdate(scalar);
 
     return v;
 }
