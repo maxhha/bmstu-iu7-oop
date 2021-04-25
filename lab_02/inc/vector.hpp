@@ -3,6 +3,7 @@
 
 #include <cmath>
 #include "vector.h"
+#include "format.h"
 
 /**************************************************************************/
 /*                           Vector Constructors                          */
@@ -12,14 +13,14 @@ template <typename T>
 Vector<T>::Vector()
 {
     size = 0;
-    resetData();
+    resetData(__LINE__);
 };
 
 template <typename T>
 Vector<T>::Vector(size_t _size)
 {
     size = _size;
-    resetData();
+    resetData(__LINE__);
 
     for (auto it = begin(); it < end(); ++it)
     {
@@ -31,7 +32,7 @@ template <typename T>
 Vector<T>::Vector(const std::initializer_list<T> &items)
 {
     size = items.size();
-    resetData();
+    resetData(__LINE__);
 
     auto it = this->begin();
 
@@ -53,9 +54,6 @@ Vector<T>::Vector(Vector<T> &&vector) noexcept
 {
     size = vector.size;
     data = vector.data;
-
-    vector.size = 0;
-    vector.data = nullptr;
 }
 
 /**************************************************************************/
@@ -162,14 +160,14 @@ template <typename T>
 Vector<T> &Vector<T>::operator=(const Vector<T> &vector)
 {
     size = vector.size;
-    resetData();
+    resetData(__LINE__);
 
-    VectorIterator<T> it(*this);
-    VectorIterator<T> itOther(vector);
+    auto it = begin();
 
-    for (; it; ++it, ++itOther)
+    for (const auto &x : vector)
     {
-        *it = *itOther;
+        *it = x;
+        ++it;
     }
 
     return *this;
@@ -179,7 +177,7 @@ template <typename T>
 Vector<T> &Vector<T>::operator=(const std::initializer_list<T> &items)
 {
     size = items.size;
-    resetData();
+    resetData(__LINE__);
 
     auto it = begin();
     for (auto &item : items)
@@ -197,9 +195,6 @@ Vector<T> &Vector<T>::operator=(Vector<T> &&vector) noexcept
     size = vector.size;
     data = vector.data;
 
-    vector.size = 0;
-    vector.data = nullptr;
-
     return *this;
 }
 
@@ -211,7 +206,13 @@ template <typename T>
 template <typename S>
 S Vector<T>::length() const
 {
-    validateSize();
+    return sqrt(lengthSquared());
+}
+
+template <typename T>
+T Vector<T>::lengthSquared() const
+{
+    validateSize(__LINE__);
 
     T sum = 0;
     for (const auto &x : *this)
@@ -219,7 +220,7 @@ S Vector<T>::length() const
         sum += x * x;
     }
 
-    return sqrt(sum);
+    return sum;
 }
 
 template <typename T>
@@ -239,6 +240,11 @@ Vector<S> Vector<T>::normalized() const
     return vec;
 }
 
+// template <typename T>
+// double Vector<T>::angle(const Vector<T> &other) const
+// {
+//     validateSize(__LINE__)
+// }
 /**************************************************************************/
 /*                           Vector Logic methods                         */
 /**************************************************************************/
@@ -277,6 +283,20 @@ bool Vector<T>::isNotEqual(const Vector<T> &other) const
     return !isEqual(other);
 }
 
+template <typename T>
+bool Vector<T>::hasZero() const
+{
+    for (const auto &x : *this)
+    {
+        if (std::fabs(x) < __DBL_EPSILON__)
+        {
+            return true;
+        }
+    }
+
+    return false;
+}
+
 /**************************************************************************/
 /*                          Vector Logic operators                        */
 /**************************************************************************/
@@ -294,11 +314,285 @@ bool Vector<T>::operator!=(const Vector<T> &other) const
 }
 
 /**************************************************************************/
+/*                            Vector Math methods                         */
+/**************************************************************************/
+
+template <typename T>
+Vector<T> Vector<T>::neg() const
+{
+    Vector<T> v(*this);
+    v.negUpdate();
+    return v;
+}
+
+template <typename T>
+Vector<T> &Vector<T>::negUpdate()
+{
+    for (auto &x : *this)
+    {
+        x = -x;
+    }
+
+    return *this;
+}
+
+template <typename T>
+Vector<T> Vector<T>::add(const Vector<T> &other) const
+{
+    Vector<T> v(*this);
+    v.addUpdate(other);
+
+    return v;
+}
+
+template <typename T>
+Vector<T> &Vector<T>::addUpdate(const Vector<T> &other)
+{
+    validateSameSize(__LINE__, other);
+
+    auto it = begin();
+    for (const auto &x : other)
+    {
+        *it += x;
+        ++it;
+    }
+
+    return *this;
+}
+
+template <typename T>
+Vector<T> Vector<T>::add(const T &scalar) const
+{
+    Vector<T> v(*this);
+    v.addUpdate(scalar);
+
+    return v;
+}
+
+template <typename T>
+Vector<T> &Vector<T>::addUpdate(const T &scalar)
+{
+    for (auto &x : *this)
+    {
+        x += scalar;
+    }
+
+    return *this;
+}
+
+template <typename T>
+Vector<T> Vector<T>::sub(const Vector<T> &other) const
+{
+    Vector<T> v(*this);
+    v.subUpdate(other);
+
+    return v;
+}
+
+template <typename T>
+Vector<T> &Vector<T>::subUpdate(const Vector<T> &other)
+{
+    validateSameSize(__LINE__, other);
+
+    auto it = begin();
+    for (const auto &x : other)
+    {
+        *it -= x;
+        ++it;
+    }
+
+    return *this;
+}
+
+template <typename T>
+Vector<T> Vector<T>::sub(const T &scalar) const
+{
+    Vector<T> v(*this);
+    v.subUpdate(scalar);
+
+    return v;
+}
+
+template <typename T>
+Vector<T> &Vector<T>::subUpdate(const T &scalar)
+{
+    for (auto &x : *this)
+    {
+        x -= scalar;
+    }
+
+    return *this;
+}
+
+template <typename T>
+Vector<T> Vector<T>::mul(const Vector<T> &other) const
+{
+    Vector<T> v(*this);
+    v.mulUpdate(other);
+
+    return v;
+}
+
+template <typename T>
+Vector<T> &Vector<T>::mulUpdate(const Vector<T> &other)
+{
+    validateSameSize(__LINE__, other);
+
+    auto it = begin();
+    for (const auto &x : other)
+    {
+        *it *= x;
+        ++it;
+    }
+
+    return *this;
+}
+
+template <typename T>
+Vector<T> Vector<T>::mul(const T &scalar) const
+{
+    Vector<T> v(*this);
+    v.mulUpdate(scalar);
+
+    return v;
+}
+
+template <typename T>
+Vector<T> &Vector<T>::mulUpdate(const T &scalar)
+{
+    for (auto &x : *this)
+    {
+        x *= scalar;
+    }
+
+    return *this;
+}
+
+template <typename T>
+Vector<T> Vector<T>::div(const Vector<T> &other) const
+{
+    Vector<T> v(*this);
+    v.divUpdate(other);
+
+    return v;
+}
+
+template <typename T>
+Vector<T> &Vector<T>::divUpdate(const Vector<T> &other)
+{
+    validateSameSize(__LINE__, other);
+
+    if (other.hasZero())
+    {
+        throw ZeroDivisionException(
+            __FILE__,
+            __LINE__,
+            "Divider has zero coord");
+    }
+
+    auto it = begin();
+    for (const auto &x : other)
+    {
+        *it /= x;
+        ++it;
+    }
+
+    return *this;
+}
+
+template <typename T>
+Vector<T> Vector<T>::div(const T &scalar) const
+{
+    Vector<T> v(*this);
+    v.divUpdate(scalar);
+
+    return v;
+}
+
+template <typename T>
+Vector<T> &Vector<T>::divUpdate(const T &scalar)
+{
+    if (std::fabs(scalar) < __DBL_EPSILON__)
+    {
+        throw ZeroDivisionException(__FILE__, __LINE__, "Divider is zero");
+    }
+
+    for (auto &x : *this)
+    {
+        x /= scalar;
+    }
+
+    return *this;
+}
+
+template <typename T>
+T Vector<T>::dot(const Vector<T> &other) const
+{
+    validateSameSize(__LINE__, other);
+    T sum = 0;
+
+    auto it = cbegin();
+    for (const auto &x : other)
+    {
+        sum += *it * x;
+        ++it;
+    }
+
+    return sum;
+}
+
+template <typename T>
+Vector<T> Vector<T>::cross(const Vector<T> &other) const
+{
+    Vector<T> v(*this);
+    v.crossUpdate(other);
+
+    return v;
+}
+
+template <typename T>
+Vector<T> &Vector<T>::crossUpdate(const Vector<T> &other)
+{
+    validateSameSize(__LINE__, other);
+
+    if (size != 3)
+    {
+        throw InvalidSizeException(
+            __FILE__,
+            __LINE__,
+            "Cross product exists only for vectors of size 3");
+    }
+
+    T x = this->y() * other.z() - this->z() * other.y();
+    T y = this->z() * other.x() - this->x() * other.z();
+    T z = this->x() * other.y() - this->y() * other.x();
+
+    this->x() = x;
+    this->y() = y;
+    this->z() = z;
+
+    return *this;
+}
+
+template <>
+std::string Vector<int>::toString() const
+{
+    auto items = std::string();
+
+    for (const auto &x : *this)
+    {
+        items = format("%s; %d", items.c_str(), x);
+    }
+
+    return format("Vector(%s)", items.c_str() + 2);
+}
+
+/**************************************************************************/
 /*                          Vector Private methods                        */
 /**************************************************************************/
 
 template <typename T>
-void Vector<T>::resetData()
+void Vector<T>::resetData(int line)
 {
     try
     {
@@ -306,16 +600,28 @@ void Vector<T>::resetData()
     }
     catch (std::bad_alloc &e)
     {
-        throw BadAllocException(__FILE__, __LINE__, "Cant alloc for vector data");
+        throw BadAllocException(__FILE__, line, "Cant alloc for vector data");
     }
 }
 
 template <typename T>
-void Vector<T>::validateSize() const
+void Vector<T>::validateSize(int line) const
 {
     if (isEmpty())
     {
-        throw EmptyVectorException(__FILE__, __LINE__, "Cant get length of empty vector");
+        throw EmptyVectorException(__FILE__, line, "Cant get length of empty vector");
+    }
+}
+
+template <typename T>
+void Vector<T>::validateSameSize(int line, const Vector<T> &other) const
+{
+    if (size != other.size)
+    {
+        throw MismatchSizeException(
+            __FILE__,
+            line,
+            format("this.size = %zu, other.size = %zu", size, other.size));
     }
 }
 

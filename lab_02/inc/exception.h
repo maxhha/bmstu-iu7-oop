@@ -6,7 +6,7 @@
 class VectorException : public std::exception
 {
 public:
-    VectorException(std::string file, int line, std::string msg);
+    VectorException(std::string name, std::string file, int line, std::string msg);
     virtual const char *what() const noexcept override;
 
     virtual ~VectorException(){};

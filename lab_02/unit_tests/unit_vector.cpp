@@ -70,6 +70,7 @@ TEST_CASE("Vector operations are tested", "[Vector]")
     SECTION("length")
     {
         auto c = Vector<int>({3, 4});
+        REQUIRE(c.lengthSquared() == 25);
         REQUIRE(c.length<int>() == 5);
     }
 
@@ -100,5 +101,130 @@ TEST_CASE("Vector operations are tested", "[Vector]")
 
         c = Vector<int>({1, 2});
         REQUIRE_THROWS_AS(c.z(), OutOfRangeException);
+    }
+
+    SECTION("has zero")
+    {
+        Vector<int> c({8, 6, 0});
+        REQUIRE(c.hasZero() == true);
+    }
+
+    SECTION("neg")
+    {
+        Vector<int> c({8, 6, 0});
+        REQUIRE(c.neg() == Vector<int>({-8, -6, 0}));
+        REQUIRE(c == Vector<int>({8, 6, 0}));
+        REQUIRE(c.negUpdate() == Vector<int>({-8, -6, 0}));
+        REQUIRE(c == Vector<int>({-8, -6, 0}));
+    }
+
+    SECTION("add vec")
+    {
+        Vector<int> a({1, 6, 0}), b({1, -10, -2}), d = Vector<int>({1, 2, 3, 4});
+
+        REQUIRE(a.add(b) == Vector<int>({2, -4, -2}));
+        REQUIRE(a == Vector<int>({1, 6, 0}));
+        REQUIRE(a.addUpdate(b) == Vector<int>({2, -4, -2}));
+        REQUIRE(a == Vector<int>({2, -4, -2}));
+        REQUIRE_THROWS_AS(a.add(d), MismatchSizeException);
+    }
+
+    SECTION("add scalar")
+    {
+        Vector<int> a({1, 6, 0});
+        int b = 2;
+
+        REQUIRE(a.add(b) == Vector<int>({3, 8, 2}));
+        REQUIRE(a == Vector<int>({1, 6, 0}));
+        REQUIRE(a.addUpdate(b) == Vector<int>({3, 8, 2}));
+        REQUIRE(a == Vector<int>({3, 8, 2}));
+    }
+
+    SECTION("sub vec")
+    {
+        Vector<int> a({1, 6, 0}), b({1, -10, -2}), d = Vector<int>({1, 2, 3, 4});
+
+        REQUIRE(a.sub(b) == Vector<int>({0, 16, 2}));
+        REQUIRE(a == Vector<int>({1, 6, 0}));
+        REQUIRE(a.subUpdate(b) == Vector<int>({0, 16, 2}));
+        REQUIRE(a == Vector<int>({0, 16, 2}));
+        REQUIRE_THROWS_AS(a.add(d), MismatchSizeException);
+    }
+
+    SECTION("sub scalar")
+    {
+        Vector<int> a({1, 6, 0});
+        int b = 6;
+
+        REQUIRE(a.sub(b) == Vector<int>({-5, 0, -6}));
+        REQUIRE(a == Vector<int>({1, 6, 0}));
+        REQUIRE(a.subUpdate(b) == Vector<int>({-5, 0, -6}));
+        REQUIRE(a == Vector<int>({-5, 0, -6}));
+    }
+
+    SECTION("mul vec")
+    {
+        Vector<int> a({1, 6, 0}), b({1, -10, -2}), d = Vector<int>({1, 2, 3, 4});
+
+        REQUIRE(a.mul(b) == Vector<int>({1, -60, 0}));
+        REQUIRE(a == Vector<int>({1, 6, 0}));
+        REQUIRE(a.mulUpdate(b) == Vector<int>({1, -60, 0}));
+        REQUIRE(a == Vector<int>({1, -60, 0}));
+        REQUIRE_THROWS_AS(a.mul(d), MismatchSizeException);
+    }
+
+    SECTION("mul scalar")
+    {
+        Vector<int> a({1, 6, 0});
+        int b = 2;
+
+        REQUIRE(a.mul(b) == Vector<int>({2, 12, 0}));
+        REQUIRE(a == Vector<int>({1, 6, 0}));
+        REQUIRE(a.mulUpdate(b) == Vector<int>({2, 12, 0}));
+        REQUIRE(a == Vector<int>({2, 12, 0}));
+    }
+
+    SECTION("div vec")
+    {
+        Vector<int> a({1, 6, 0}), b({1, -2, -2}), d = Vector<int>({1, 2, 3, 4});
+
+        REQUIRE(a.div(b) == Vector<int>({1, -3, 0}));
+        REQUIRE(a == Vector<int>({1, 6, 0}));
+        REQUIRE_THROWS_AS(b.div(a), ZeroDivisionException);
+        REQUIRE(a == Vector<int>({1, 6, 0}));
+        REQUIRE(a.divUpdate(b) == Vector<int>({1, -3, 0}));
+        REQUIRE(a == Vector<int>({1, -3, 0}));
+        REQUIRE_THROWS_AS(a.div(d), MismatchSizeException);
+    }
+
+    SECTION("div scalar")
+    {
+        Vector<int> a({1, 6, 0});
+
+        REQUIRE(a.div(2) == Vector<int>({0, 3, 0}));
+        REQUIRE(a == Vector<int>({1, 6, 0}));
+        REQUIRE_THROWS_AS(a.div(0), ZeroDivisionException);
+        REQUIRE(a.divUpdate(2) == Vector<int>({0, 3, 0}));
+        REQUIRE(a == Vector<int>({0, 3, 0}));
+    }
+
+    SECTION("dot product")
+    {
+        Vector<int> a({1, 6, 0}), b({1, -2, -2}), d = Vector<int>({1, 2, 3, 4});
+
+        REQUIRE(a.dot(b) == -11);
+        REQUIRE_THROWS_AS(a.dot(d), MismatchSizeException);
+    }
+
+    SECTION("cross product")
+    {
+        Vector<int> a({1, 6, 0}), b({1, -2, -2}), d = Vector<int>({1, 2, 3, 4});
+
+        REQUIRE(a.cross(b) == Vector<int>({-12, 2, -8}));
+        REQUIRE(a == Vector<int>({1, 6, 0}));
+        REQUIRE_THROWS_AS(a.cross(d), MismatchSizeException);
+        REQUIRE_THROWS_AS(d.cross(d), InvalidSizeException);
+        REQUIRE(a.crossUpdate(b) == Vector<int>({-12, 2, -8}));
+        REQUIRE(a == Vector<int>({-12, 2, -8}));
     }
 }

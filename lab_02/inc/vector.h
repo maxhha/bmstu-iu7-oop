@@ -67,6 +67,7 @@ public:
 
     template <typename S>
     S length() const;
+    T lengthSquared() const;
     template <typename S>
     Vector<S> normalized() const;
     // double angle() const;
@@ -80,12 +81,50 @@ public:
     bool isEqual(const Vector<T> &other) const;
     bool isNotEqual(const Vector<T> &other) const;
 
+    bool hasZero() const;
+
     /**************************************************************************/
     /*                          Vector Logic operators                        */
     /**************************************************************************/
 
     bool operator==(const Vector<T> &other) const;
     bool operator!=(const Vector<T> &other) const;
+
+    /**************************************************************************/
+    /*                            Vector Math methods                         */
+    /**************************************************************************/
+
+    Vector<T> neg() const;
+    Vector<T> &negUpdate();
+
+    Vector<T> add(const Vector<T> &other) const;
+    Vector<T> &addUpdate(const Vector<T> &other);
+    Vector<T> add(const T &scalar) const;
+    Vector<T> &addUpdate(const T &scalar);
+
+    Vector<T> sub(const Vector<T> &other) const;
+    Vector<T> &subUpdate(const Vector<T> &other);
+    Vector<T> sub(const T &scalar) const;
+    Vector<T> &subUpdate(const T &scalar);
+
+    Vector<T> mul(const Vector<T> &other) const;
+    Vector<T> &mulUpdate(const Vector<T> &other);
+    Vector<T> mul(const T &scalar) const;
+    Vector<T> &mulUpdate(const T &scalar);
+
+    Vector<T> div(const Vector<T> &other) const;
+    Vector<T> &divUpdate(const Vector<T> &other);
+    Vector<T> div(const T &scalar) const;
+    Vector<T> &divUpdate(const T &scalar);
+
+    T dot(const Vector<T> &other) const;
+
+    Vector<T> cross(const Vector<T> &other) const;
+    Vector<T> &crossUpdate(const Vector<T> &other);
+
+    /**************************************************************************/
+    /*                           Vector Math operators                        */
+    /**************************************************************************/
 
     // //! Two vectors methods
     // bool collinear(const Vector<Type> &vector) const;
@@ -144,6 +183,8 @@ public:
     // Vector<Type> operator-();
     // Vector<Type> negative();
 
+    std::string toString() const;
+
 private:
     /**************************************************************************/
     /*                           Vector Private data                          */
@@ -155,8 +196,9 @@ private:
     /*                          Vector Private methods                        */
     /**************************************************************************/
 
-    void resetData();
-    void validateSize() const;
+    void resetData(int line);
+    void validateSize(int line) const;
+    void validateSameSize(int line, const Vector<T> &other) const;
 };
 
 #include "vector.hpp"
