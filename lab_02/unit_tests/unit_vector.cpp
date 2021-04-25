@@ -78,4 +78,16 @@ TEST_CASE("Vector operations are tested", "[Vector]")
         Vector<int> c;
         REQUIRE_THROWS_AS(c.length<int>(), EmptyVectorException);
     }
+
+    SECTION("is zero")
+    {
+        Vector<int> c(10);
+        REQUIRE(c.isZero() == true);
+    }
+
+    SECTION("normalized")
+    {
+        Vector<int> c({8, 6, 0});
+        REQUIRE(c.normalized<double>() == Vector<double>({0.8, 0.6, 0.0}));
+    }
 }

@@ -1,10 +1,13 @@
 #ifndef __CONST_ITERATOR_H__
 #define __CONST_ITERATOR_H__
 
-#include "iterator_base.h"
+#include "exceptions.h"
 
 template <typename T>
-class ConstVectorIterator : public VectorIteratorBase<T>
+class Vector;
+
+template <typename T>
+class ConstVectorIterator : public std::iterator<std::random_access_iterator_tag, T>
 {
 
 public:
@@ -12,8 +15,8 @@ public:
     /*                   ConstVectorIterator Constructors                     */
     /**************************************************************************/
 
-    ConstVectorIterator(const ConstVectorIterator<T> &iterator) noexcept : VectorIteratorBase(iterator){};
-    ConstVectorIterator(const Vector<T> &vector) noexcept : VectorIteratorBase(vector){};
+    ConstVectorIterator(const ConstVectorIterator<T> &iterator) noexcept;
+    ConstVectorIterator(const Vector<T> &vector) noexcept;
 
     /**************************************************************************/
     /*                ConstVectorIterator Reference operators                 */

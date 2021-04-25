@@ -156,12 +156,6 @@ Vector<T> &Vector<T>::operator=(Vector<T> &&vector) noexcept
 /**************************************************************************/
 
 template <typename T>
-bool Vector<T>::isZero() const
-{
-    return this->length<double>() < __DBL_EPSILON__;
-}
-
-template <typename T>
 template <typename S>
 S Vector<T>::length() const
 {
@@ -174,6 +168,77 @@ S Vector<T>::length() const
     }
 
     return sqrt(sum);
+}
+
+template <typename T>
+template <typename S>
+Vector<S> Vector<T>::normalized() const
+{
+    S len = length<S>();
+    Vector<S> vec(size);
+
+    auto it = vec.begin();
+    for (const auto x : *this)
+    {
+        *it = x / len;
+        ++it;
+    }
+
+    return vec;
+}
+
+/**************************************************************************/
+/*                           Vector Logic methods                         */
+/**************************************************************************/
+
+template <typename T>
+bool Vector<T>::isZero() const
+{
+    return this->length<double>() < __DBL_EPSILON__;
+}
+
+template <typename T>
+bool Vector<T>::isEqual(const Vector<T> &other) const
+{
+    if (size != other.size)
+    {
+        return false;
+    }
+
+    auto it = cbegin();
+    for (const auto &x : other)
+    {
+        if (std::fabs(x - *it) >= __DBL_EPSILON__)
+        {
+            return false;
+        }
+
+        ++it;
+    }
+
+    return true;
+}
+
+template <typename T>
+bool Vector<T>::isNotEqual(const Vector<T> &other) const
+{
+    return !isEqual(other);
+}
+
+/**************************************************************************/
+/*                          Vector Logic operators                        */
+/**************************************************************************/
+
+template <typename T>
+bool Vector<T>::operator==(const Vector<T> &other) const
+{
+    return isEqual(other);
+}
+
+template <typename T>
+bool Vector<T>::operator!=(const Vector<T> &other) const
+{
+    return !isEqual(other);
 }
 
 /**************************************************************************/

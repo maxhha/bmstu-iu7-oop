@@ -54,14 +54,23 @@ public:
 
     template <typename S>
     S length() const;
-    // template <typename s>
-    // Vector<S> normalized() const;
+    template <typename S>
+    Vector<S> normalized() const;
 
     /**************************************************************************/
-    /*                           Vector Logic methods                        */
+    /*                           Vector Logic methods                         */
     /**************************************************************************/
 
     bool isZero() const;
+    bool isEqual(const Vector<T> &other) const;
+    bool isNotEqual(const Vector<T> &other) const;
+
+    /**************************************************************************/
+    /*                          Vector Logic operators                        */
+    /**************************************************************************/
+
+    bool operator==(const Vector<T> &other) const;
+    bool operator!=(const Vector<T> &other) const;
 
     // //! Two vectors methods
     // double angle(const Vector<Type> &vector) const;
@@ -73,13 +82,6 @@ public:
     // const Type &at(size_t index) const;
     // Type &operator[](size_t index);
     // const Type &operator[](size_t index) const;
-
-    // //! Iterator
-    // ConstIterator<Type> begin() const noexcept;
-    // ConstIterator<Type> end() const noexcept;
-    // ConstIterator<Type> cBegin() const noexcept;
-    // ConstIterator<Type> cEnd() const noexcept;
-    // //< End
 
     // //! Operators overloads
 
@@ -129,11 +131,6 @@ public:
 
     // Vector<Type> operator-();
     // Vector<Type> negative();
-
-    // bool operator==(const Vector<Type> &vector) const; //! + методы
-    // bool isEqual(const Vector<Type> &vector) const;
-    // bool operator!=(const Vector<Type> &vector) const; //! + методы
-    // bool isNotEqual(const Vector<Type> &vector) const;
 
 private:
     /**************************************************************************/
