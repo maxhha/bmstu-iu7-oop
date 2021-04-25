@@ -41,6 +41,22 @@ Vector<T>::Vector(const std::initializer_list<T> &items)
     }
 }
 
+template <typename T>
+Vector<T>::Vector(const Vector<T> &vector)
+{
+    *this = vector;
+}
+
+template <typename T>
+Vector<T>::Vector(Vector<T> &&vector) noexcept
+{
+    size = vector.size;
+    data = vector.data;
+
+    vector.size = 0;
+    vector.data = nullptr;
+}
+
 /**************************************************************************/
 /*                             Vector Iterators                           */
 /**************************************************************************/
@@ -97,13 +113,13 @@ Vector<T> &Vector<T>::operator=(const std::initializer_list<T> &items)
 }
 
 template <typename T>
-Vector<T> &Vector<T>::operator=(Vector<T> &&vector)
+Vector<T> &Vector<T>::operator=(Vector<T> &&vector) noexcept
 {
     size = vector.size;
-    resetData();
-
     data = vector.data;
-    vector.data.reset();
+
+    vector.size = 0;
+    vector.data = nullptr;
 
     return *this;
 }

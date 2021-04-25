@@ -14,18 +14,23 @@ public:
     /**************************************************************************/
     /*                           Vector Constructors                          */
     /**************************************************************************/
+
     Vector();
     explicit Vector(size_t size);
     explicit Vector(const std::initializer_list<T> &items);
+    explicit Vector(const Vector<T> &vector);
+    Vector(Vector<T> &&vector) noexcept;
 
     /**************************************************************************/
     /*                           Vector Deconstructor                         */
     /**************************************************************************/
+
     virtual ~Vector() = default;
 
     /**************************************************************************/
     /*                             Vector Iterators                           */
     /**************************************************************************/
+
     VectorIterator<T> begin() noexcept;
     VectorIterator<T> end() noexcept;
 
@@ -35,13 +40,11 @@ public:
 
     Vector<T> &operator=(const Vector<T> &vector);
     Vector<T> &operator=(const std::initializer_list<T> &items);
-    Vector<T> &operator=(Vector<T> &&vector); // noexcept?
+    Vector<T> &operator=(Vector<T> &&vector) noexcept;
 
     // Vector(size_t size, const Type *arrayFrom);
     // Vector(size_t size, Type element);
 
-    // explicit Vector(const Vector<Type> &vector);
-    // Vector(Vector<Type> &&vector) noexcept; //! noexcept
     // //< End
 
     // //! Vector bool funcs
