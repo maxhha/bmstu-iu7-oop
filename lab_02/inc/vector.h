@@ -19,7 +19,7 @@ public:
 
     Vector();
     explicit Vector(size_t size);
-    explicit Vector(const std::initializer_list<T> &items);
+    explicit Vector(std::initializer_list<T> items); // FIXED
     explicit Vector(const Vector<T> &vector);
     Vector(size_t size, const T *items);
     Vector(Vector<T> &&vector) noexcept;
@@ -46,20 +46,16 @@ public:
     /**************************************************************************/
 
     T &operator[](size_t index);
+    T &at(size_t index); // FIXED
     const T &operator[](size_t index) const;
-    T &x();
-    const T &x() const;
-    T &y();
-    const T &y() const;
-    T &z();
-    const T &z() const;
+    const T &at(size_t index) const; // FIXED
 
     /**************************************************************************/
     /*                          Vector Assign operators                       */
     /**************************************************************************/
 
     Vector<T> &operator=(const Vector<T> &vector);
-    Vector<T> &operator=(const std::initializer_list<T> &items);
+    Vector<T> &operator=(std::initializer_list<T> items); // FIXED
     Vector<T> &operator=(Vector<T> &&vector) noexcept;
 
     /**************************************************************************/
@@ -74,9 +70,6 @@ public:
     Vector<S> normalized() const;
 
     double angleBetween(const Vector<T> &vector) const;
-    double angleX() const;
-    double angleY() const;
-    double angleZ() const;
 
     /**************************************************************************/
     /*                           Vector Logic methods                         */
@@ -101,49 +94,85 @@ public:
     Vector<T> operator-(); // = neg
     Vector<T> &negUpdate();
 
-    Vector<T> add(const Vector<T> &vector) const;
-    Vector<T> operator+(const Vector<T> &vector) const; // = add
-    Vector<T> &addUpdate(const Vector<T> &vector);
-    Vector<T> &operator+=(const Vector<T> &vector); // = addUpdate
-    Vector<T> addScalar(const T &scalar) const;
-    Vector<T> operator+(const T &scalar) const; // = addScalar
-    Vector<T> &addScalarUpdate(const T &scalar);
-    Vector<T> &operator+=(const T &scalar); // = addScalarUpdate
+    template <typename B>
+    decltype(auto) add(const Vector<B> &vector) const;
+    template <typename B>
+    decltype(auto) operator+(const Vector<B> &vector) const; // = add
+    template <typename B>
+    Vector<T> &addUpdate(const Vector<B> &vector);
+    template <typename B>
+    Vector<T> &operator+=(const Vector<B> &vector); // = addUpdate
+    template <typename B>
+    decltype(auto) addScalar(const B &scalar) const;
+    template <typename B>
+    decltype(auto) operator+(const B &scalar) const; // = addScalar
+    template <typename B>
+    Vector<T> &addScalarUpdate(const B &scalar);
+    template <typename B>
+    Vector<T> &operator+=(const B &scalar); // = addScalarUpdate
 
-    Vector<T> sub(const Vector<T> &vector) const;
-    Vector<T> operator-(const Vector<T> &vector) const; // = sub
-    Vector<T> &subUpdate(const Vector<T> &vector);
-    Vector<T> &operator-=(const Vector<T> &vector); // = subUpdate
-    Vector<T> subScalar(const T &scalar) const;
-    Vector<T> operator-(const T &scalar) const; // = subScalar
-    Vector<T> &subScalarUpdate(const T &scalar);
-    Vector<T> &operator-=(const T &scalar); // = subScalarUpdate
+    template <typename B>
+    decltype(auto) sub(const Vector<B> &vector) const;
+    template <typename B>
+    decltype(auto) operator-(const Vector<B> &vector) const; // = sub
+    template <typename B>
+    Vector<T> &subUpdate(const Vector<B> &vector);
+    template <typename B>
+    Vector<T> &operator-=(const Vector<B> &vector); // = subUpdate
+    template <typename B>
+    decltype(auto) subScalar(const B &scalar) const;
+    template <typename B>
+    decltype(auto) operator-(const B &scalar) const; // = subScalar
+    template <typename B>
+    Vector<T> &subScalarUpdate(const B &scalar);
+    template <typename B>
+    Vector<T> &operator-=(const B &scalar); // = subScalarUpdate
 
-    Vector<T> mul(const Vector<T> &vector) const;
-    Vector<T> operator*(const Vector<T> &vector) const; // = mul
-    Vector<T> &mulUpdate(const Vector<T> &vector);
-    Vector<T> &operator*=(const Vector<T> &vector); // = mulUpdate
-    Vector<T> mulScalar(const T &scalar) const;
-    Vector<T> operator*(const T &scalar) const; // = mulScalar
-    Vector<T> &mulScalarUpdate(const T &scalar);
-    Vector<T> &operator*=(const T &scalar); // = mulScalarUpdate
+    template <typename B>
+    decltype(auto) mul(const Vector<B> &vector) const;
+    template <typename B>
+    decltype(auto) operator*(const Vector<B> &vector) const; // = mul
+    template <typename B>
+    Vector<T> &mulUpdate(const Vector<B> &vector);
+    template <typename B>
+    Vector<T> &operator*=(const Vector<B> &vector); // = mulUpdate
+    template <typename B>
+    decltype(auto) mulScalar(const B &scalar) const;
+    template <typename B>
+    decltype(auto) operator*(const B &scalar) const; // = mulScalar
+    template <typename B>
+    Vector<T> &mulScalarUpdate(const B &scalar);
+    template <typename B>
+    Vector<T> &operator*=(const B &scalar); // = mulScalarUpdate
 
-    Vector<T> div(const Vector<T> &vector) const;
-    Vector<T> operator/(const Vector<T> &vector) const; // = div
-    Vector<T> &divUpdate(const Vector<T> &vector);
-    Vector<T> &operator/=(const Vector<T> &vector); // = divUpdate
-    Vector<T> divScalar(const T &scalar) const;
-    Vector<T> operator/(const T &scalar) const; // = divScalar
-    Vector<T> &divScalarUpdate(const T &scalar);
-    Vector<T> &operator/=(const T &scalar); // = divScalarUpdate
+    template <typename B>
+    decltype(auto) div(const Vector<B> &vector) const;
+    template <typename B>
+    decltype(auto) operator/(const Vector<B> &vector) const; // = div
+    template <typename B>
+    Vector<T> &divUpdate(const Vector<B> &vector);
+    template <typename B>
+    Vector<T> &operator/=(const Vector<B> &vector); // = divUpdate
+    template <typename B>
+    decltype(auto) divScalar(const B &scalar) const;
+    template <typename B>
+    decltype(auto) operator/(const B &scalar) const; // = divScalar
+    template <typename B>
+    Vector<T> &divScalarUpdate(const B &scalar);
+    template <typename B>
+    Vector<T> &operator/=(const B &scalar); // = divScalarUpdate
 
     T dot(const Vector<T> &vector) const;
     T operator&(const Vector<T> &vector) const; // = dot
 
-    Vector<T> cross(const Vector<T> &vector) const;
-    Vector<T> operator^(const Vector<T> &vector) const; // = cross
-    Vector<T> &crossUpdate(const Vector<T> &vector);
-    Vector<T> &operator^=(const Vector<T> &vector); // = crossUpdate
+    template <typename B>
+    decltype(auto) cross(const Vector<B> &vector) const;
+    template <typename B>
+    decltype(auto) operator^(const Vector<B> &vector) const; // = cross
+    template <typename B>
+    Vector<T> &crossUpdate(const Vector<B> &vector);
+    template <typename B>
+    Vector<T> &operator^=(const Vector<B> &vector); // = crossUpdate
 
 private:
     /**************************************************************************/

@@ -41,7 +41,7 @@ Vector<T>::Vector(size_t _size, const T *items)
 };
 
 template <typename T>
-Vector<T>::Vector(const std::initializer_list<T> &items)
+Vector<T>::Vector(std::initializer_list<T> items)
 {
     size = items.size();
     resetData(__LINE__);
@@ -123,45 +123,21 @@ T &Vector<T>::operator[](size_t index)
 }
 
 template <typename T>
+T &Vector<T>::at(size_t index)
+{
+    return *(begin() + index);
+}
+
+template <typename T>
 const T &Vector<T>::operator[](size_t index) const
 {
     return *(cbegin() + index);
 }
 
 template <typename T>
-T &Vector<T>::x()
+const T &Vector<T>::at(size_t index) const
 {
-    return (*this)[0];
-}
-
-template <typename T>
-const T &Vector<T>::x() const
-{
-    return (*this)[0];
-}
-
-template <typename T>
-T &Vector<T>::y()
-{
-    return (*this)[1];
-}
-
-template <typename T>
-const T &Vector<T>::y() const
-{
-    return (*this)[1];
-}
-
-template <typename T>
-T &Vector<T>::z()
-{
-    return (*this)[2];
-}
-
-template <typename T>
-const T &Vector<T>::z() const
-{
-    return (*this)[2];
+    return *(cbegin() + index);
 }
 
 /**************************************************************************/
@@ -186,7 +162,7 @@ Vector<T> &Vector<T>::operator=(const Vector<T> &vector)
 }
 
 template <typename T>
-Vector<T> &Vector<T>::operator=(const std::initializer_list<T> &items)
+Vector<T> &Vector<T>::operator=(std::initializer_list<T> items)
 {
     size = items.size;
     resetData(__LINE__);
@@ -276,54 +252,6 @@ double Vector<T>::angleBetween(const Vector<T> &vector) const
     }
 
     return acos(dot(vector) / l1 / l2);
-}
-
-template <typename T>
-double Vector<T>::angleX() const
-{
-    double l = length<double>();
-
-    if (l < __DBL_EPSILON__)
-    {
-        throw ZeroDivisionException(
-            __FILE__,
-            __LINE__,
-            format("this.length() = %.3lf", l));
-    }
-
-    return acos(x() / l);
-}
-
-template <typename T>
-double Vector<T>::angleY() const
-{
-    double l = length<double>();
-
-    if (l < __DBL_EPSILON__)
-    {
-        throw ZeroDivisionException(
-            __FILE__,
-            __LINE__,
-            format("this.length() = %.3lf", l));
-    }
-
-    return acos(y() / l);
-}
-
-template <typename T>
-double Vector<T>::angleZ() const
-{
-    double l = length<double>();
-
-    if (l < __DBL_EPSILON__)
-    {
-        throw ZeroDivisionException(
-            __FILE__,
-            __LINE__,
-            format("this.length() = %.3lf", l));
-    }
-
-    return acos(z() / l);
 }
 
 /**************************************************************************/
@@ -431,7 +359,8 @@ Vector<T> &Vector<T>::negUpdate()
 }
 
 template <typename T>
-Vector<T> Vector<T>::add(const Vector<T> &vector) const
+template <typename B>
+decltype(auto) Vector<T>::add(const Vector<B> &vector) const
 {
     Vector<T> v(*this);
     v.addUpdate(vector);
@@ -440,7 +369,8 @@ Vector<T> Vector<T>::add(const Vector<T> &vector) const
 }
 
 template <typename T>
-Vector<T> &Vector<T>::addUpdate(const Vector<T> &vector)
+template <typename B>
+Vector<T> &Vector<T>::addUpdate(const Vector<B> &vector)
 {
     validateSameSize(__LINE__, vector);
 
@@ -455,7 +385,8 @@ Vector<T> &Vector<T>::addUpdate(const Vector<T> &vector)
 }
 
 template <typename T>
-Vector<T> Vector<T>::addScalar(const T &scalar) const
+template <typename B>
+decltype(auto) Vector<T>::addScalar(const B &scalar) const
 {
     Vector<T> v(*this);
     v.addScalarUpdate(scalar);
@@ -464,7 +395,8 @@ Vector<T> Vector<T>::addScalar(const T &scalar) const
 }
 
 template <typename T>
-Vector<T> &Vector<T>::addScalarUpdate(const T &scalar)
+template <typename B>
+Vector<T> &Vector<T>::addScalarUpdate(const B &scalar)
 {
     for (auto &x : *this)
     {
@@ -475,7 +407,8 @@ Vector<T> &Vector<T>::addScalarUpdate(const T &scalar)
 }
 
 template <typename T>
-Vector<T> Vector<T>::sub(const Vector<T> &vector) const
+template <typename B>
+decltype(auto) Vector<T>::sub(const Vector<B> &vector) const
 {
     Vector<T> v(*this);
     v.subUpdate(vector);
@@ -484,7 +417,8 @@ Vector<T> Vector<T>::sub(const Vector<T> &vector) const
 }
 
 template <typename T>
-Vector<T> &Vector<T>::subUpdate(const Vector<T> &vector)
+template <typename B>
+Vector<T> &Vector<T>::subUpdate(const Vector<B> &vector)
 {
     validateSameSize(__LINE__, vector);
 
@@ -499,7 +433,8 @@ Vector<T> &Vector<T>::subUpdate(const Vector<T> &vector)
 }
 
 template <typename T>
-Vector<T> Vector<T>::subScalar(const T &scalar) const
+template <typename B>
+decltype(auto) Vector<T>::subScalar(const B &scalar) const
 {
     Vector<T> v(*this);
     v.subScalarUpdate(scalar);
@@ -508,7 +443,8 @@ Vector<T> Vector<T>::subScalar(const T &scalar) const
 }
 
 template <typename T>
-Vector<T> &Vector<T>::subScalarUpdate(const T &scalar)
+template <typename B>
+Vector<T> &Vector<T>::subScalarUpdate(const B &scalar)
 {
     for (auto &x : *this)
     {
@@ -519,7 +455,8 @@ Vector<T> &Vector<T>::subScalarUpdate(const T &scalar)
 }
 
 template <typename T>
-Vector<T> Vector<T>::mul(const Vector<T> &vector) const
+template <typename B>
+decltype(auto) Vector<T>::mul(const Vector<B> &vector) const
 {
     Vector<T> v(*this);
     v.mulUpdate(vector);
@@ -528,7 +465,8 @@ Vector<T> Vector<T>::mul(const Vector<T> &vector) const
 }
 
 template <typename T>
-Vector<T> &Vector<T>::mulUpdate(const Vector<T> &vector)
+template <typename B>
+Vector<T> &Vector<T>::mulUpdate(const Vector<B> &vector)
 {
     validateSameSize(__LINE__, vector);
 
@@ -543,7 +481,8 @@ Vector<T> &Vector<T>::mulUpdate(const Vector<T> &vector)
 }
 
 template <typename T>
-Vector<T> Vector<T>::mulScalar(const T &scalar) const
+template <typename B>
+decltype(auto) Vector<T>::mulScalar(const B &scalar) const
 {
     Vector<T> v(*this);
     v.mulScalarUpdate(scalar);
@@ -552,7 +491,8 @@ Vector<T> Vector<T>::mulScalar(const T &scalar) const
 }
 
 template <typename T>
-Vector<T> &Vector<T>::mulScalarUpdate(const T &scalar)
+template <typename B>
+Vector<T> &Vector<T>::mulScalarUpdate(const B &scalar)
 {
     for (auto &x : *this)
     {
@@ -563,7 +503,8 @@ Vector<T> &Vector<T>::mulScalarUpdate(const T &scalar)
 }
 
 template <typename T>
-Vector<T> Vector<T>::div(const Vector<T> &vector) const
+template <typename B>
+decltype(auto) Vector<T>::div(const Vector<B> &vector) const
 {
     Vector<T> v(*this);
     v.divUpdate(vector);
@@ -572,7 +513,8 @@ Vector<T> Vector<T>::div(const Vector<T> &vector) const
 }
 
 template <typename T>
-Vector<T> &Vector<T>::divUpdate(const Vector<T> &vector)
+template <typename B>
+Vector<T> &Vector<T>::divUpdate(const Vector<B> &vector)
 {
     validateSameSize(__LINE__, vector);
 
@@ -595,7 +537,8 @@ Vector<T> &Vector<T>::divUpdate(const Vector<T> &vector)
 }
 
 template <typename T>
-Vector<T> Vector<T>::divScalar(const T &scalar) const
+template <typename B>
+decltype(auto) Vector<T>::divScalar(const B &scalar) const
 {
     Vector<T> v(*this);
     v.divScalarUpdate(scalar);
@@ -604,7 +547,8 @@ Vector<T> Vector<T>::divScalar(const T &scalar) const
 }
 
 template <typename T>
-Vector<T> &Vector<T>::divScalarUpdate(const T &scalar)
+template <typename B>
+Vector<T> &Vector<T>::divScalarUpdate(const B &scalar)
 {
     if (std::fabs(scalar) < __DBL_EPSILON__)
     {
@@ -636,7 +580,8 @@ T Vector<T>::dot(const Vector<T> &vector) const
 }
 
 template <typename T>
-Vector<T> Vector<T>::cross(const Vector<T> &vector) const
+template <typename B>
+decltype(auto) Vector<T>::cross(const Vector<B> &vector) const
 {
     Vector<T> v(*this);
     v.crossUpdate(vector);
@@ -645,7 +590,8 @@ Vector<T> Vector<T>::cross(const Vector<T> &vector) const
 }
 
 template <typename T>
-Vector<T> &Vector<T>::crossUpdate(const Vector<T> &vector)
+template <typename B>
+Vector<T> &Vector<T>::crossUpdate(const Vector<B> &vector)
 {
     validateSameSize(__LINE__, vector);
 
@@ -679,105 +625,121 @@ Vector<T> Vector<T>::operator-()
 }
 
 template <typename T>
-Vector<T> &Vector<T>::operator+=(const Vector<T> &vector)
+template <typename B>
+Vector<T> &Vector<T>::operator+=(const Vector<B> &vector)
 {
     this->addUpdate(vector);
     return *this;
 }
 
 template <typename T>
-Vector<T> &Vector<T>::operator+=(const T &scalar)
+template <typename B>
+Vector<T> &Vector<T>::operator+=(const B &scalar)
 {
     this.addScalarUpdate(scalar);
     return *this;
 }
 
 template <typename T>
-Vector<T> Vector<T>::operator+(const Vector<T> &vector) const
+template <typename B>
+decltype(auto) Vector<T>::operator+(const Vector<B> &vector) const
 {
     return this->add(vector);
 }
 
 template <typename T>
-Vector<T> Vector<T>::operator+(const T &scalar) const
+template <typename B>
+decltype(auto) Vector<T>::operator+(const B &scalar) const
 {
     return this->addScalar(scalar);
 }
 
 template <typename T>
-Vector<T> &Vector<T>::operator-=(const Vector<T> &vector)
+template <typename B>
+Vector<T> &Vector<T>::operator-=(const Vector<B> &vector)
 {
     this->subUpdate(vector);
     return *this;
 }
 
 template <typename T>
-Vector<T> &Vector<T>::operator-=(const T &scalar)
+template <typename B>
+Vector<T> &Vector<T>::operator-=(const B &scalar)
 {
     this.subScalarUpdate(scalar);
     return *this;
 }
 
 template <typename T>
-Vector<T> Vector<T>::operator-(const Vector<T> &vector) const
+template <typename B>
+decltype(auto) Vector<T>::operator-(const Vector<B> &vector) const
 {
     return this->sub(vector);
 }
 
 template <typename T>
-Vector<T> Vector<T>::operator-(const T &scalar) const
+template <typename B>
+decltype(auto) Vector<T>::operator-(const B &scalar) const
 {
     return this->subScalar(scalar);
 }
 
 template <typename T>
-Vector<T> &Vector<T>::operator*=(const Vector<T> &vector)
+template <typename B>
+Vector<T> &Vector<T>::operator*=(const Vector<B> &vector)
 {
     this->mulUpdate(vector);
     return *this;
 }
 
 template <typename T>
-Vector<T> &Vector<T>::operator*=(const T &scalar)
+template <typename B>
+Vector<T> &Vector<T>::operator*=(const B &scalar)
 {
     this.mulScalarUpdate(scalar);
     return *this;
 }
 
 template <typename T>
-Vector<T> Vector<T>::operator*(const Vector<T> &vector) const
+template <typename B>
+decltype(auto) Vector<T>::operator*(const Vector<B> &vector) const
 {
     return this->mul(vector);
 }
 
 template <typename T>
-Vector<T> Vector<T>::operator*(const T &scalar) const
+template <typename B>
+decltype(auto) Vector<T>::operator*(const B &scalar) const
 {
     return this->mulScalar(scalar);
 }
 
 template <typename T>
-Vector<T> &Vector<T>::operator/=(const Vector<T> &vector)
+template <typename B>
+Vector<T> &Vector<T>::operator/=(const Vector<B> &vector)
 {
     this->divUpdate(vector);
     return *this;
 }
 
 template <typename T>
-Vector<T> &Vector<T>::operator/=(const T &scalar)
+template <typename B>
+Vector<T> &Vector<T>::operator/=(const B &scalar)
 {
     this.divScalarUpdate(scalar);
     return *this;
 }
 
 template <typename T>
-Vector<T> Vector<T>::operator/(const Vector<T> &vector) const
+template <typename B>
+decltype(auto) Vector<T>::operator/(const Vector<B> &vector) const
 {
     return this->div(vector);
 }
 
 template <typename T>
-Vector<T> Vector<T>::operator/(const T &scalar) const
+template <typename B>
+decltype(auto) Vector<T>::operator/(const B &scalar) const
 {
     return this->divScalar(scalar);
 }
@@ -789,13 +751,15 @@ T Vector<T>::operator&(const Vector<T> &vector) const
 }
 
 template <typename T>
-Vector<T> Vector<T>::operator^(const Vector<T> &vector) const
+template <typename B>
+decltype(auto) Vector<T>::operator^(const Vector<B> &vector) const
 {
     return this->cross(vector);
 }
 
 template <typename T>
-Vector<T> &Vector<T>::operator^=(const Vector<T> &vector)
+template <typename B>
+Vector<T> &Vector<T>::operator^=(const Vector<B> &vector)
 {
     this->crossUpdate(vector);
     return *this;

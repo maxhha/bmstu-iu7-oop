@@ -18,16 +18,4 @@ protected:
     size_t size = 0;
 };
 
-size_t Container::getSize() const noexcept
-{
-    return size;
-}
-
-bool Container::isEmpty() const noexcept
-{
-    return size == 0;
-}
-
-Container::~Container() {}
-
 #endif // __CONTAINER_HPP__
