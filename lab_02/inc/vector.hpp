@@ -603,13 +603,13 @@ Vector<T> &Vector<T>::crossUpdate(const Vector<B> &vector)
             "Cross product exists only for vectors of size 3");
     }
 
-    T x = this->y() * vector.z() - this->z() * vector.y();
-    T y = this->z() * vector.x() - this->x() * vector.z();
-    T z = this->x() * vector.y() - this->y() * vector.x();
+    T x = (*this)[1] * vector[2] - (*this)[2] * vector[1];
+    T y = (*this)[2] * vector[0] - (*this)[0] * vector[2];
+    T z = (*this)[0] * vector[1] - (*this)[1] * vector[0];
 
-    this->x() = x;
-    this->y() = y;
-    this->z() = z;
+    (*this)[0] = x;
+    (*this)[1] = y;
+    (*this)[2] = z;
 
     return *this;
 }

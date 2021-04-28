@@ -95,12 +95,12 @@ TEST_CASE("Vector operations are tested", "[Vector]")
     SECTION("x y z")
     {
         Vector<int> c({8, 6, 0});
-        REQUIRE(c.x() == 8);
-        REQUIRE(c.y() == 6);
-        REQUIRE(c.z() == 0);
+        REQUIRE(c.at(0) == 8);
+        REQUIRE(c.at(1) == 6);
+        REQUIRE(c.at(2) == 0);
 
         c = Vector<int>({1, 2});
-        REQUIRE_THROWS_AS(c.z(), OutOfRangeException);
+        REQUIRE_THROWS_AS(c.at(2), OutOfRangeException);
     }
 
     SECTION("has zero")

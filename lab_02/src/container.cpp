@@ -1,13 +1,14 @@
 #include "container.h"
+
 // FIXED
 size_t Container::getSize() const noexcept
 {
-    return size;
+    return this->size;
 }
 
 bool Container::isEmpty() const noexcept
 {
-    return size == 0;
+    return this->size == 0;
 }
 
 Container::~Container() {}
