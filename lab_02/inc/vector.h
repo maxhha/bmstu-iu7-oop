@@ -21,6 +21,7 @@ public:
     explicit Vector(size_t size);
     explicit Vector(const std::initializer_list<T> &items);
     explicit Vector(const Vector<T> &vector);
+    Vector(size_t size, const T *items);
     Vector(Vector<T> &&vector) noexcept;
 
     /**************************************************************************/
@@ -90,7 +91,7 @@ public:
     bool isCollinear(const Vector<T> &vector) const;
     bool isPerpendicular(const Vector<T> &vector) const;
 
-    bool hasZero() const;
+    bool hasZero() const noexcept;
 
     /**************************************************************************/
     /*                            Vector Math methods                         */

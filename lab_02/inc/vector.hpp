@@ -29,6 +29,18 @@ Vector<T>::Vector(size_t _size)
 };
 
 template <typename T>
+Vector<T>::Vector(size_t _size, const T *items)
+{
+    size = _size;
+    resetData(__LINE__);
+
+    for (auto it = begin(); it < end(); ++it)
+    {
+        *it = *(items++);
+    }
+};
+
+template <typename T>
 Vector<T>::Vector(const std::initializer_list<T> &items)
 {
     size = items.size();
@@ -366,7 +378,7 @@ bool Vector<T>::isPerpendicular(const Vector<T> &vector) const
 }
 
 template <typename T>
-bool Vector<T>::hasZero() const
+bool Vector<T>::hasZero() const noexcept
 {
     for (const auto &x : *this)
     {
