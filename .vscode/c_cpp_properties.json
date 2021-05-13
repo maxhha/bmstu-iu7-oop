@@ -4,7 +4,8 @@
             "name": "Win32",
             "includePath": [
                 "${default}",
-                "lab01\\model\\inc"
+                "lab01\\model\\inc",
+                "lab_03\\engine\\inc"
             ],
             "defines": [
                 "_DEBUG",
