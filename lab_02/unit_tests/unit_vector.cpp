@@ -129,6 +129,14 @@ TEST_CASE("Vector operations are tested", "[Vector]")
         REQUIRE_THROWS_AS(a.add(d), MismatchSizeException);
     }
 
+    SECTION("add vec double")
+    {
+        Vector<int> a({1, 6, 0});
+        Vector<double> b({1.0, -10.0, -2.0});
+
+        REQUIRE(a.add(b) == Vector<int>({2, -4, -2}));
+    }
+
     SECTION("add scalar")
     {
         Vector<int> a({1, 6, 0});

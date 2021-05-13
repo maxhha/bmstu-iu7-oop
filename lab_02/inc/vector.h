@@ -187,7 +187,8 @@ private:
 
     void resetData(int line);
     void validateSize(int line) const;
-    void validateSameSize(int line, const Vector<T> &vector) const;
+    template <typename B>
+    void validateSameSize(int line, const Vector<B> &vector) const;
 };
 
 #include "vector.hpp"

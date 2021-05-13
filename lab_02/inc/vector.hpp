@@ -812,14 +812,15 @@ void Vector<T>::validateSize(int line) const
 }
 
 template <typename T>
-void Vector<T>::validateSameSize(int line, const Vector<T> &vector) const
+template <typename B>
+void Vector<T>::validateSameSize(int line, const Vector<B> &vector) const
 {
-    if (size != vector.size)
+    if (size != vector.getSize())
     {
         throw MismatchSizeException(
             __FILE__,
             line,
-            format("this.size = %zu, vector.size = %zu", size, vector.size));
+            format("this.size = %zu, vector.size = %zu", size, vector.getSize()));
     }
 }
 
