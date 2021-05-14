@@ -4,17 +4,15 @@
             "name": "Win32",
             "includePath": [
                 "${default}",
-                "lab01\\model\\inc",
-                "lab_03\\engine\\inc"
+                "inc",
+                "/mnt/c/Users/devma/Tools/emsdk-linux/upstream/emscripten/system/include"
             ],
             "defines": [
                 "_DEBUG",
                 "UNICODE",
                 "_UNICODE"
             ],
-            "compilerPath": "",
-            "cStandard": "gnu17",
-            "cppStandard": "gnu++14",
+            "compilerPath": "/usr/bin/gcc",
             "intelliSenseMode": "linux-gcc-x64"
         }
     ],

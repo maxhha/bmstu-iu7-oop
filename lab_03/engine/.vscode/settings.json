@@ -1,0 +1,17 @@
+{
+    "C_Cpp.default.includePath": [
+        "${default}",
+        "inc",
+        "/mnt/c/Users/devma/Tools/emsdk-linux/upstream/emscripten/system/include"
+    ],
+    "files.associations": {
+        "__config": "cpp",
+        "__nullptr": "cpp",
+        "cmath": "cpp",
+        "cstddef": "cpp",
+        "cstdlib": "cpp",
+        "initializer_list": "cpp",
+        "limits": "cpp",
+        "type_traits": "cpp"
+    }
+}

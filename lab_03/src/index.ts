@@ -1,5 +1,8 @@
 import createModelManager from "../engine/build/render";
 
-createModelManager().then(({ requestModelManager, ManagerResponce }) => {
-  console.log(requestModelManager());
+createModelManager().then(({ Engine }) => {
+  const engine = new Engine("#render");
+  requestAnimationFrame(() => {
+    engine.render();
+  });
 });

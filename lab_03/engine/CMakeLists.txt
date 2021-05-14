@@ -11,7 +11,7 @@ if (EMSCRIPTEN)
 	set(CMAKE_EXECUTABLE_SUFFIX ".js")
 
 	set(CMAKE_EXE_LINKER_FLAGS "\
-		-s WASM=1
+		-s WASM=1 \
 		-s MODULARIZE=1 \
     	-s EXPORT_NAME=createEngineModule \
    	 	-s ENVIRONMENT=web \
@@ -22,12 +22,16 @@ if (EMSCRIPTEN)
     	message("debug mode")
 
 		set(CMAKE_EXE_LINKER_FLAGS "\
-			-s WASM=1
+			-s WASM=1 \
 			-s MODULARIZE=1 \
 			-s EXPORT_NAME=createEngineModule \
 			-s ENVIRONMENT=web \
+			-s MINIMAL_RUNTIME=2 \
+			-s MIN_WEBGL_VERSION=2 \
+			-s MAX_WEBGL_VERSION=2 \
+			-lGL \
 			--bind \
-			-O0")
+			")
 
 	ENDIF(CMAKE_BUILD_TYPE STREQUAL "Debug")
 
@@ -37,9 +41,6 @@ if (EMSCRIPTEN)
 		# -s WASM=1 \
 		# --closure 1 \
 		# -s TEXTDECODER=2 \
-		# -s MINIMAL_RUNTIME=2 \
-		# -s MIN_WEBGL_VERSION=2 \
-		# -s MAX_WEBGL_VERSION=2 \
 		# -s GL_SUPPORT_AUTOMATIC_ENABLE_EXTENSIONS=0 \
 		# -s GL_EXTENSIONS_IN_PREFIXED_FORMAT=0 \
 		# -s GL_POOL_TEMP_BUFFERS=0 \
