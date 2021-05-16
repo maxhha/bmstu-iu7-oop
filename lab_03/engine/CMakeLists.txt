@@ -52,7 +52,16 @@ if (EMSCRIPTEN)
 		# -s GL_TRACK_ERRORS=0 \
 endif()
 
-file(GLOB_RECURSE SOURCES RELATIVE ${CMAKE_SOURCE_DIR} "src/*")
+file(GLOB_RECURSE SOURCES RELATIVE ${CMAKE_SOURCE_DIR} 
+	src/Commands/Commands.cpp
+	src/Engine/Engine.cpp
+	src/Engine/WebGLEngine.cpp
+	src/Screen/Screen.cpp
+	src/ScreenCreator/WebGLScreenCreator.cpp
+	src/ScreenManager/ScreenManager.cpp
+	src/Visitor/WebGLRenderVisitor.cpp
+	src/bindings.cpp
+) 
 add_executable(${PROJECT_NAME} ${SOURCES})
 
-target_include_directories(${PROJECT_NAME} PRIVATE inc)
+target_include_directories(${PROJECT_NAME} PRIVATE src)

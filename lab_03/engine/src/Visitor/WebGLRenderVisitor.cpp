@@ -1,6 +1,6 @@
-#include "manager.h"
+#include "WebGLRenderVisitor.h"
 
-GLuint compile_shader(GLenum shaderType, const char *src)
+static GLuint compile_shader(GLenum shaderType, const char *src)
 {
     GLuint shader = glCreateShader(shaderType);
     glShaderSource(shader, 1, &src, NULL);
@@ -22,7 +22,7 @@ GLuint compile_shader(GLenum shaderType, const char *src)
     return shader;
 }
 
-GLuint create_program(GLuint vertexShader, GLuint fragmentShader)
+static GLuint create_program(GLuint vertexShader, GLuint fragmentShader)
 {
     GLuint program = glCreateProgram();
     glAttachShader(program, vertexShader);
@@ -33,7 +33,7 @@ GLuint create_program(GLuint vertexShader, GLuint fragmentShader)
     return program;
 }
 
-Engine::Engine(std::string canvas)
+WebGLRenderVisitor::WebGLRenderVisitor(std::string canvas)
 {
     EmscriptenWebGLContextAttributes attrs;
     emscripten_webgl_init_context_attributes(&attrs);
@@ -91,11 +91,21 @@ Engine::Engine(std::string canvas)
     glEnableVertexAttribArray(1);
 }
 
-void Engine::render()
+void WebGLRenderVisitor::render()
 {
     glClearColor(0.3f, 0.3f, 0.3f, 1);
     glClear(GL_COLOR_BUFFER_BIT);
     glDrawArrays(GL_TRIANGLES, 0, 3);
+}
 
-    // emscripten_webgl_commit_frame();
+void WebGLRenderVisitor::visitSceneTree(SceneTree &sceneTree)
+{
+}
+
+void WebGLRenderVisitor::visitCamera(Camera &camera)
+{
+}
+
+void WebGLRenderVisitor::visitModel(Model &model)
+{
 }
