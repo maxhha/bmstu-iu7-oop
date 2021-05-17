@@ -7,6 +7,10 @@ endif()
 
 project(render LANGUAGES CXX)
 
+if (EMSCRIPTEN_VERSION VERSION_LESS 2.0.20 OR NOT EMSCRIPTEN_VERSION VERSION_LESS 2.1)
+	message(WARNING "Project tested with EMSCRIPTEN_VERSION=2.0.20, but your version is EMSCRIPTEN_VERSION=" ${EMSCRIPTEN_VERSION})
+endif()
+
 if (EMSCRIPTEN)
 	set(CMAKE_EXECUTABLE_SUFFIX ".js")
 
@@ -21,16 +25,27 @@ if (EMSCRIPTEN)
 	IF(CMAKE_BUILD_TYPE STREQUAL "Debug")
     	message("debug mode")
 
+		add_compile_options(-s DISABLE_EXCEPTION_CATCHING=0 -g -gsource-map)
+
 		set(CMAKE_EXE_LINKER_FLAGS "\
 			-s WASM=1 \
 			-s MODULARIZE=1 \
+			-s EXPORT_ES6=1 \
+			-s USE_ES6_IMPORT_META=0 \
 			-s EXPORT_NAME=createEngineModule \
 			-s ENVIRONMENT=web \
-			-s MINIMAL_RUNTIME=2 \
+			-s DISABLE_EXCEPTION_CATCHING=0 \
+			-s ALLOW_MEMORY_GROWTH=1 \
+			-s ABORTING_MALLOC=0 \
+			-s SAFE_HEAP=1 \
+			-s SAFE_HEAP_LOG=1 \
+			-s ASSERTIONS=1 \
+			-s EXCEPTION_DEBUG=1\
 			-s MIN_WEBGL_VERSION=2 \
 			-s MAX_WEBGL_VERSION=2 \
-			-lGL \
 			--bind \
+			-lwebgl.js \
+			-lGL \
 			")
 
 	ENDIF(CMAKE_BUILD_TYPE STREQUAL "Debug")

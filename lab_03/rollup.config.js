@@ -24,6 +24,7 @@ export default {
     typescript({ target: "esnext", jsx: "react" }),
     replace({
       "process.env.NODE_ENV": JSON.stringify("development"),
+      preventAssignment: true,
     }),
     resolve(),
     commonjs(),
