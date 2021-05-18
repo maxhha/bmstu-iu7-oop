@@ -38,7 +38,6 @@ if (EMSCRIPTEN)
 			-s ALLOW_MEMORY_GROWTH=1 \
 			-s ABORTING_MALLOC=0 \
 			-s SAFE_HEAP=1 \
-			-s SAFE_HEAP_LOG=1 \
 			-s ASSERTIONS=1 \
 			-s EXCEPTION_DEBUG=1\
 			-s MIN_WEBGL_VERSION=2 \
@@ -47,6 +46,8 @@ if (EMSCRIPTEN)
 			-lwebgl.js \
 			-lGL \
 			")
+
+			# -s SAFE_HEAP_LOG=1 \
 
 	ENDIF(CMAKE_BUILD_TYPE STREQUAL "Debug")
 

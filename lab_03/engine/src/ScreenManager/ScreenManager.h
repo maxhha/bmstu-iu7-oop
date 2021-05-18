@@ -4,8 +4,6 @@
 #include "ScreenCreator/ScreenCreator.h"
 #include "ScreenIterator.h"
 
-#define MAX_SCREEN_SIZE 6
-
 class ScreenManager
 {
 public:
@@ -18,6 +16,6 @@ public:
 
 private:
     std::shared_ptr<ScreenCreator> creator;
-    std::shared_ptr<std::shared_ptr<Screen>[MAX_SCREEN_SIZE]> screens;
+    std::shared_ptr<Screen> screen;
     int screens_size;
 };
