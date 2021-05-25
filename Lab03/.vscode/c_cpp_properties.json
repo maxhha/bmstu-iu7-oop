@@ -1,0 +1,23 @@
+{
+  "configurations": [
+    {
+      "name": "Win32",
+      "includePath": [
+        "${default}",
+        "C:/Qt/5.15.2/mingw81_64/include",
+        "C:/Qt/5.15.2/mingw81_64/include/QtWidgets",
+        "C:/Qt/5.15.2/mingw81_64/include/QtGui",
+        "C:/Qt/5.15.2/mingw81_64/include/QtANGLE",
+        "C:/Qt/5.15.2/mingw81_64/include/QtCore",
+        "${default}/src",
+        "C:/Qt/5.15.2/mingw81_64/mkspecs/win32-g++"
+      ],
+      "defines": ["_DEBUG", "UNICODE", "_UNICODE"],
+      "compilerPath": "g++",
+      "cStandard": "gnu17",
+      "cppStandard": "gnu++11",
+      "intelliSenseMode": "linux-gcc-x64"
+    }
+  ],
+  "version": 4
+}

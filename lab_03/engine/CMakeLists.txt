@@ -76,6 +76,7 @@ file(GLOB_RECURSE SOURCES RELATIVE ${CMAKE_SOURCE_DIR}
 	src/ScreenCreator/WebGLScreenCreator.cpp
 	src/ScreenManager/ScreenManager.cpp
 	src/Visitor/WebGLRenderVisitor.cpp
+	src/EngineCreator/EngineCreator.cpp
 	src/bindings.cpp
 ) 
 add_executable(${PROJECT_NAME} ${SOURCES})
