@@ -1,4 +1,5 @@
 #include <string>
+#include <vector>
 #include <engine/Exception/Exceptions.h>
 #include <engine/Engine/QtEngine.h>
 #include <fmt/format.h>
@@ -21,7 +22,14 @@ void EngineCreator::readConfiguration(const std::string &configfile)
         throw AlreadyConfiguredEngineException(__FILE__, __LINE__);
     }
 
-    config = YAML::LoadFile(configfile);
+    try
+    {
+        config = YAML::LoadFile(configfile);
+    }
+    catch (YAML::Exception &ex)
+    {
+        throw ReadConfigException(__FILE__, __LINE__, ex.msg);
+    }
 }
 
 std::shared_ptr<Engine> EngineCreator::createEngine()
@@ -36,10 +44,20 @@ std::shared_ptr<Engine> EngineCreator::createEngine()
     try
     {
         std::string engineType = config["engine"].as<std::string>();
+        std::vector<std::string> loaders;
+        std::vector<std::string> savers;
+
+        if (config["loaders"])
+        {
+            for (const auto &it : config["loaders"])
+            {
+                loaders.push_back(it.as<std::string>());
+            }
+        }
 
         if (engineType == "qt")
         {
-            engine = std::shared_ptr<Engine>(new QtEngine());
+            engine = std::shared_ptr<Engine>(new QtEngine(loaders, savers));
         }
         else
         {

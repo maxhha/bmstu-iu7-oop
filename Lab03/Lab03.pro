@@ -15,6 +15,10 @@ SOURCES += \
     engine/Exception/Exception.cpp \
     engine/Engine/Engine.cpp \
     engine/Engine/QtEngine.cpp \
+    engine/ObjectLoaderSolution/ObjectLoaderSolution.cpp \
+    engine/ObjectLoader/ModelLoader/FileModelLoader.cpp \
+    engine/ObjectLoader/ModelLoader/ModelLoader.cpp \
+    engine/ObjectBuilder/ModelBuilder/ModelBuilder.cpp \
     libs/yaml-cpp/src/binary.cpp \
     libs/yaml-cpp/src/convert.cpp \
     libs/yaml-cpp/src/depthguard.cpp \
