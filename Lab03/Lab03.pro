@@ -19,6 +19,7 @@ SOURCES += \
     engine/ObjectLoader/ModelLoader/FileModelLoader.cpp \
     engine/ObjectLoader/ModelLoader/ModelLoader.cpp \
     engine/ObjectBuilder/ModelBuilder/ModelBuilder.cpp \
+    engine/Transformation/Transformation.cpp \
     libs/yaml-cpp/src/binary.cpp \
     libs/yaml-cpp/src/convert.cpp \
     libs/yaml-cpp/src/depthguard.cpp \
