@@ -11,8 +11,10 @@ CONFIG += c++14
 SOURCES += \
     main.cpp \
     mainwindow.cpp \
-    engine/EngineCreator.cpp \
+    engine/EngineCreator/EngineCreator.cpp \
     engine/Exception/Exception.cpp \
+    engine/Engine/Engine.cpp \
+    engine/Engine/QtEngine.cpp \
     libs/yaml-cpp/src/binary.cpp \
     libs/yaml-cpp/src/convert.cpp \
     libs/yaml-cpp/src/depthguard.cpp \
@@ -43,13 +45,16 @@ SOURCES += \
     libs/yaml-cpp/src/stream.cpp \
     libs/yaml-cpp/src/tag.cpp \
     libs/yaml-cpp/src/contrib/graphbuilderadapter.cpp \
-    libs/yaml-cpp/src/contrib/graphbuilder.cpp
+    libs/yaml-cpp/src/contrib/graphbuilder.cpp \
+    libs/fmt/src/format.cc \
+    libs/fmt/src/os.cc
 
 HEADERS += \
     mainwindow.h
 
 INCLUDEPATH += \
-    libs/yaml-cpp/include
+    libs/yaml-cpp/include \
+    libs/fmt/include
 
 FORMS += \
     mainwindow.ui

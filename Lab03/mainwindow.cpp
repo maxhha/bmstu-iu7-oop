@@ -6,6 +6,7 @@ MainWindow::MainWindow(QWidget *parent)
 {
     ui->setupUi(this);
     engineCreator.readConfiguration("../Lab03/config.yml");
+    engineCreator.getEngine();
 }
 
 MainWindow::~MainWindow()

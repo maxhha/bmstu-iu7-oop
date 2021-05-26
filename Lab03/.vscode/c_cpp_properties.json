@@ -4,7 +4,9 @@
       "name": "Win32",
       "includePath": [
         "${default}",
+        ".",
         "libs/yaml-cpp/include",
+        "libs/fmt/include",
         "C:/Qt/5.15.2/mingw81_64/include",
         "C:/Qt/5.15.2/mingw81_64/include/QtWidgets",
         "C:/Qt/5.15.2/mingw81_64/include/QtGui",
@@ -15,7 +17,7 @@
       "defines": ["_DEBUG", "UNICODE", "_UNICODE"],
       "compilerPath": "g++",
       "cStandard": "gnu17",
-      "cppStandard": "gnu++17",
+      "cppStandard": "gnu++14",
       "intelliSenseMode": "linux-gcc-x64"
     }
   ],

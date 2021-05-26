@@ -11,3 +11,6 @@
 [submodule "Lab03/libs/yaml-cpp"]
 	path = Lab03/libs/yaml-cpp
 	url = https://github.com/jbeder/yaml-cpp.git
+[submodule "Lab03/libs/fmt"]
+	path = Lab03/libs/fmt
+	url = https://github.com/fmtlib/fmt.git
