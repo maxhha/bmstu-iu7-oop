@@ -2,14 +2,13 @@
 #include "ui_mainwindow.h"
 
 MainWindow::MainWindow(QWidget *parent)
-    : QMainWindow(parent)
-    , ui(new Ui::MainWindow)
+    : QMainWindow(parent), ui(new Ui::MainWindow), engineCreator()
 {
     ui->setupUi(this);
+    engineCreator.readConfiguration("../Lab03/config.yml");
 }
 
 MainWindow::~MainWindow()
 {
     delete ui;
 }
-

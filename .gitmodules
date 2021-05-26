@@ -2,3 +2,12 @@
 	path = lab_02/lib/catch
 	url = https://github.com/catchorg/Catch2.git
 	branch = v2.x
+[submodule "Lab03/libs/config"]
+	path = Lab03/libs/config
+	url = https://github.com/taocpp/config.git
+[submodule "Lab03/libs/libconfig"]
+	path = Lab03/libs/libconfig
+	url = https://github.com/hyperrealm/libconfig
+[submodule "Lab03/libs/yaml-cpp"]
+	path = Lab03/libs/yaml-cpp
+	url = https://github.com/jbeder/yaml-cpp.git
