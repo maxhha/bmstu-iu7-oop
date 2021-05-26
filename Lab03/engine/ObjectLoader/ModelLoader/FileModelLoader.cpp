@@ -61,5 +61,32 @@ void FileModelLoader::loadObjectInfo()
     }
 }
 
-void FileModelLoader::loadPoints() {}
-void FileModelLoader::loadEdges() {}
+void FileModelLoader::loadPoints()
+{
+    try
+    {
+        for (const auto &it : data["points"])
+        {
+            builder.addPoint(it[0].as<double>(), it[1].as<double>(), it[2].as<double>());
+        }
+    }
+    catch (YAML::Exception &ex)
+    {
+        throw LoadModelException(__FILE__, __LINE__, ex.msg);
+    }
+}
+
+void FileModelLoader::loadEdges()
+{
+    try
+    {
+        for (const auto &it : data["edges"])
+        {
+            builder.addEdge(it[0].as<int>(), it[1].as<int>());
+        }
+    }
+    catch (YAML::Exception &ex)
+    {
+        throw LoadModelException(__FILE__, __LINE__, ex.msg);
+    }
+}
