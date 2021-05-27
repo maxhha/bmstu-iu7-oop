@@ -12,6 +12,8 @@ public:
     PointPtr getStartPoint() { return start; };
     PointPtr getEndPoint() { return end; };
 
+    ~Edge() = default;
+
 private:
     PointPtr start;
     PointPtr end;

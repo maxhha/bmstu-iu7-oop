@@ -10,6 +10,8 @@ public:
     d getY() { return y; };
     d getZ() { return z; };
 
+    ~Point() = default;
+
 private:
     d x;
     d y;

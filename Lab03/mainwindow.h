@@ -2,7 +2,8 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
-#include "engine/EngineCreator/EngineCreator.h"
+#include <QGraphicsScene>
+#include <engine/EngineSolution/EngineSolution.h>
 
 QT_BEGIN_NAMESPACE
 namespace Ui
@@ -21,6 +22,7 @@ public:
 
 private:
     Ui::MainWindow *ui;
-    EngineCreator engineCreator;
+    std::shared_ptr<Engine> engine;
+    QGraphicsScene *_scene;
 };
 #endif // MAINWINDOW_H

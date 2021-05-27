@@ -6,7 +6,7 @@ void SceneMediator::appendChild(const std::string &target, const std::shared_ptr
 {
     std::shared_ptr<Object> parent;
 
-    if (tree->getName() == target)
+    if (getName(*tree) == target)
     {
         parent = tree;
     }
@@ -16,7 +16,7 @@ void SceneMediator::appendChild(const std::string &target, const std::shared_ptr
         {
             auto obj = it->getNext();
 
-            if (obj->getName() == target)
+            if (getName(*tree) == target)
             {
                 parent = obj;
                 break;

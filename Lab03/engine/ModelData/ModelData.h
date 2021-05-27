@@ -11,6 +11,8 @@ public:
     void addPoint(double x, double y, double z) { points.push_back(std::make_shared<Point>(x, y, z)); };
     void addEdge(int p1, int p2) { edges.push_back(Edge(points[p1], points[p2])); };
 
+    ~ModelData() = default;
+
 private:
     std::vector<std::shared_ptr<Point>> points;
     std::vector<Edge> edges;

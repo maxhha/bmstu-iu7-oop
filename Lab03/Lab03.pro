@@ -11,10 +11,10 @@ CONFIG += c++14
 SOURCES += \
     main.cpp \
     mainwindow.cpp \
-    engine/EngineCreator/EngineCreator.cpp \
+    engine/EngineSolution/EngineSolution.cpp \
     engine/Exception/Exception.cpp \
     engine/Engine/Engine.cpp \
-    engine/Engine/QtEngine.cpp \
+    qt/QtEngine.cpp \
     engine/ObjectLoaderSolution/ObjectLoaderSolution.cpp \
     engine/ObjectLoader/ModelLoader/FileModelLoader.cpp \
     engine/ObjectLoader/ModelLoader/ModelLoader.cpp \
@@ -22,6 +22,13 @@ SOURCES += \
     engine/Transformation/Transformation.cpp \
     engine/ObjectMediator/SceneMediator.cpp \
     engine/Object/ObjectIterator.cpp \
+    engine/ScreenManager/ScreenManager.cpp \
+    engine/Screen/Screen.cpp \
+    qt/QtScreenCreator.cpp \
+    qt/QtRenderVisitor.cpp \
+    engine/Object/SceneTree/SceneTree.cpp \
+    engine/Visitor/Visitor.cpp \
+    qt/QtEngineCreator.cpp \
     libs/yaml-cpp/src/binary.cpp \
     libs/yaml-cpp/src/convert.cpp \
     libs/yaml-cpp/src/depthguard.cpp \

@@ -11,6 +11,8 @@ public:
     void addEdge(int p1, int p2) { modelData.addEdge(p1, p2); };
     std::shared_ptr<Object> build() override;
 
+    ~ModelBuilder() override = default;
+
 private:
     ModelData modelData;
 };

@@ -1,9 +1,9 @@
-#include <algorithm>
 #include <engine/ObjectLoader/ModelLoader/FileModelLoader.h>
 #include <engine/ObjectMediator/SceneMediator.h>
 #include <engine/Exception/Exceptions.h>
 #include <fmt/format.h>
 #include "QtEngine.h"
+#include "QtScreenCreator.h"
 
 std::shared_ptr<ObjectLoaderSolution> QtEngine::createObjectLoaderSolution()
 {
@@ -43,5 +43,6 @@ std::shared_ptr<ObjectMediator> QtEngine::createObjectMediator()
 
 std::shared_ptr<ScreenManager> QtEngine::createScreenManager()
 {
-    return std::shared_ptr<ScreenManager>(new ScreenManager());
+    return std::make_shared<ScreenManager>(
+        std::make_unique<QtScreenCreator>(scene));
 }
