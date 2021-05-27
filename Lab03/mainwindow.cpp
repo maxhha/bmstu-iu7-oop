@@ -12,8 +12,7 @@ MainWindow::MainWindow(QWidget *parent)
 
     auto object = loader->load("../Lab03/model.yml");
 
-
-    qDebug() << "LoadedObject name = " << QString(object->getName().c_str());
+    engineCreator.getEngine()->getSceneMediator()->appendChild("root", object);
 }
 
 MainWindow::~MainWindow()

@@ -20,6 +20,8 @@ SOURCES += \
     engine/ObjectLoader/ModelLoader/ModelLoader.cpp \
     engine/ObjectBuilder/ModelBuilder/ModelBuilder.cpp \
     engine/Transformation/Transformation.cpp \
+    engine/SceneMediator/SceneMediator.cpp \
+    engine/Object/ObjectIterator.cpp \
     libs/yaml-cpp/src/binary.cpp \
     libs/yaml-cpp/src/convert.cpp \
     libs/yaml-cpp/src/depthguard.cpp \

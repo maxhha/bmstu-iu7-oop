@@ -6,7 +6,7 @@
 class Transformation
 {
 public:
-    Transformation() noexcept {};
+    Transformation(){};
     explicit Transformation(const std::vector<std::vector<double>> &data);
 
 private:
