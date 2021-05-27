@@ -2,7 +2,6 @@
 
 #include "Object.h"
 #include <QDebug>
-#include <engine/SceneMediator/SceneMediator.h>
 
 class SceneTree : public Object
 {
@@ -15,7 +14,7 @@ public:
         : Object(_name, _transformation), children(std::make_shared<VecObj>()){};
 
     bool isSceneTree() const override { return true; };
-    void appendChild(std::shared_ptr<Object> &object) override { children->push_back(object); };
+    void appendChild(const std::shared_ptr<Object> &object) override { children->push_back(object); };
     std::shared_ptr<ObjectIterator> getDFIterator() override { return std::make_shared<DepthFirstObjectIterator>(*this); };
 
 protected:

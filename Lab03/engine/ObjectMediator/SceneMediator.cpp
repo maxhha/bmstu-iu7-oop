@@ -2,7 +2,7 @@
 #include <QDebug>
 #include <stack>
 
-void SceneMediator::appendChild(const std::string &target, std::shared_ptr<Object> object)
+void SceneMediator::appendChild(const std::string &target, const std::shared_ptr<Object> &object)
 {
     std::shared_ptr<Object> parent;
 

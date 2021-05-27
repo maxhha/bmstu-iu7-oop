@@ -20,7 +20,7 @@ public:
         : name(_name), transformation(_transformation){};
 
     virtual bool isSceneTree() const { return false; };
-    virtual void appendChild(std::shared_ptr<Object> &object){};
+    virtual void appendChild(const std::shared_ptr<Object> &object){};
     virtual std::shared_ptr<ObjectIterator> getDFIterator() { return std::make_shared<DepthFirstObjectIterator>(); };
 
 protected:

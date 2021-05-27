@@ -12,7 +12,7 @@ MainWindow::MainWindow(QWidget *parent)
 
     auto object = loader->load("../Lab03/model.yml");
 
-    engineCreator.getEngine()->getSceneMediator()->appendChild("root", object);
+    engineCreator.getEngine()->getObjectMediator()->appendChild("root", object);
 }
 
 MainWindow::~MainWindow()

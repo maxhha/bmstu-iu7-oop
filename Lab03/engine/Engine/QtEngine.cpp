@@ -1,5 +1,6 @@
 #include <algorithm>
 #include <engine/ObjectLoader/ModelLoader/FileModelLoader.h>
+#include <engine/ObjectMediator/SceneMediator.h>
 #include <engine/Exception/Exceptions.h>
 #include <fmt/format.h>
 #include "QtEngine.h"
@@ -35,9 +36,9 @@ std::shared_ptr<ObjectSaverSolution> QtEngine::createObjectSaverSolution()
     return std::shared_ptr<ObjectSaverSolution>(new ObjectSaverSolution());
 }
 
-std::shared_ptr<SceneMediator> QtEngine::createSceneMediator()
+std::shared_ptr<ObjectMediator> QtEngine::createObjectMediator()
 {
-    return std::shared_ptr<SceneMediator>(new SceneMediator());
+    return std::shared_ptr<ObjectMediator>(new SceneMediator());
 }
 
 std::shared_ptr<ScreenManager> QtEngine::createScreenManager()

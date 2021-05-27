@@ -14,7 +14,7 @@ public:
 private:
     std::shared_ptr<ObjectLoaderSolution> createObjectLoaderSolution() override;
     std::shared_ptr<ObjectSaverSolution> createObjectSaverSolution() override;
-    std::shared_ptr<SceneMediator> createSceneMediator() override;
+    std::shared_ptr<ObjectMediator> createObjectMediator() override;
     std::shared_ptr<ScreenManager> createScreenManager() override;
 
     VecStr loaders;

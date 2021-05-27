@@ -20,14 +20,14 @@ std::shared_ptr<ObjectSaverSolution> Engine::getObjectSaverSolution()
     return objectSaverSolution;
 }
 
-std::shared_ptr<SceneMediator> Engine::getSceneMediator()
+std::shared_ptr<ObjectMediator> Engine::getObjectMediator()
 {
-    if (sceneMediator == nullptr)
+    if (objectMediator == nullptr)
     {
-        sceneMediator = createSceneMediator();
+        objectMediator = createObjectMediator();
     }
 
-    return sceneMediator;
+    return objectMediator;
 }
 
 std::shared_ptr<ScreenManager> Engine::getScreenManager()
