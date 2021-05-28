@@ -18,4 +18,6 @@ protected:
     std::shared_ptr<std::vector<std::shared_ptr<Object>>> getChildren(SceneTree &tree);
     template <class T>
     const std::string &getName(const T &obj) { return obj.getName(); };
+    template <class T, typename D>
+    D &getData(T &obj) { return obj.data; };
 };
