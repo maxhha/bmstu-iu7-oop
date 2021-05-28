@@ -6,12 +6,14 @@
 class Object;
 class SceneTree;
 class Model;
+class Camera;
 
 class Visitor
 {
 public:
     virtual void visitSceneTree(SceneTree &tree) = 0;
     virtual void visitModel(Model &model) = 0;
+    virtual void visitCamera(Camera &model) = 0;
     virtual ~Visitor() = default;
 
 protected:

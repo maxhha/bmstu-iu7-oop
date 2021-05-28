@@ -5,6 +5,5 @@ std::shared_ptr<Object> ModelBuilder::build()
 {
     return std::make_shared<Model>(
         name,
-        transformation,
         modelData);
 };

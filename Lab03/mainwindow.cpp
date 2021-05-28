@@ -4,6 +4,7 @@
 #include <QDebug>
 #include <qt/QtEngineCreator.h>
 #include <engine/EngineSolution/EngineSolution.h>
+#include <engine/Object/Camera.h>
 
 using VecStr = std::vector<std::string>;
 
@@ -12,17 +13,9 @@ MainWindow::MainWindow(QWidget *parent)
 {
     ui->setupUi(this);
 
-    auto _scene = new QGraphicsScene(this);
-
-    ui->graphicsView->setScene(_scene);
-    ui->graphicsView->setAlignment(Qt::AlignTop | Qt::AlignLeft);
-
-    auto rcontent = ui->graphicsView->contentsRect();
-    _scene->setSceneRect(0, 0, rcontent.width(), rcontent.height());
-
     EngineSolution solution;
 
-    std::shared_ptr<EngineCreator> qtEngine = std::make_shared<QtEngineCreator>(_scene);
+    std::shared_ptr<EngineCreator> qtEngine = std::make_shared<QtEngineCreator>(ui->screenFrame);
 
     solution.registration("qt", qtEngine);
 
@@ -33,9 +26,25 @@ MainWindow::MainWindow(QWidget *parent)
     auto loader = engine->getObjectLoaderSolution()->create("FileModel");
     auto object = loader->load("../Lab03/model.yml");
 
+    auto camera = std::make_shared<Camera>("cam0", Transformation({25.0, 0.0, 0.0, 50.0,
+                                                                   0.0, 25.0, 0.0, 50.0,
+                                                                   0.0, 0.0, 25.0, 0.0,
+                                                                   0.0, 0.0, 0.0, 1.0}));
+    auto camera1 = std::make_shared<Camera>("cam1", Transformation({0.0, -25.0, 0.0, 50.0,
+                                                                    25.0, 0.0, 0.0, 50.0,
+                                                                    0.0, 0.0, 50.0, 0.0,
+                                                                    0.0, 0.0, 0.0, 1.0}));
     engine->getObjectMediator()->appendChild("root", object);
+    engine->getObjectMediator()->appendChild("root", camera);
+    engine->getObjectMediator()->appendChild("root", camera1);
     engine->getScreenManager()->addScreen(0, 0, 100, 100);
-    engine->getScreenManager()->render(*engine->getObjectMediator()->getSceneTree());
+    engine->getScreenManager()->addScreen(120, 0, 100, 100);
+    engine->getScreenManager()->addScreen(0, 120, 100, 100);
+    engine->getScreenManager()->setCamera(0, camera);
+    engine->getScreenManager()->setCamera(1, camera);
+    engine->getScreenManager()->setCamera(2, camera1);
+
+    engine->getScreenManager()->render(engine->getObjectMediator()->getSceneTree());
 }
 
 MainWindow::~MainWindow()

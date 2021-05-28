@@ -10,11 +10,12 @@ class Model : public Object
 public:
     Model(
         const std::string &_name,
-        const Transformation &_transformation,
         const ModelData &_data)
-        : Object(_name, _transformation), data(_data){};
+        : Object(_name), data(_data){};
 
     void accept(Visitor &visitor) override { visitor.visitModel(*this); }
+
+    ~Model() override = default;
 
 private:
     ModelData data;

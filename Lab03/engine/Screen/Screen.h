@@ -14,6 +14,7 @@ public:
           height(_height),
           renderer(std::move(_renderer)){};
 
+    void setCamera(const std::weak_ptr<Camera> &_camera) { camera = _camera; };
     void render(const SceneTree &tree);
 
 private:
@@ -22,4 +23,5 @@ private:
     int width;
     int height;
     std::unique_ptr<RenderVisitor> renderer;
+    std::weak_ptr<Camera> camera;
 };

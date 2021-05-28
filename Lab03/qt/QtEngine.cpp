@@ -44,5 +44,5 @@ std::shared_ptr<ObjectMediator> QtEngine::createObjectMediator()
 std::shared_ptr<ScreenManager> QtEngine::createScreenManager()
 {
     return std::make_shared<ScreenManager>(
-        std::make_unique<QtScreenCreator>(scene));
+        std::make_unique<QtScreenCreator>(widget));
 }

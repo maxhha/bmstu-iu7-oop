@@ -12,3 +12,8 @@ void ScreenManager::render(const SceneTree &tree)
         screen->render(tree);
     }
 }
+
+void ScreenManager::setCamera(int screen, const std::shared_ptr<Camera> &camera)
+{
+    screens[screen]->setCamera(camera);
+}

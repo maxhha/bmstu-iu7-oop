@@ -12,6 +12,7 @@ public:
     explicit ScreenManager(std::unique_ptr<ScreenCreator> _creator)
         : creator(std::move(_creator)){};
     void addScreen(int x, int y, int width, int height);
+    void setCamera(int screen, const std::shared_ptr<Camera> &camera);
     void render(const SceneTree &tree);
 
     ~ScreenManager() = default;

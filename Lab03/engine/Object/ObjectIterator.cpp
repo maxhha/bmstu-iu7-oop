@@ -1,5 +1,5 @@
 #include "ObjectIterator.h"
-#include "SceneTree.h"
+#include "SceneTree/SceneTree.h"
 
 DepthFirstObjectIterator::DepthFirstObjectIterator(const SceneTree &tree)
 {

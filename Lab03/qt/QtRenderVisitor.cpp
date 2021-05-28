@@ -1,4 +1,5 @@
 #include <engine/Object/Model.h>
+#include <engine/Object/Camera.h>
 #include <engine/Object/SceneTree/SceneTree.h>
 #include "QtRenderVisitor.h"
 #include <QDebug>
@@ -22,16 +23,19 @@ void QtRenderVisitor::visitModel(Model &model)
 
     for (const auto &edge : modelData.getEdges())
     {
-        auto x1 = edge.getStartPoint()->getX() * 100 + 50;
-        auto y1 = edge.getStartPoint()->getY() * 100 + 50;
-        auto x2 = edge.getEndPoint()->getX() * 100 + 50;
-        auto y2 = edge.getEndPoint()->getX() * 100 + 50;
+        auto p1 = transformation.transform(*edge.getStartPoint());
+        auto p2 = transformation.transform(*edge.getEndPoint());
 
-        scene->addLine(x1, y1, x2, y2);
+        scene->addLine(p1.getX(), p1.getY(), p2.getX(), p2.getY());
     }
 }
 
-void QtRenderVisitor::render(const SceneTree &tree)
+void visitCamera(Camera &camera){};
+
+void QtRenderVisitor::render(const SceneTree &tree, const std::weak_ptr<Camera> &camera)
 {
+    if (camera.expired())
+        return;
+    transformation = getData<Camera, Transformation>(*camera.lock());
     visitSceneTree(const_cast<SceneTree &>(tree));
 }

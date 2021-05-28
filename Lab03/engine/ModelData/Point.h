@@ -6,9 +6,9 @@ public:
     using d = double;
     Point(d _x, d _y, d _z) : x(_x), y(_y), z(_z){};
 
-    d getX() { return x; };
-    d getY() { return y; };
-    d getZ() { return z; };
+    d getX() const { return x; };
+    d getY() const { return y; };
+    d getZ() const { return z; };
 
     ~Point() = default;
 

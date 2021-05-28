@@ -1,6 +1,6 @@
 #pragma once
 
-#include <QGraphicsScene>
+#include <QWidget>
 #include <engine/Engine/Engine.h>
 
 class QtEngine : public Engine
@@ -9,8 +9,8 @@ public:
     using VecStr = std::vector<std::string>;
 
     QtEngine() = delete;
-    QtEngine(const VecStr &_loaders, const VecStr &_savers, QGraphicsScene *_scene)
-        : loaders(_loaders), savers(_savers), scene(_scene){};
+    QtEngine(const VecStr &_loaders, const VecStr &_savers, QWidget *_widget)
+        : loaders(_loaders), savers(_savers), widget(_widget){};
 
     ~QtEngine() override = default;
 
@@ -22,5 +22,5 @@ private:
 
     VecStr loaders;
     VecStr savers;
-    QGraphicsScene *scene;
+    QWidget *widget;
 };

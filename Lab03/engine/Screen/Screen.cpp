@@ -2,5 +2,5 @@
 
 void Screen::render(const SceneTree &tree)
 {
-    renderer->render(tree);
+    renderer->render(tree, camera);
 }
