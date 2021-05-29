@@ -30,6 +30,10 @@ SOURCES += \
     engine/Visitor/Visitor.cpp \
     qt/QtEngineCreator.cpp \
     engine/Command/Commands.cpp \
+    engine/ObjectSaver/SceneTreeSaver/SceneTreeSaver.cpp \
+    engine/ObjectSaver/SceneTreeSaver/FileSceneTreeSaver.cpp \
+    engine/ObjectSaver/SceneTreeSaver/FileObjectSaverVisitor.cpp \
+    engine/ObjectSaverSolution/ObjectSaverSolution.cpp \
     libs/yaml-cpp/src/binary.cpp \
     libs/yaml-cpp/src/convert.cpp \
     libs/yaml-cpp/src/depthguard.cpp \

@@ -45,6 +45,8 @@ MainWindow::MainWindow(QWidget *parent)
     engine->getScreenManager()->setCamera(1, camera);
     engine->getScreenManager()->setCamera(2, camera1);
 
+    engine->getObjectSaverSolution()->create("FileSceneTree")->save("../Lab03/temp.yml", engine->getObjectMediator()->getSceneTree());
+
     RenderCommand(engine).execute();
 }
 

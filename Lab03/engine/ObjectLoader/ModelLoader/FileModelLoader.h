@@ -8,7 +8,7 @@ class FileModelLoader : public ModelLoader
 public:
     ~FileModelLoader() override = default;
 
-private:
+protected:
     void open(const std::string &source) override;
     void close() override;
 
@@ -16,5 +16,6 @@ private:
     void loadPoints() override;
     void loadEdges() override;
 
+private:
     YAML::Node data;
 };

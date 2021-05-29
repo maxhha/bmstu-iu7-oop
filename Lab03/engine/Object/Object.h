@@ -20,6 +20,7 @@ public:
         const std::string &_name)
         : name(_name){};
 
+    const std::string &getName() const { return name; };
     virtual bool isSceneTree() const { return false; };
     virtual void appendChild(const std::shared_ptr<Object> &object){};
     virtual std::shared_ptr<ObjectIterator> getDFIterator() { return std::make_shared<DepthFirstObjectIterator>(); };
@@ -29,7 +30,6 @@ public:
 
 protected:
     void setName(const std::string &_name) { name = _name; };
-    const std::string &getName() const { return name; };
 
 private:
     std::string name;

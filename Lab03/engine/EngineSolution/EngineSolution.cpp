@@ -36,6 +36,14 @@ std::shared_ptr<Engine> EngineSolution::createEngine()
                 loaders.push_back(it.as<std::string>());
             }
         }
+
+        if (config["savers"])
+        {
+            for (const auto &it : config["savers"])
+            {
+                savers.push_back(it.as<std::string>());
+            }
+        }
     }
     catch (YAML::Exception &ex)
     {

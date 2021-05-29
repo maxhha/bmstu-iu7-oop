@@ -1,4 +1,5 @@
 #include <engine/ObjectLoader/ModelLoader/FileModelLoader.h>
+#include <engine/ObjectSaver/SceneTreeSaver/FileSceneTreeSaver.h>
 #include <engine/ObjectMediator/SceneMediator.h>
 #include <engine/Exception/Exceptions.h>
 #include <fmt/format.h>
@@ -7,7 +8,7 @@
 
 std::shared_ptr<ObjectLoaderSolution> QtEngine::createObjectLoaderSolution()
 {
-    auto solution = std::shared_ptr<ObjectLoaderSolution>(new ObjectLoaderSolution());
+    auto solution = std::make_shared<ObjectLoaderSolution>();
 
     for (const auto &loaderName : loaders)
     {
@@ -33,12 +34,33 @@ std::shared_ptr<ObjectLoaderSolution> QtEngine::createObjectLoaderSolution()
 
 std::shared_ptr<ObjectSaverSolution> QtEngine::createObjectSaverSolution()
 {
-    return std::shared_ptr<ObjectSaverSolution>(new ObjectSaverSolution());
+    auto solution = std::make_shared<ObjectSaverSolution>();
+
+    for (const auto &saverName : savers)
+    {
+        if (saverName == "file")
+        {
+            solution->registration(
+                "FileSceneTree",
+                []() -> std::shared_ptr<ObjectSaver> {
+                    return std::make_shared<FileSceneTreeSaver>();
+                });
+        }
+        else
+        {
+            throw ParseConfigException(
+                __FILE__,
+                __LINE__,
+                fmt::format("Unknown saver type '{}' for QtEngine", saverName));
+        }
+    }
+
+    return solution;
 }
 
 std::shared_ptr<ObjectMediator> QtEngine::createObjectMediator()
 {
-    return std::shared_ptr<ObjectMediator>(new SceneMediator());
+    return std::make_shared<SceneMediator>();
 }
 
 std::shared_ptr<ScreenManager> QtEngine::createScreenManager()

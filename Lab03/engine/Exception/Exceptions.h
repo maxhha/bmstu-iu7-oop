@@ -35,3 +35,10 @@ public:
     LoadModelException(std::string file, int line, std::string msg = "")
         : EngineException("LoadModelException", file, line, msg){};
 };
+
+class SaveSceneTreeException : public EngineException
+{
+public:
+    SaveSceneTreeException(std::string file, int line, std::string msg = "")
+        : EngineException("SaveSceneTreeException", file, line, msg){};
+};
