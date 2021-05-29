@@ -5,6 +5,7 @@
 #include <qt/QtEngineCreator.h>
 #include <engine/EngineSolution/EngineSolution.h>
 #include <engine/Object/Camera.h>
+#include <engine/Command/Commands.h>
 
 using VecStr = std::vector<std::string>;
 
@@ -44,7 +45,7 @@ MainWindow::MainWindow(QWidget *parent)
     engine->getScreenManager()->setCamera(1, camera);
     engine->getScreenManager()->setCamera(2, camera1);
 
-    engine->getScreenManager()->render(engine->getObjectMediator()->getSceneTree());
+    RenderCommand(engine).execute();
 }
 
 MainWindow::~MainWindow()

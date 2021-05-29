@@ -9,6 +9,7 @@ public:
     explicit ObjectMediator(std::shared_ptr<SceneTree> _tree) : tree(_tree){};
 
     const SceneTree &getSceneTree() { return *tree; }
+    virtual const std::shared_ptr<Object> &getNode(const std::string &name) = 0;
     virtual void appendChild(const std::string &target, const std::shared_ptr<Object> &object) = 0;
 
     virtual ~ObjectMediator() = default;

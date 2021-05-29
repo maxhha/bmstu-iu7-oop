@@ -29,6 +29,7 @@ SOURCES += \
     engine/Object/SceneTree/SceneTree.cpp \
     engine/Visitor/Visitor.cpp \
     qt/QtEngineCreator.cpp \
+    engine/Command/Commands.cpp \
     libs/yaml-cpp/src/binary.cpp \
     libs/yaml-cpp/src/convert.cpp \
     libs/yaml-cpp/src/depthguard.cpp \

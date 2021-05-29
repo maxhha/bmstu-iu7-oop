@@ -30,7 +30,7 @@ void QtRenderVisitor::visitModel(Model &model)
     }
 }
 
-void visitCamera(Camera &camera){};
+void QtRenderVisitor::visitCamera(Camera &camera){};
 
 void QtRenderVisitor::render(const SceneTree &tree, const std::weak_ptr<Camera> &camera)
 {

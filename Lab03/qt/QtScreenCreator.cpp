@@ -2,8 +2,7 @@
 #include "QtRenderVisitor.h"
 #include <QGraphicsView>
 #include <QGraphicsScene>
-#include <QLayout>
-#include <QGridLayout>
+#include <QLabel>
 
 std::shared_ptr<Screen> QtScreenCreator::createScreen(int x, int y, int width, int height)
 {
@@ -15,16 +14,10 @@ std::shared_ptr<Screen> QtScreenCreator::createScreen(int x, int y, int width, i
     view->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     view->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     scene->setSceneRect(0, 0, width, height);
-    // view->setAlignment(Qt::AlignTop | Qt::AlignLeft);
 
-    // if (widget->layout() == nullptr)
-    // {
-    //     widget->setLayout(new QGridLayout(widget));
-    // }
-
-    // auto layout = widget->layout();
-
-    // layout->addWidget(view);
+    auto label = new QLabel(widget);
+    label->setText(QString::number(widget->children().count() / 2));
+    label->setGeometry(x + 2, y, 100, 20);
 
     return std::make_shared<Screen>(
         x, y, width, height,
