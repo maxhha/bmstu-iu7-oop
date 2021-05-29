@@ -9,6 +9,7 @@ public:
     friend class Visitor;
 
     using VecObj = std::vector<std::shared_ptr<Object>>;
+
     explicit SceneTree(const std::string &_name)
         : Object(_name), children(std::make_shared<VecObj>()){};
 

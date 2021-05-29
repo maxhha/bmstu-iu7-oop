@@ -11,6 +11,8 @@ public:
 
     virtual void execute() = 0;
 
+    virtual ~Command() = default;
+
 protected:
     std::shared_ptr<Engine> engine;
 };
