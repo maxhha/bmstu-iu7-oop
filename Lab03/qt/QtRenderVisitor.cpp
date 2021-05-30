@@ -21,10 +21,12 @@ void QtRenderVisitor::visitModel(Model &model)
 
     auto modelData = getData<Model, ModelData>(model);
 
+    const auto points = modelData.getPoints();
+
     for (const auto &edge : modelData.getEdges())
     {
-        auto p1 = transformation.transform(*edge.getStartPoint());
-        auto p2 = transformation.transform(*edge.getEndPoint());
+        auto p1 = transformation.transform(points[edge.getStartPoint()]);
+        auto p2 = transformation.transform(points[edge.getEndPoint()]);
 
         scene->addLine(p1.getX(), p1.getY(), p2.getX(), p2.getY());
     }

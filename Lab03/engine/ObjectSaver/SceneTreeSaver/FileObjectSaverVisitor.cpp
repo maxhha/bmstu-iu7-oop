@@ -2,6 +2,7 @@
 #include <engine/Object/Camera.h>
 #include <engine/Object/Model.h>
 #include <engine/Object/SceneTree/SceneTree.h>
+#include <map>
 
 void FileObjectSaverVisitor::visitSceneTree(SceneTree &sceneTree)
 {
@@ -46,6 +47,28 @@ void FileObjectSaverVisitor::visitModel(Model &model)
     out << YAML::BeginMap;
     out << YAML::Key << "type" << YAML::Value << "Model";
     out << YAML::Key << "name" << YAML::Value << getName<Model>(model);
+
+    auto data = getData<Model, ModelData>(model);
+
+    out << YAML::Key << "points" << YAML::Value << YAML::BeginSeq;
+
+    for (auto &p : data.getPoints())
+    {
+        out << YAML::Flow << YAML::BeginSeq;
+        out << p.getX() << p.getY() << p.getZ();
+        out << YAML::EndSeq;
+    }
+
+    out << YAML::EndSeq;
+
     out << YAML::Key << "edges" << YAML::Value << YAML::BeginSeq;
+
+    for (auto &edge : data.getEdges())
+    {
+        out << YAML::Flow << YAML::BeginSeq;
+        out << edge.getStartPoint() << edge.getEndPoint();
+        out << YAML::EndSeq;
+    }
+
     out << YAML::EndSeq << YAML::EndMap;
 }
