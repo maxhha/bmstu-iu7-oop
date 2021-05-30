@@ -4,7 +4,7 @@
 #include <QGraphicsScene>
 #include <QLabel>
 
-std::shared_ptr<Screen> QtScreenCreator::createScreen(int x, int y, int width, int height)
+std::shared_ptr<Screen> QtScreenCreator::createScreen(int id, int x, int y, int width, int height)
 {
     auto view = new QGraphicsView(widget);
     auto scene = new QGraphicsScene(view);
@@ -15,11 +15,10 @@ std::shared_ptr<Screen> QtScreenCreator::createScreen(int x, int y, int width, i
     view->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     scene->setSceneRect(0, 0, width, height);
 
-    auto label = new QLabel(widget);
-    label->setText(QString::number(widget->children().count() / 2));
-    label->setGeometry(x + 2, y, 100, 20);
+    auto label = new QLabel(view);
+    label->setText(QString::number(id));
+    label->setGeometry(2, 0, 100, 20);
 
     return std::make_shared<Screen>(
-        x, y, width, height,
-        std::make_unique<QtRenderVisitor>(scene));
+        std::make_unique<QtRenderVisitor>(view));
 }

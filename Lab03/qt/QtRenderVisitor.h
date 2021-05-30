@@ -1,6 +1,6 @@
 #pragma once
 
-#include <QGraphicsScene>
+#include <QGraphicsView>
 #include <engine/Transformation/Transformation.h>
 #include <engine/Visitor/RenderVisitor.h>
 
@@ -8,7 +8,7 @@ class QtRenderVisitor : public RenderVisitor
 {
 public:
     QtRenderVisitor() = delete;
-    explicit QtRenderVisitor(QGraphicsScene *_scene) : scene(_scene){};
+    explicit QtRenderVisitor(QGraphicsView *_view) : view(_view){};
 
     void visitSceneTree(SceneTree &tree) override;
     void visitModel(Model &model) override;
@@ -16,9 +16,9 @@ public:
 
     void render(const SceneTree &tree, const std::weak_ptr<Camera> &camera) override;
 
-    ~QtRenderVisitor() override = default;
+    ~QtRenderVisitor() override { delete view; };
 
 private:
-    QGraphicsScene *scene;
+    QGraphicsView *view;
     Transformation transformation;
 };

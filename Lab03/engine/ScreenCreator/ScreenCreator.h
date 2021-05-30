@@ -6,6 +6,6 @@
 class ScreenCreator
 {
 public:
-    virtual std::shared_ptr<Screen> createScreen(int x, int y, int width, int height) = 0;
+    virtual std::shared_ptr<Screen> createScreen(int id, int x, int y, int width, int height) = 0;
     virtual ~ScreenCreator() = default;
 };

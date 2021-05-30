@@ -28,7 +28,7 @@ void QtRenderVisitor::visitModel(Model &model)
         auto p1 = transformation.transform(points[edge.getStartPoint()]);
         auto p2 = transformation.transform(points[edge.getEndPoint()]);
 
-        scene->addLine(p1.getX(), p1.getY(), p2.getX(), p2.getY());
+        view->scene()->addLine(p1.getX(), p1.getY(), p2.getX(), p2.getY());
     }
 }
 

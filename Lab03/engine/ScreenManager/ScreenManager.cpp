@@ -2,14 +2,20 @@
 
 void ScreenManager::addScreen(int x, int y, int width, int height)
 {
-    screens.push_back(creator->createScreen(x, y, width, height));
+    screens[nextScreenId] = (creator->createScreen(nextScreenId, x, y, width, height));
+    nextScreenId++;
+}
+
+void ScreenManager::removeScreen(int id)
+{
+    screens.erase(id);
 }
 
 void ScreenManager::render(const SceneTree &tree)
 {
-    for (const auto &screen : screens)
+    for (const auto &it : screens)
     {
-        screen->render(tree);
+        it.second->render(tree);
     }
 }
 

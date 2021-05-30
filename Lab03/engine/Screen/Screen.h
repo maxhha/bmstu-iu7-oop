@@ -7,21 +7,13 @@ class Screen
 {
 public:
     Screen() = delete;
-    Screen(int _x, int _y, int _width, int _height, std::unique_ptr<RenderVisitor> _renderer)
-        : x(_x),
-          y(_y),
-          width(_width),
-          height(_height),
-          renderer(std::move(_renderer)){};
+    explicit Screen(std::unique_ptr<RenderVisitor> _renderer)
+        : renderer(std::move(_renderer)){};
 
     void setCamera(const std::weak_ptr<Camera> &_camera) { camera = _camera; };
     void render(const SceneTree &tree);
 
 private:
-    int x;
-    int y;
-    int width;
-    int height;
     std::unique_ptr<RenderVisitor> renderer;
     std::weak_ptr<Camera> camera;
 };
