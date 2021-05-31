@@ -23,7 +23,9 @@ public:
     const std::string &getName() const { return name; };
     virtual bool isSceneTree() const { return false; };
     virtual void appendChild(const std::shared_ptr<Object> &object){};
+    virtual void removeChild(const std::shared_ptr<Object> &object){};
     virtual std::shared_ptr<ObjectIterator> getDFIterator() { return std::make_shared<DepthFirstObjectIterator>(); };
+    virtual std::shared_ptr<ObjectIterator> getPathIterator() { return std::make_shared<DepthFirstObjectIterator>(); };
     virtual void accept(Visitor &visitor) = 0;
 
     virtual ~Object() = default;

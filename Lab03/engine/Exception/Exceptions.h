@@ -49,3 +49,10 @@ public:
     SaveSceneTreeException(std::string file, int line, std::string msg = "")
         : EngineException("SaveSceneTreeException", file, line, msg){};
 };
+
+class ObjectNotFoundException : public EngineException
+{
+public:
+    ObjectNotFoundException(std::string file, int line, std::string msg = "")
+        : EngineException("ObjectNotFoundException", file, line, msg){};
+};

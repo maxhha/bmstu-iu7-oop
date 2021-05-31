@@ -1,17 +1,14 @@
 #include "SceneMediator.h"
-#include <stack>
+#include <engine/Exception/Exceptions.h>
+#include <fmt/format.h>
 
 void SceneMediator::appendChild(const std::string &target, const std::shared_ptr<Object> &object)
 {
-    auto parent = getNode(target);
-
-    if (parent != nullptr)
-    {
-        parent->appendChild(object);
-    }
+    auto parent = get(target);
+    parent->appendChild(object);
 }
 
-const std::shared_ptr<Object> SceneMediator::getNode(const std::string &name)
+std::shared_ptr<Object> SceneMediator::get(const std::string &name)
 {
     std::shared_ptr<Object> parent;
 
@@ -33,5 +30,61 @@ const std::shared_ptr<Object> SceneMediator::getNode(const std::string &name)
         }
     }
 
+    if (parent == nullptr)
+        throw ObjectNotFoundException(
+            __FILE__,
+            __LINE__,
+            fmt::format("Cant find object '{}' in scene", name));
+
     return parent;
+}
+
+void SceneMediator::rename(const std::string &target, const std::string &newName)
+{
+    auto obj = get(target);
+    setName(*obj, newName);
+}
+
+#include <QDebug>
+
+void SceneMediator::remove(const std::string &target)
+{
+    qDebug() << "remove" << target.c_str();
+
+    std::shared_ptr<Object> parent, obj;
+
+    for (auto it = tree->getPathIterator(); it->hasNext();)
+    {
+        parent = obj;
+        obj = it->getNext();
+
+        if (obj == nullptr)
+        {
+            qDebug() << "null";
+        }
+        else
+        {
+            qDebug() << getName(*obj).c_str();
+        }
+
+        if (obj && getName(*obj) == target)
+            break;
+    }
+
+    if (obj && getName(*obj) == target)
+    {
+        if (!parent)
+        {
+            parent = tree;
+        }
+
+        parent->removeChild(obj);
+    }
+    else
+    {
+        throw ObjectNotFoundException(
+            __FILE__,
+            __LINE__,
+            fmt::format("Cant find object '{}' in scene", target));
+    }
 }

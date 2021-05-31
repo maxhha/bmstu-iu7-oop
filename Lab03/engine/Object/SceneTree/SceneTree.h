@@ -5,7 +5,7 @@
 class SceneTree : public Object
 {
 public:
-    friend class DepthFirstObjectIterator;
+    friend class ObjectIterator;
     friend class Visitor;
 
     using VecObj = std::vector<std::shared_ptr<Object>>;
@@ -14,8 +14,11 @@ public:
         : Object(_name), children(std::make_shared<VecObj>()){};
 
     bool isSceneTree() const override { return true; };
-    void appendChild(const std::shared_ptr<Object> &object) override { children->push_back(object); };
-    std::shared_ptr<ObjectIterator> getDFIterator() override { return std::make_shared<DepthFirstObjectIterator>(*this); };
+    void appendChild(const std::shared_ptr<Object> &object) override;
+    void removeChild(const std::shared_ptr<Object> &object) override;
+    std::shared_ptr<ObjectIterator> getDFIterator() override;
+    std::shared_ptr<ObjectIterator> getPathIterator() override;
+
     void accept(Visitor &visitor) override;
 
     ~SceneTree() override = default;

@@ -7,5 +7,5 @@ void RenderCommand::execute()
 
 const std::shared_ptr<Object> &NodeCommand::getNode()
 {
-    return engine->getObjectMediator()->getNode(nodename);
+    return engine->getObjectMediator()->get(nodename);
 }

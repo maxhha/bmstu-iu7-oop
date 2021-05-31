@@ -52,18 +52,23 @@ MainWindow::MainWindow(QWidget *parent)
     auto object = engine->getObjectLoaderSolution()->create("FileSceneTree")->load("../Lab03/temp.yml");
     engine->getObjectMediator()->appendChild("root", object);
 
-    auto camera0 = std::dynamic_pointer_cast<Camera>(engine->getObjectMediator()->getNode("cam0"));
-    auto camera1 = std::dynamic_pointer_cast<Camera>(engine->getObjectMediator()->getNode("cam1"));
+    {
+        auto camera0 = std::dynamic_pointer_cast<Camera>(engine->getObjectMediator()->get("cam0"));
+        auto camera1 = std::dynamic_pointer_cast<Camera>(engine->getObjectMediator()->get("cam1"));
 
-    engine->getScreenManager()->addScreen(0, 0, 100, 100);
-    engine->getScreenManager()->addScreen(120, 0, 100, 100);
-    engine->getScreenManager()->addScreen(0, 120, 100, 100);
+        engine->getScreenManager()->addScreen(0, 0, 100, 100);
+        engine->getScreenManager()->addScreen(120, 0, 100, 100);
+        engine->getScreenManager()->addScreen(0, 120, 100, 100);
 
-    engine->getScreenManager()->setCamera(0, camera0);
-    engine->getScreenManager()->setCamera(1, camera0);
-    engine->getScreenManager()->setCamera(2, camera1);
+        engine->getScreenManager()->setCamera(0, camera0);
+        engine->getScreenManager()->setCamera(1, camera0);
+        engine->getScreenManager()->setCamera(2, camera1);
+    }
 
-    RenderCommand(engine).execute();
+    engine->getObjectMediator()->remove("cam0");
+
+    RenderCommand(engine)
+        .execute();
 }
 
 MainWindow::~MainWindow()
