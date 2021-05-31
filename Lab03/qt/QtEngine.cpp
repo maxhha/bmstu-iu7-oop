@@ -1,4 +1,5 @@
 #include <engine/ObjectLoader/ModelLoader/FileModelLoader.h>
+#include <engine/ObjectLoader/SceneTreeLoader/FileSceneTreeLoader.h>
 #include <engine/ObjectSaver/SceneTreeSaver/FileSceneTreeSaver.h>
 #include <engine/ObjectMediator/SceneMediator.h>
 #include <engine/Exception/Exceptions.h>
@@ -19,13 +20,19 @@ std::shared_ptr<ObjectLoaderSolution> QtEngine::createObjectLoaderSolution()
                 []() -> std::shared_ptr<ObjectLoader> {
                     return std::make_shared<FileModelLoader>();
                 });
+
+            solution->registration(
+                "FileSceneTree",
+                []() -> std::shared_ptr<ObjectLoader> {
+                    return std::make_shared<FileSceneTreeLoader>();
+                });
         }
         else
         {
             throw ParseConfigException(
                 __FILE__,
                 __LINE__,
-                fmt::format("Unknown loader type '{}' for QtEngine", loaderName));
+                fmt::format("Unknown for QtEngine loader type '{}'", loaderName));
         }
     }
 

@@ -36,6 +36,13 @@ public:
         : EngineException("LoadModelException", file, line, msg){};
 };
 
+class LoadSceneTreeException : public EngineException
+{
+public:
+    LoadSceneTreeException(std::string file, int line, std::string msg = "")
+        : EngineException("LoadSceneTreeException", file, line, msg){};
+};
+
 class SaveSceneTreeException : public EngineException
 {
 public:

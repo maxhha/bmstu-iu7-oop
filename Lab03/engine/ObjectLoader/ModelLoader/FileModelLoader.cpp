@@ -1,4 +1,5 @@
 #include <yaml-cpp/yaml.h>
+#include <fmt/format.h>
 #include <engine/Exception/Exceptions.h>
 #include "FileModelLoader.h"
 
@@ -7,6 +8,16 @@ void FileModelLoader::open(const std::string &source)
     try
     {
         data = YAML::LoadFile(source);
+
+        if (data["type"] && data["type"].as<std::string>() != "Model")
+        {
+            throw LoadModelException(
+                __FILE__,
+                __LINE__,
+                fmt::format(
+                    "Field 'type' in file must be 'Model', not '{}'",
+                    data["type"].as<std::string>()));
+        }
     }
     catch (YAML::Exception &ex)
     {

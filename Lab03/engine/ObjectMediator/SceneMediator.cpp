@@ -1,28 +1,9 @@
 #include "SceneMediator.h"
-#include <QDebug>
 #include <stack>
 
 void SceneMediator::appendChild(const std::string &target, const std::shared_ptr<Object> &object)
 {
-    std::shared_ptr<Object> parent;
-
-    if (getName(*tree) == target)
-    {
-        parent = tree;
-    }
-    else
-    {
-        for (auto it = tree->getDFIterator(); it->hasNext();)
-        {
-            auto obj = it->getNext();
-
-            if (getName(*obj) == target)
-            {
-                parent = obj;
-                break;
-            }
-        }
-    }
+    auto parent = getNode(target);
 
     if (parent != nullptr)
     {
@@ -30,7 +11,7 @@ void SceneMediator::appendChild(const std::string &target, const std::shared_ptr
     }
 }
 
-const std::shared_ptr<Object> &SceneMediator::getNode(const std::string &name)
+const std::shared_ptr<Object> SceneMediator::getNode(const std::string &name)
 {
     std::shared_ptr<Object> parent;
 
