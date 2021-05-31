@@ -7,7 +7,7 @@
 
 class ControlPanel : public QObject {
   Q_OBJECT
-  enum panel_state { FREE, BUSY };
+  enum panel_state { WATCH, WAIT };
 
 public:
   explicit ControlPanel(QObject *parent = nullptr);
@@ -16,9 +16,10 @@ public:
 signals:
   void set_target(int floor, direction dir);
 
+
 public slots:
-  void achieved_floor(int floor);
-  void passed_floor(int floor);
+  void reach_floor(int floor);
+  void pass_floor(int floor);
 
 private:
   int cur_floor;

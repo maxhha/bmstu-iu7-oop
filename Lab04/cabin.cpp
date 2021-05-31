@@ -8,90 +8,136 @@ Cabin::Cabin(QObject *parent)
     : QObject(parent), current_floor(1), target(-1), new_target(false),
       current_state(STOP), current_direction(STAY) {
   crossing_floor_timer.setSingleShot(true);
-  overweight_timer.setSingleShot(false);
+  wait_opened_timer.setSingleShot(true);
+  wait_opened_timer.setInterval(LOAD_TIME);
 
-  QObject::connect(this, SIGNAL(cabin_called()), &doors, SLOT(start_closing()));
-  QObject::connect(this, SIGNAL(cabin_reached_target(int)), this,
-                   SLOT(cabin_stopping()));
+  QObject::connect(
+              this,
+              SIGNAL(called()),
+              &doors,
+              SLOT(start_closing()));
 
-  QObject::connect(this, SIGNAL(cabin_stopped(int)), &doors,
-                   SLOT(start_openning()));
+  QObject::connect(
+              this,
+              SIGNAL(target_reached(int)),
+              this,
+              SLOT(stop()));
 
-  QObject::connect(&doors, SIGNAL(closed_doors()), this, SLOT(cabin_move()));
-  QObject::connect(&crossing_floor_timer, SIGNAL(timeout()), this,
-                   SLOT(cabin_move()));
+  QObject::connect(
+              this,
+              SIGNAL(stopped(int)),
+              &doors,
+              SLOT(start_openning()));
 
-  QObject::connect(&weight_sensor, SIGNAL(overweight(bool)), this, SLOT(set_overweight(bool)));
-  QObject::connect(&overweight_timer, SIGNAL(timeout()), &doors, SLOT(start_openning()));
+  QObject::connect(
+              &doors,
+              SIGNAL(doors_opened()),
+              &wait_opened_timer,
+              SLOT(start()));
+
+  QObject::connect(
+              &doors,
+              SIGNAL(doors_opened()),
+              &weight_sensor,
+              SLOT(activate()));
+
+  QObject::connect(
+              &wait_opened_timer,
+              SIGNAL(timeout()),
+              &doors,
+              SLOT(start_closing()));
+
+  QObject::connect(
+              &doors,
+              SIGNAL(doors_closed()),
+              this,
+              SLOT(move()));
+
+  QObject::connect(
+              &doors,
+              SIGNAL(doors_closed()),
+              &weight_sensor,
+              SLOT(deactivate()));
+
+  QObject::connect(
+              &crossing_floor_timer,
+              SIGNAL(timeout()),
+              this,
+              SLOT(move()));
+
+  QObject::connect(
+              &weight_sensor,
+              SIGNAL(overweight()),
+              &doors,
+              SLOT(start_openning()));
+
+  QObject::connect(
+              &weight_sensor,
+              SIGNAL(overweight()),
+              &wait_opened_timer,
+              SLOT(stop()));
+
+  QObject::connect(
+              &weight_sensor,
+              SIGNAL(normal()),
+              &doors,
+              SLOT(start_closing()));
 }
 
 void Cabin::enter(int weight) {
   weight_sensor.increase_weight(weight);
-  qDebug() << "Enter " << weight << " kg";
+  qDebug() << "Enter" << weight << "kg";
 }
 
 void Cabin::exit(int weight) {
   weight_sensor.decrease_weight(weight);
-  qDebug() << "Exit " << weight << " kg";
+  qDebug() << "Exit" << weight << "kg";
 }
 
-void Cabin::set_overweight(bool overweight) {
-  if (current_state != WAIT && current_state != STOP)
-     return;
+void Cabin::move() {
 
-  if (overweight) {
-      current_state = OVERWEIGHT;
-      overweight_timer.start(OVERWEIGHT_REOPEN);
-  } else {
-      current_state = WAIT;
-      overweight_timer.stop();
-  }
-}
-
-void Cabin::cabin_move() {
-  if (new_target && current_state == WAIT) {
-    current_state = MOVE;
-
-    if (current_floor == target) {
-      emit cabin_reached_target(current_floor);
-    } else {
-      crossing_floor_timer.start(CROSSING_FLOOR);
-    }
-
+  if (current_state != WAIT && current_state != MOVE)
     return;
-  }
 
-  if (current_state == MOVE) {
-    current_state = MOVE;
-
+  if (current_state == MOVE)
+  {
     current_floor += current_direction;
+  }
 
-    if (current_floor == target) {
-      emit cabin_reached_target(current_floor);
-    } else {
-      emit cabin_crossing_floor(current_floor, current_direction);
-      crossing_floor_timer.start(CROSSING_FLOOR);
-    }
+  qDebug() << "Cabin is moving [" << current_floor << "]... tun tun turu tun tun tuturu";
+
+  if (current_floor != target) {
+    crossing_floor_timer.start(CROSSING_FLOOR);
+  }
+
+  current_state = MOVE;
+
+  if (current_floor == target) {
+    emit target_reached(current_floor);
+  } else {
+    emit floor_crossed(current_floor, current_direction);
   }
 }
 
-void Cabin::cabin_stopping() {
-  if (current_state != MOVE)
+void Cabin::stop() {
+  if (MOVE != current_state && WAIT != current_state)
     return;
+
+  qDebug() << "Cabin stopped at floor" << current_floor << ".";
 
   current_state = STOP;
-  qDebug() << "Stopped at floor " << QString::number(current_floor) << ".";
-  emit cabin_stopped(current_floor);
+  emit stopped(current_floor);
 }
 
-void Cabin::cabin_call(int floor, direction dir) {
+void Cabin::call(int floor, direction dir) {
   if (current_state != STOP)
     return;
+
+  qDebug() << "Cabin called to" << floor << ".";
 
   new_target = true;
   current_state = WAIT;
   target = floor;
-
   current_direction = dir;
-  emit cabin_called();
+  emit called();
 }

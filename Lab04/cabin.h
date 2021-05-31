@@ -9,7 +9,7 @@
 
 class Cabin : public QObject {
   Q_OBJECT
-  enum cabin_state { MOVE, WAIT, STOP, OVERWEIGHT };
+  enum cabin_state { MOVE, WAIT, STOP };
 
 public:
   explicit Cabin(QObject *parent = nullptr);
@@ -18,18 +18,15 @@ public:
   void exit(int weight);
 
 signals:
-  void cabin_called();
-  void cabin_crossing_floor(int floor, direction d);
-  void cabin_reached_target(int floor);
-  void cabin_stopped(int floor);
+  void called();
+  void floor_crossed(int floor, direction d);
+  void target_reached(int floor);
+  void stopped(int floor);
 
 public slots:
-  void cabin_move();
-  void cabin_stopping();
-  void cabin_call(int floor, direction dir);
-
-private slots:
-  void set_overweight(bool overweight);
+  void move();
+  void stop();
+  void call(int floor, direction dir);
 
 private:
   int current_floor;
@@ -40,5 +37,5 @@ private:
   Doors doors;
   WeightSensor weight_sensor;
   QTimer crossing_floor_timer;
-  QTimer overweight_timer;
+  QTimer wait_opened_timer;
 };

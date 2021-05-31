@@ -6,10 +6,16 @@
 
 ControlPanel::ControlPanel(QObject *parent)
     : QObject(parent), cur_floor(1), cur_target(-1),
-      is_target(NUM_FLOORS, false), current_state(FREE), cur_direction(STAY) {}
+      is_target(NUM_FLOORS, false), current_state(WAIT), cur_direction(STAY) {
+
+    QObject::connect(
+                this,
+                SIGNAL(set_target(int, direction)),
+                this,
+                SLOT(pass_floor(int)));
+}
 
 void ControlPanel::set_new_target(int floor) {
-  current_state = BUSY;
   is_target[floor - 1] = true;
 
   if (cur_target == -1) {
@@ -23,11 +29,12 @@ void ControlPanel::set_new_target(int floor) {
 
   next_target(floor);
   cur_direction = (cur_floor > cur_target) ? DOWN : UP;
+
   emit set_target(floor, cur_direction);
 }
 
-void ControlPanel::achieved_floor(int floor) {
-  if (current_state != BUSY)
+void ControlPanel::reach_floor(int floor) {
+  if (current_state != WATCH)
     return;
 
   cur_floor = floor;
@@ -38,18 +45,25 @@ void ControlPanel::achieved_floor(int floor) {
     find_new_target();
   }
 
+  current_state = WAIT;
+
   if (next_target(floor)) {
     cur_direction = (cur_floor > cur_target) ? DOWN : UP;
 
     emit set_target(floor, cur_direction);
-  } else {
-    current_state = FREE;
   }
 }
 
-void ControlPanel::passed_floor(int floor) {
-  cur_floor = floor;
-  qDebug() << "Moving... floor:" << floor;
+void ControlPanel::pass_floor(int floor) {
+  if (WATCH != current_state && WAIT != current_state)
+    return;
+
+  qDebug() << "Panel is watching cabin moving...";
+
+  if (WATCH == current_state)
+       cur_floor = floor;
+
+  current_state = WATCH;
 }
 
 void ControlPanel::find_new_target() {

@@ -3,63 +3,84 @@
 #include <QDebug>
 
 Doors::Doors(QObject *parent) : QObject(parent), current_state(CLOSED) {
-  doors_stay_open_timer.setInterval(WAITING_TIME);
-  doors_stay_open_timer.setSingleShot(true);
-
   doors_open_timer.setSingleShot(true);
   doors_close_timer.setSingleShot(true);
 
-  QObject::connect(&doors_open_timer, SIGNAL(timeout()), this, SLOT(open()));
-  QObject::connect(this, SIGNAL(opened_doors()), &doors_stay_open_timer,
-                   SLOT(start()));
-  QObject::connect(&doors_stay_open_timer, SIGNAL(timeout()), this,
-                   SLOT(start_closing()));
+  QObject::connect(
+              &doors_open_timer,
+              SIGNAL(timeout()),
+              this,
+              SLOT(finish_openning()));
+
+  QObject::connect(
+              &doors_close_timer,
+              SIGNAL(timeout()),
+              this,
+              SLOT(finish_closing()));
 }
 
 void Doors::start_openning() {
+  if (OPENED == current_state)
+  {
+    emit doors_opened();
+    return;
+  }
+
   if (CLOSED != current_state && CLOSING != current_state)
     return;
 
+  qDebug() << "Doors are opening...";
+
   if (current_state == CLOSED) {
-    current_state = OPENING;
-    qDebug() << "Doors are opening...";
     doors_open_timer.start(DOORS_TIME);
   } else {
-    current_state = OPENING;
-    qDebug() << "Doors are opening...";
     int t = doors_close_timer.remainingTime();
     doors_close_timer.stop();
     doors_open_timer.start(DOORS_TIME - t);
   }
+
+  current_state = OPENING;
 }
 
 void Doors::start_closing() {
-  if (OPENED != current_state && CLOSED != current_state)
+  if (current_state == CLOSED) {
+      emit doors_closed();
+      return;
+  }
+
+  if (OPENED != current_state && OPENING != current_state)
       return;
 
-  if (current_state == CLOSED) {
-    emit closed_doors();
-  } else {
-    current_state = CLOSING;
-    qDebug() << "Doors are closing...";
+  qDebug() << "Doors are closing...";
+
+  if (current_state == OPENED) {
     doors_close_timer.start(DOORS_TIME);
+  } else {
+    int t = doors_open_timer.remainingTime();
+    doors_open_timer.stop();
+    doors_close_timer.start(DOORS_TIME - t);
   }
+
+  current_state = CLOSING;
 }
 
-void Doors::open() {
+void Doors::finish_openning() {
   if (current_state != OPENING)
     return;
 
+  qDebug() << "The doors are opened!";
+  qDebug() << "Waiting for passengers...";
+
   current_state = OPENED;
-  qDebug() << "The doors are opened!\nWaiting for passengers...";
-  emit opened_doors();
+  emit doors_opened();
 }
 
-void Doors::close() {
+void Doors::finish_closing() {
   if (current_state != CLOSING)
     return;
 
-  current_state = CLOSED;
   qDebug() << "The doors are closed.";
-  emit closed_doors();
+
+  current_state = CLOSED;
+  emit doors_closed();
 }

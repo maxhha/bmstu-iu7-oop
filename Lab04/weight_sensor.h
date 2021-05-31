@@ -1,6 +1,7 @@
 #pragma once
 
 #include <QObject>
+#include <QTimer>
 
 #include <constants.h>
 
@@ -15,11 +16,12 @@ public:
   void decrease_weight(int weight);
 
 signals:
-  void overweight(bool overweight);
+  void overweight();
+  void normal();
 
 public slots:
-   void start_ignore();
-   void end_ignore();
+   void activate();
+   void deactivate();
 
 private:
   weight_sensor_state current_state;
