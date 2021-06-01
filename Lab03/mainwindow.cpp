@@ -8,7 +8,6 @@
 #include <engine/Command/Commands.h>
 
 using VecStr = std::vector<std::string>;
-
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent), ui(new Ui::MainWindow)
 {

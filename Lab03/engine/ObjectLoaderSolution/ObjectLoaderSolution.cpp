@@ -14,7 +14,7 @@ std::shared_ptr<ObjectLoader> ObjectLoaderSolution::create(const std::string &na
         throw SolutionNotFoundException(
             __FILE__,
             __LINE__,
-            fmt::format("Solution '{}' not registered", name));
+            fmt::format("Load solution '{}' not registered", name));
     }
 
     return creators[name]();
