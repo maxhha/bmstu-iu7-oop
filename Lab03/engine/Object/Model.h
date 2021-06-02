@@ -6,6 +6,7 @@
 class Model : public Object
 {
     friend class Visitor;
+    friend class ObjectMediator;
 
 public:
     Model(
@@ -17,6 +18,6 @@ public:
 
     ~Model() override = default;
 
-private:
+protected:
     ModelData data;
 };

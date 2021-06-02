@@ -1,6 +1,8 @@
 #include "SceneMediator.h"
 #include <engine/Exception/Exceptions.h>
 #include <fmt/format.h>
+#include <engine/Object/Model.h>
+#include <engine/Object/Camera.h>
 
 void SceneMediator::appendChild(const std::string &target, const std::shared_ptr<Object> &object)
 {
@@ -86,5 +88,22 @@ void SceneMediator::remove(const std::string &target)
             __FILE__,
             __LINE__,
             fmt::format("Cant find object '{}' in scene", target));
+    }
+}
+
+void SceneMediator::transform(const std::string &target, const Transformation &transform)
+{
+    auto obj = get(target);
+
+    auto camera = std::dynamic_pointer_cast<Camera>(obj);
+    auto model = std::dynamic_pointer_cast<Model>(obj);
+
+    if (camera)
+    {
+        getData<Camera, Transformation>(*camera).compose(transform);
+    }
+    else if (model)
+    {
+        getData<Model, ModelData>(*model).transform(transform);
     }
 }

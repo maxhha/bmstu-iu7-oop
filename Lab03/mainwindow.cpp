@@ -6,6 +6,8 @@
 #include <engine/EngineSolution/EngineSolution.h>
 #include <engine/Object/Camera.h>
 #include <engine/Command/Commands.h>
+#include <QMessageBox>
+#include <engine/Exception/Exception.h>
 
 using VecStr = std::vector<std::string>;
 MainWindow::MainWindow(QWidget *parent)
@@ -64,7 +66,7 @@ MainWindow::MainWindow(QWidget *parent)
         engine->getScreenManager()->setCamera(2, camera1);
     }
 
-    engine->getObjectMediator()->remove("cam0");
+//    engine->getObjectMediator()->remove("cam0");
 
     RenderCommand(engine)
         .execute();
@@ -73,4 +75,22 @@ MainWindow::MainWindow(QWidget *parent)
 MainWindow::~MainWindow()
 {
     delete ui;
+}
+
+void MainWindow::on_buttonTranslate_clicked()
+{
+    auto target = ui->inputTranslateTarget->text().toStdString();
+    double x = ui->inputTranslateX->value();
+    double y = ui->inputTranslateY->value();
+    double z = ui->inputTranslateZ->value();
+
+    try {
+        TranslateObjectCommand(engine, target, x, y, z).execute();
+        RenderCommand(engine)
+            .execute();
+    }  catch (EngineException &ex) {
+        QMessageBox mb;
+        mb.setText(ex.what());
+        mb.exec();
+    }
 }

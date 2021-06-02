@@ -5,7 +5,8 @@
 
 class Camera : public Object
 {
-    friend Visitor;
+    friend class Visitor;
+    friend class ObjectMediator;
 
 public:
     Camera(

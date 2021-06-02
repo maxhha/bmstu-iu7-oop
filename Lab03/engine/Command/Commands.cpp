@@ -5,7 +5,50 @@ void RenderCommand::execute()
     engine->getScreenManager()->render(engine->getObjectMediator()->getSceneTree());
 }
 
-const std::shared_ptr<Object> &NodeCommand::getNode()
+void LoadSceneTreeCommand::execute()
 {
-    return engine->getObjectMediator()->get(nodename);
+}
+
+void AddCameraCommand::execute()
+{
+}
+
+void LoadModelCommand::execute()
+{
+}
+
+void TranslateObjectCommand::execute()
+{
+    Transformation m;
+    m.translate(x, y, z);
+
+    engine->getObjectMediator()->transform(target, m);
+}
+
+void ScaleObjectCommand::execute()
+{
+}
+
+void RotateObjectCommand::execute()
+{
+}
+
+void RenameObjectCommand::execute()
+{
+}
+
+void RemoveObjectCommand::execute()
+{
+}
+
+void SetScreenCameraCommand::execute()
+{
+}
+
+void AddScreenCommand::execute()
+{
+}
+
+void RemoveScreenCommand::execute()
+{
 }
