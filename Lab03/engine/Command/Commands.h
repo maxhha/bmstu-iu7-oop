@@ -59,22 +59,33 @@ private:
 class ScaleObjectCommand : public Command
 {
 public:
-    ScaleObjectCommand(std::shared_ptr<Engine> &_engine) : Command(_engine){};
+    ScaleObjectCommand(std::shared_ptr<Engine> &_engine, const std::string &_target, double _x, double _y, double _z)
+        : Command(_engine), target(_target), x(_x), y(_y), z(_z){};
     void execute() override;
 
     ~ScaleObjectCommand() override = default;
 
 private:
+    std::string target;
+    double x;
+    double y;
+    double z;
 };
 class RotateObjectCommand : public Command
 {
 public:
-    RotateObjectCommand(std::shared_ptr<Engine> &_engine) : Command(_engine){};
+    RotateObjectCommand(std::shared_ptr<Engine> &_engine, const std::string &_target, double _x, double _y, double _z, double _a)
+        : Command(_engine), target(_target), x(_x), y(_y), z(_z), a(_a){};
     void execute() override;
 
     ~RotateObjectCommand() override = default;
 
 private:
+    std::string target;
+    double x;
+    double y;
+    double z;
+    double a;
 };
 class RenameObjectCommand : public Command
 {

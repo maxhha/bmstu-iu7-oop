@@ -8,6 +8,7 @@
 #include <engine/Command/Commands.h>
 #include <QMessageBox>
 #include <engine/Exception/Exception.h>
+#include <math.h>
 
 using VecStr = std::vector<std::string>;
 MainWindow::MainWindow(QWidget *parent)
@@ -86,6 +87,43 @@ void MainWindow::on_buttonTranslate_clicked()
 
     try {
         TranslateObjectCommand(engine, target, x, y, z).execute();
+        RenderCommand(engine)
+            .execute();
+    }  catch (EngineException &ex) {
+        QMessageBox mb;
+        mb.setText(ex.what());
+        mb.exec();
+    }
+}
+
+void MainWindow::on_buttonScale_clicked()
+{
+    auto target = ui->inputScaleTarget->text().toStdString();
+    double x = ui->inputScaleX->value();
+    double y = ui->inputScaleY->value();
+    double z = ui->inputScaleZ->value();
+
+    try {
+        ScaleObjectCommand(engine, target, x, y, z).execute();
+        RenderCommand(engine)
+            .execute();
+    }  catch (EngineException &ex) {
+        QMessageBox mb;
+        mb.setText(ex.what());
+        mb.exec();
+    }
+}
+
+void MainWindow::on_buttonRotate_clicked()
+{
+    auto target = ui->inputRotateTarget->text().toStdString();
+    double x = ui->inputRotateX->value();
+    double y = ui->inputRotateY->value();
+    double z = ui->inputRotateZ->value();
+    double a = ui->inputRotateAngle->value() * M_PI / 180;
+
+    try {
+        RotateObjectCommand(engine, target, x, y, z, a).execute();
         RenderCommand(engine)
             .execute();
     }  catch (EngineException &ex) {

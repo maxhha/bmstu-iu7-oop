@@ -23,6 +23,10 @@ public:
 private slots:
     void on_buttonTranslate_clicked();
 
+    void on_buttonScale_clicked();
+
+    void on_buttonRotate_clicked();
+
 private:
     Ui::MainWindow *ui;
     std::shared_ptr<Engine> engine;

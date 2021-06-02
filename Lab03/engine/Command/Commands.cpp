@@ -27,10 +27,18 @@ void TranslateObjectCommand::execute()
 
 void ScaleObjectCommand::execute()
 {
+    Transformation m;
+    m.scale(x, y, z);
+
+    engine->getObjectMediator()->transform(target, m);
 }
 
 void RotateObjectCommand::execute()
 {
+    Transformation m;
+    m.rotate(x, y, z, a);
+
+    engine->getObjectMediator()->transform(target, m);
 }
 
 void RenameObjectCommand::execute()
