@@ -18,7 +18,7 @@ signals:
 
 
 public slots:
-  void reach_floor(int floor);
+  void reach_floor();
   void pass_floor(int floor);
 
 private:

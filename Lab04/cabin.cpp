@@ -6,7 +6,7 @@
 
 Cabin::Cabin(QObject *parent)
     : QObject(parent), current_floor(1), target(-1), new_target(false),
-      current_state(STOP), current_direction(STAY) {
+      current_state(PENDING), current_direction(STAY) {
   crossing_floor_timer.setSingleShot(true);
   wait_opened_timer.setSingleShot(true);
   wait_opened_timer.setInterval(LOAD_TIME + DOORS_TIME);
@@ -35,17 +35,11 @@ Cabin::Cabin(QObject *parent)
               &weight_sensor,
               SLOT(activate()));
 
-//  QObject::connect(
-//              &doors,
-//              SIGNAL(doors_opened()),
-//              &wait_opened_timer,
-//              SLOT(start()));
-
   QObject::connect(
               &wait_opened_timer,
               SIGNAL(timeout()),
-              &doors,
-              SLOT(start_closing()));
+              this,
+              SLOT(pend()));
 
   QObject::connect(
               &doors,
@@ -80,18 +74,16 @@ Cabin::Cabin(QObject *parent)
   QObject::connect(
               &weight_sensor,
               SIGNAL(normal()),
-              &doors,
-              SLOT(start_closing()));
+              this,
+              SLOT(pend()));
 }
 
 void Cabin::enter(int weight) {
   weight_sensor.increase_weight(weight);
-  qDebug() << "Enter" << weight << "kg";
 }
 
 void Cabin::exit(int weight) {
   weight_sensor.decrease_weight(weight);
-  qDebug() << "Exit" << weight << "kg";
 }
 
 void Cabin::move() {
@@ -106,11 +98,11 @@ void Cabin::move() {
 
   qDebug() << "Cabin is moving [" << current_floor << "]... tun tun turu tun tun tuturu";
 
+  current_state = MOVE;
+
   if (current_floor != target) {
     crossing_floor_timer.start(CROSSING_FLOOR);
   }
-
-  current_state = MOVE;
 
   if (current_floor == target) {
     emit target_reached(current_floor);
@@ -130,8 +122,18 @@ void Cabin::stop() {
   emit stopped(current_floor);
 }
 
+void Cabin::pend() {
+    if (STOP != current_state)
+        return;
+
+    qDebug() << "Fetch call";
+
+    current_state = PENDING;
+    emit wait_call();
+}
+
 void Cabin::call(int floor, direction dir) {
-  if (current_state != STOP)
+  if (current_state != PENDING)
     return;
 
   qDebug() << "Cabin called to" << floor << ".";

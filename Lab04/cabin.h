@@ -9,7 +9,7 @@
 
 class Cabin : public QObject {
   Q_OBJECT
-  enum cabin_state { MOVE, WAIT, STOP };
+  enum cabin_state { MOVE = 0, WAIT = 1, STOP = 2, PENDING = 3};
 
 public:
   explicit Cabin(QObject *parent = nullptr);
@@ -22,11 +22,13 @@ signals:
   void floor_crossed(int floor, direction d);
   void target_reached(int floor);
   void stopped(int floor);
+  void wait_call();
 
 public slots:
   void move();
   void stop();
   void call(int floor, direction dir);
+  void pend();
 
 private:
   int current_floor;

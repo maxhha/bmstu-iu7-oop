@@ -2,12 +2,14 @@
 #include <QDebug>
 
 WeightSensor::WeightSensor(QObject *parent)
-    : QObject(parent), current_state(IGNORE), weight(0) {
+    : QObject(parent), current_state(NORMAL), weight(0) {
 }
 
 void WeightSensor::increase_weight(int w) {
     if (current_state != NORMAL)
             return;
+
+    qDebug() << "Enter" << w << "kg; Now " << weight + w << "kg";
 
     if (weight + w > MAX_WEIGHT)
     {
@@ -21,6 +23,8 @@ void WeightSensor::increase_weight(int w) {
 void WeightSensor::decrease_weight(int w) {
     if (current_state != NORMAL)
         return;
+
+    qDebug() << "Exit" << w << "kg; Now " << weight - w << "kg";
 
     if (weight > MAX_WEIGHT && weight - w <= MAX_WEIGHT) {
         qDebug() << "WEIGHT BECOME NORMAL!";

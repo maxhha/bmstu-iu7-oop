@@ -33,11 +33,12 @@ void ControlPanel::set_new_target(int floor) {
   emit set_target(floor, cur_direction);
 }
 
-void ControlPanel::reach_floor(int floor) {
-  if (current_state != WATCH)
+void ControlPanel::reach_floor() {
+  if (current_state != WATCH && current_state != WAIT)
     return;
 
-  cur_floor = floor;
+  int floor = cur_floor;
+
   is_target[floor - 1] = false;
 
   if (cur_floor == cur_target) {

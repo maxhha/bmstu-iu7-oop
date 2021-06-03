@@ -15,9 +15,15 @@ Lift::Lift() {
 
   QObject::connect(
               &cabin,
-              SIGNAL(stopped(int)),
+              SIGNAL(target_reached(int)),
               &control_panel,
-              SLOT(reach_floor(int)));
+              SLOT(pass_floor(int)));
+
+  QObject::connect(
+              &cabin,
+              SIGNAL(wait_call()),
+              &control_panel,
+              SLOT(reach_floor()));
 }
 
 void Lift::click(int floor) { control_panel.set_new_target(floor); }
