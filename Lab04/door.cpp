@@ -2,7 +2,7 @@
 
 #include <QDebug>
 
-Doors::Doors(QObject *parent) : QObject(parent), current_state(CLOSED) {
+Doors::Doors(QObject *parent) : QObject(parent), current_state(OPENED) {
   doors_open_timer.setSingleShot(true);
   doors_close_timer.setSingleShot(true);
 
@@ -20,12 +20,6 @@ Doors::Doors(QObject *parent) : QObject(parent), current_state(CLOSED) {
 }
 
 void Doors::start_openning() {
-  if (OPENED == current_state)
-  {
-    emit doors_opened();
-    return;
-  }
-
   if (CLOSED != current_state && CLOSING != current_state)
     return;
 
@@ -43,11 +37,6 @@ void Doors::start_openning() {
 }
 
 void Doors::start_closing() {
-  if (current_state == CLOSED) {
-      emit doors_closed();
-      return;
-  }
-
   if (OPENED != current_state && OPENING != current_state)
       return;
 

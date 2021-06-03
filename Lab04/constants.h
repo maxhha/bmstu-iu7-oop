@@ -16,4 +16,4 @@ enum direction {
 #define DOORS_TIME 2000
 #define WAITING_TIME 2000
 #define MAX_WEIGHT 200
-#define LOAD_TIME 30000
+#define LOAD_TIME 10000

@@ -6,7 +6,7 @@ MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent), ui(new Ui::MainWindow) {
   ui->setupUi(this);
 
-  qDebug() << "Stopped at 1 floor, doors are closed.\n"
+  qDebug() << "Stopped at 1 floor, doors are opened.\n"
               "Waiting state...";
 
   for (int i = 0; i < ui->cabin_buttons.size(); ++i) {
