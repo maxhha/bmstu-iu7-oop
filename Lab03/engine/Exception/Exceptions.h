@@ -56,3 +56,10 @@ public:
     ObjectNotFoundException(std::string file, int line, std::string msg = "")
         : EngineException("ObjectNotFoundException", file, line, msg){};
 };
+
+class ObjectIsNotMatchTypeException : public EngineException
+{
+public:
+    ObjectIsNotMatchTypeException(std::string file, int line, std::string msg = "")
+        : EngineException("ObjectIsNotMatchTypeException", file, line, msg){};
+};

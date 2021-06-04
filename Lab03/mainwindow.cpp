@@ -7,8 +7,25 @@
 #include <engine/Object/Camera.h>
 #include <engine/Command/Commands.h>
 #include <QMessageBox>
+#include <QMenu>
 #include <engine/Exception/Exception.h>
 #include <math.h>
+
+void MainWindow::execute(Command &command)
+{
+    try
+    {
+        command.execute();
+        RenderCommand(engine)
+            .execute();
+    }
+    catch (EngineException &ex)
+    {
+        QMessageBox mb;
+        mb.setText(ex.what());
+        mb.exec();
+    }
+}
 
 using VecStr = std::vector<std::string>;
 MainWindow::MainWindow(QWidget *parent)
@@ -67,7 +84,7 @@ MainWindow::MainWindow(QWidget *parent)
         engine->getScreenManager()->setCamera(2, camera1);
     }
 
-//    engine->getObjectMediator()->remove("cam0");
+    //    engine->getObjectMediator()->remove("cam0");
 
     RenderCommand(engine)
         .execute();
@@ -85,15 +102,9 @@ void MainWindow::on_buttonTranslate_clicked()
     double y = ui->inputTranslateY->value();
     double z = ui->inputTranslateZ->value();
 
-    try {
-        TranslateObjectCommand(engine, target, x, y, z).execute();
-        RenderCommand(engine)
-            .execute();
-    }  catch (EngineException &ex) {
-        QMessageBox mb;
-        mb.setText(ex.what());
-        mb.exec();
-    }
+    TranslateObjectCommand cmd(engine, target, x, y, z);
+
+    execute(cmd);
 }
 
 void MainWindow::on_buttonScale_clicked()
@@ -103,15 +114,9 @@ void MainWindow::on_buttonScale_clicked()
     double y = ui->inputScaleY->value();
     double z = ui->inputScaleZ->value();
 
-    try {
-        ScaleObjectCommand(engine, target, x, y, z).execute();
-        RenderCommand(engine)
-            .execute();
-    }  catch (EngineException &ex) {
-        QMessageBox mb;
-        mb.setText(ex.what());
-        mb.exec();
-    }
+    ScaleObjectCommand cmd(engine, target, x, y, z);
+
+    execute(cmd);
 }
 
 void MainWindow::on_buttonRotate_clicked()
@@ -122,13 +127,55 @@ void MainWindow::on_buttonRotate_clicked()
     double z = ui->inputRotateZ->value();
     double a = ui->inputRotateAngle->value() * M_PI / 180;
 
-    try {
-        RotateObjectCommand(engine, target, x, y, z, a).execute();
-        RenderCommand(engine)
-            .execute();
-    }  catch (EngineException &ex) {
-        QMessageBox mb;
-        mb.setText(ex.what());
-        mb.exec();
-    }
+    double l = x*x + y*y + z*z;
+    if (l == 0)
+        return;
+
+    RotateObjectCommand cmd(engine, target, x / l, y / l, z / l, a);
+
+    execute(cmd);
+}
+
+void MainWindow::on_buttonSetCamera_clicked()
+{
+    int id = ui->inputSetCameraScreen->value();
+    std::string camera = ui->inputCameraScreen->text().toStdString();
+
+    SetScreenCameraCommand cmd(engine, id, camera);
+
+    execute(cmd);
+}
+
+void MainWindow::on_buttonRemoveScreen_clicked()
+{
+    int id = ui->inputRemoveScreen->value();
+
+    RemoveScreenCommand cmd(engine, id);
+
+    execute(cmd);
+}
+
+void MainWindow::on_buttonAddScreen_clicked()
+{
+    int x1 = ui->inputScreenX1->value();
+    int x2 = ui->inputScreenX2->value();
+    int y1 = ui->inputScreenY1->value();
+    int y2 = ui->inputScreenY2->value();
+
+    AddScreenCommand cmd(engine, x1, y1, x2, y2);
+
+    execute(cmd);
+}
+
+void MainWindow::on_treeWidget_customContextMenuRequested(const QPoint &pos)
+{
+    auto val = ui->sceneTreeWidget->itemAt(pos);
+
+    QMenu *menu = new QMenu(ui->centralwidget);
+
+    menu->addAction(new QAction("Action1", menu));
+    menu->addAction(new QAction("Action2", menu));
+    menu->addAction(new QAction("Action3", menu));
+
+    menu->popup(ui->sceneTreeWidget->viewport()->mapToGlobal(pos));
 }

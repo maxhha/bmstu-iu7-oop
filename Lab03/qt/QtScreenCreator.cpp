@@ -19,6 +19,8 @@ std::shared_ptr<Screen> QtScreenCreator::createScreen(int id, int x, int y, int 
     label->setText(QString::number(id));
     label->setGeometry(2, 0, 100, 20);
 
+    view->show();
+
     return std::make_shared<Screen>(
         std::make_unique<QtRenderVisitor>(view));
 }

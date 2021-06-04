@@ -4,6 +4,7 @@
 #include <QMainWindow>
 #include <QGraphicsScene>
 #include <engine/EngineSolution/EngineSolution.h>
+#include <engine/Command/Command.h>
 
 QT_BEGIN_NAMESPACE
 namespace Ui
@@ -27,9 +28,19 @@ private slots:
 
     void on_buttonRotate_clicked();
 
+    void on_buttonSetCamera_clicked();
+
+    void on_buttonRemoveScreen_clicked();
+
+    void on_buttonAddScreen_clicked();
+
+    void on_treeWidget_customContextMenuRequested(const QPoint &pos);
+
 private:
     Ui::MainWindow *ui;
     std::shared_ptr<Engine> engine;
     QGraphicsScene *_scene;
+
+    void execute(Command &cmd);
 };
 #endif // MAINWINDOW_H

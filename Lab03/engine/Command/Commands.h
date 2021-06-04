@@ -110,30 +110,40 @@ private:
 class SetScreenCameraCommand : public Command
 {
 public:
-    SetScreenCameraCommand(std::shared_ptr<Engine> &_engine) : Command(_engine){};
+    SetScreenCameraCommand(std::shared_ptr<Engine> &_engine, int _id, std::string _camera)
+        : Command(_engine), id(_id), camera(_camera){};
     void execute() override;
 
     ~SetScreenCameraCommand() override = default;
 
 private:
+    int id;
+    std::string camera;
 };
 class AddScreenCommand : public Command
 {
 public:
-    AddScreenCommand(std::shared_ptr<Engine> &_engine) : Command(_engine){};
+    AddScreenCommand(std::shared_ptr<Engine> &_engine, int _x1, int _y1, int _x2, int _y2)
+        : Command(_engine), x1(_x1), x2(_x2), y1(_y1), y2(_y2){};
     void execute() override;
 
     ~AddScreenCommand() override = default;
 
 private:
+    int x1;
+    int x2;
+    int y1;
+    int y2;
 };
 class RemoveScreenCommand : public Command
 {
 public:
-    RemoveScreenCommand(std::shared_ptr<Engine> &_engine) : Command(_engine){};
+    RemoveScreenCommand(std::shared_ptr<Engine> &_engine, int _id)
+        : Command(_engine), id(_id){};
     void execute() override;
 
     ~RemoveScreenCommand() override = default;
 
 private:
+    int id;
 };

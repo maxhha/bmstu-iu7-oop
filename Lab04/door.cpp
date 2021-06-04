@@ -33,6 +33,7 @@ void Doors::start_openning() {
     doors_open_timer.start(DOORS_TIME - t);
   }
 
+
   current_state = OPENING;
 }
 

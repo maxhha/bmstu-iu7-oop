@@ -1,4 +1,7 @@
 #include "Commands.h"
+#include <engine/Exception/Exceptions.h>
+#include <fmt/format.h>
+#include <engine/Object/Camera.h>
 
 void RenderCommand::execute()
 {
@@ -51,12 +54,24 @@ void RemoveObjectCommand::execute()
 
 void SetScreenCameraCommand::execute()
 {
+    auto obj = engine->getObjectMediator()->get(camera);
+    auto cam = std::dynamic_pointer_cast<Camera>(obj);
+
+    if (!cam)
+        throw ObjectIsNotMatchTypeException(
+            __FILE__,
+            __LINE__,
+            fmt::format("Object '{}' must be a camera", camera));
+
+    engine->getScreenManager()->setCamera(id, cam);
 }
 
 void AddScreenCommand::execute()
 {
+    engine->getScreenManager()->addScreen(x1, y1, x2, y2);
 }
 
 void RemoveScreenCommand::execute()
 {
+    engine->getScreenManager()->removeScreen(id);
 }
