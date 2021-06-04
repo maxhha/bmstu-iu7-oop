@@ -39,6 +39,7 @@ SOURCES += \
     engine/ObjectBuilder/CameraBuilder/CameraBuilder.cpp \
     engine/ObjectLoader/SceneTreeLoader/FileSceneTreeLoader.cpp \
     engine/ModelData/ModelData.cpp \
+    qt/QtSceneVisitor.cpp \
     libs/yaml-cpp/src/binary.cpp \
     libs/yaml-cpp/src/convert.cpp \
     libs/yaml-cpp/src/depthguard.cpp \

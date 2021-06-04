@@ -90,22 +90,27 @@ private:
 class RenameObjectCommand : public Command
 {
 public:
-    RenameObjectCommand(std::shared_ptr<Engine> &_engine) : Command(_engine){};
+    RenameObjectCommand(std::shared_ptr<Engine> &_engine, const std::string &_target, const std::string &_newName)
+        : Command(_engine), target(_target), newName(_newName){};
     void execute() override;
 
     ~RenameObjectCommand() override = default;
 
 private:
+    std::string target;
+    std::string newName;
 };
 class RemoveObjectCommand : public Command
 {
 public:
-    RemoveObjectCommand(std::shared_ptr<Engine> &_engine) : Command(_engine){};
+    RemoveObjectCommand(std::shared_ptr<Engine> &_engine, const std::string &_target)
+        : Command(_engine), target(_target){};
     void execute() override;
 
     ~RemoveObjectCommand() override = default;
 
 private:
+    std::string target;
 };
 class SetScreenCameraCommand : public Command
 {

@@ -15,6 +15,7 @@ public:
     virtual void remove(const std::string &target) = 0;
     virtual void transform(const std::string &target, const Transformation &transform) = 0;
     virtual void appendChild(const std::string &target, const std::shared_ptr<Object> &object) = 0;
+    virtual void accept(Visitor &visitor) = 0;
 
     virtual ~ObjectMediator() = default;
 

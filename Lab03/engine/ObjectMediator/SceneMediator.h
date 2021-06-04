@@ -14,6 +14,7 @@ public:
     void transform(const std::string &target, const Transformation &transform) override;
 
     void appendChild(const std::string &target, const std::shared_ptr<Object> &object) override;
+    void accept(Visitor &visitor) override { tree->accept(visitor); };
 
     ~SceneMediator() override = default;
 };

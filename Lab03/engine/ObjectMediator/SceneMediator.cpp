@@ -25,10 +25,7 @@ std::shared_ptr<Object> SceneMediator::get(const std::string &name)
             auto obj = it->getNext();
 
             if (getName(*obj) == name)
-            {
                 parent = obj;
-                break;
-            }
         }
     }
 
@@ -54,33 +51,28 @@ void SceneMediator::remove(const std::string &target)
     qDebug() << "remove" << target.c_str();
 
     std::shared_ptr<Object> parent, obj;
+    std::shared_ptr<Object> targetParent, targetObj;
 
     for (auto it = tree->getPathIterator(); it->hasNext();)
     {
         parent = obj;
         obj = it->getNext();
 
-        if (obj == nullptr)
-        {
-            qDebug() << "null";
-        }
-        else
-        {
-            qDebug() << getName(*obj).c_str();
-        }
-
         if (obj && getName(*obj) == target)
-            break;
+        {
+            targetParent = parent;
+            targetObj = obj;
+        }
     }
 
-    if (obj && getName(*obj) == target)
+    if (targetObj && getName(*targetObj) == target)
     {
-        if (!parent)
+        if (!targetParent)
         {
-            parent = tree;
+            targetParent = tree;
         }
 
-        parent->removeChild(obj);
+        targetParent->removeChild(obj);
     }
     else
     {

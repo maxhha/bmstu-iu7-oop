@@ -46,10 +46,12 @@ void RotateObjectCommand::execute()
 
 void RenameObjectCommand::execute()
 {
+    engine->getObjectMediator()->rename(target, newName);
 }
 
 void RemoveObjectCommand::execute()
 {
+    engine->getObjectMediator()->remove(target);
 }
 
 void SetScreenCameraCommand::execute()

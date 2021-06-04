@@ -34,7 +34,7 @@ private slots:
 
     void on_buttonAddScreen_clicked();
 
-    void on_treeWidget_customContextMenuRequested(const QPoint &pos);
+    void on_sceneTreeWidget_customContextMenuRequested(const QPoint &pos);
 
 private:
     Ui::MainWindow *ui;

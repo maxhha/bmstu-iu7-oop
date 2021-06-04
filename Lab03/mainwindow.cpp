@@ -10,6 +10,8 @@
 #include <QMenu>
 #include <engine/Exception/Exception.h>
 #include <math.h>
+#include <qt/QtSceneVisitor.h>
+#include <QInputDialog>
 
 void MainWindow::execute(Command &command)
 {
@@ -25,6 +27,12 @@ void MainWindow::execute(Command &command)
         mb.setText(ex.what());
         mb.exec();
     }
+
+    QtSceneVisitor visitor(ui->sceneTreeWidget);
+
+    ui->sceneTreeWidget->clear();
+
+    engine->getObjectMediator()->accept(visitor);
 }
 
 using VecStr = std::vector<std::string>;
@@ -88,6 +96,10 @@ MainWindow::MainWindow(QWidget *parent)
 
     RenderCommand(engine)
         .execute();
+
+    QtSceneVisitor visitor(ui->sceneTreeWidget);
+
+    engine->getObjectMediator()->accept(visitor);
 }
 
 MainWindow::~MainWindow()
@@ -127,7 +139,7 @@ void MainWindow::on_buttonRotate_clicked()
     double z = ui->inputRotateZ->value();
     double a = ui->inputRotateAngle->value() * M_PI / 180;
 
-    double l = x*x + y*y + z*z;
+    double l = x * x + y * y + z * z;
     if (l == 0)
         return;
 
@@ -167,15 +179,42 @@ void MainWindow::on_buttonAddScreen_clicked()
     execute(cmd);
 }
 
-void MainWindow::on_treeWidget_customContextMenuRequested(const QPoint &pos)
+void MainWindow::on_sceneTreeWidget_customContextMenuRequested(const QPoint &pos)
 {
-    auto val = ui->sceneTreeWidget->itemAt(pos);
+    auto item = ui->sceneTreeWidget->itemAt(pos);
+    std::string target = item->data(1, Qt::DisplayRole).toString().toStdString();
 
-    QMenu *menu = new QMenu(ui->centralwidget);
+    QMenu *menu = new QMenu(this);
 
-    menu->addAction(new QAction("Action1", menu));
-    menu->addAction(new QAction("Action2", menu));
-    menu->addAction(new QAction("Action3", menu));
+    auto renameAction = new QAction(QString::fromUtf8("Изменить имя"), menu);
+    auto removeAction = new QAction(QString::fromUtf8("Удалить"), menu);
 
+    connect(renameAction, &QAction::triggered, [=]() -> void {
+       bool ok;
+       QString newName = QInputDialog::getText(
+                   this,
+                   QString::fromUtf8("Введите новое имя"),
+                   QString::fromUtf8("Имя"),
+                   QLineEdit::Normal,
+                   QString::fromStdString(target),
+                   &ok);
+
+       if (!ok)
+           return;
+
+       RenameObjectCommand cmd(engine, target, newName.toStdString());
+
+       execute(cmd);
+    });
+
+    connect(removeAction, &QAction::triggered, [=]() -> void
+            {
+                RemoveObjectCommand cmd(engine, target);
+
+                execute(cmd);
+            });
+
+    menu->addAction(renameAction);
+    menu->addAction(removeAction);
     menu->popup(ui->sceneTreeWidget->viewport()->mapToGlobal(pos));
 }
