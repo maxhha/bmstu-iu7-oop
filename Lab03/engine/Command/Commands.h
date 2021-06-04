@@ -14,32 +14,41 @@ public:
 class LoadSceneTreeCommand : public Command
 {
 public:
-    LoadSceneTreeCommand(std::shared_ptr<Engine> &_engine) : Command(_engine){};
+    LoadSceneTreeCommand(std::shared_ptr<Engine> &_engine, std::string _target, std::string _filename)
+        : Command(_engine), target(_target), filename(_filename){};
     void execute() override;
 
     ~LoadSceneTreeCommand() override = default;
 
 private:
+    std::string target;
+    std::string filename;
 };
 class AddCameraCommand : public Command
 {
 public:
-    AddCameraCommand(std::shared_ptr<Engine> &_engine) : Command(_engine){};
+    AddCameraCommand(std::shared_ptr<Engine> &_engine, std::string _target, std::string _name)
+        : Command(_engine), target(_target), name(_name){};
     void execute() override;
 
     ~AddCameraCommand() override = default;
 
 private:
+    std::string target;
+    std::string name;
 };
 class LoadModelCommand : public Command
 {
 public:
-    LoadModelCommand(std::shared_ptr<Engine> &_engine) : Command(_engine){};
+    LoadModelCommand(std::shared_ptr<Engine> &_engine, std::string _target, std::string _filename)
+        : Command(_engine), target(_target), filename(_filename){};
     void execute() override;
 
     ~LoadModelCommand() override = default;
 
 private:
+    std::string target;
+    std::string filename;
 };
 class TranslateObjectCommand : public Command
 {

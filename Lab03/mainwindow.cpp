@@ -12,6 +12,7 @@
 #include <math.h>
 #include <qt/QtSceneVisitor.h>
 #include <QInputDialog>
+#include <QFileDialog>
 
 void MainWindow::execute(Command &command)
 {
@@ -217,4 +218,11 @@ void MainWindow::on_sceneTreeWidget_customContextMenuRequested(const QPoint &pos
     menu->addAction(renameAction);
     menu->addAction(removeAction);
     menu->popup(ui->sceneTreeWidget->viewport()->mapToGlobal(pos));
+}
+
+void MainWindow::on_buttonLoadModel_clicked()
+{
+    QString filename = QFileDialog::getOpenFileName(this);
+
+    LoadModelCommand cmd(engine, "root", filename.toStdString());
 }

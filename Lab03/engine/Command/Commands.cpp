@@ -10,14 +10,21 @@ void RenderCommand::execute()
 
 void LoadSceneTreeCommand::execute()
 {
+    auto obj = engine->getObjectLoaderSolution()->create("FileSceneTree")->load(filename);
+    engine->getObjectMediator()->appendChild(target, obj);
 }
 
 void AddCameraCommand::execute()
 {
+    auto obj = std::make_shared<Camera>(name, Transformation());
+
+    engine->getObjectMediator()->appendChild(target, obj);
 }
 
 void LoadModelCommand::execute()
 {
+    auto obj = engine->getObjectLoaderSolution()->create("FileModel")->load(filename);
+    engine->getObjectMediator()->appendChild(target, obj);
 }
 
 void TranslateObjectCommand::execute()
