@@ -36,6 +36,8 @@ private slots:
 
     void on_sceneTreeWidget_customContextMenuRequested(const QPoint &pos);
 
+    void on_buttonLoadModel_clicked();
+
 private:
     Ui::MainWindow *ui;
     std::shared_ptr<Engine> engine;
