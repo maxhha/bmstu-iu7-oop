@@ -16,7 +16,7 @@ void LoadSceneTreeCommand::execute()
 
 void AddCameraCommand::execute()
 {
-    auto obj = std::make_shared<Camera>(name, Transformation());
+    auto obj = std::make_shared<Camera>(name);
 
     engine->getObjectManager()->appendChild(target, obj);
 }

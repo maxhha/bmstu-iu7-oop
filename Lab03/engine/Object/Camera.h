@@ -9,15 +9,19 @@ class Camera : public Object
     friend class ObjectManager;
 
 public:
+    explicit Camera(
+        const std::string &_name)
+        : Object(_name), data(std::make_unique<Transformation>()){};
+
     Camera(
         const std::string &_name,
-        const Transformation &_data)
-        : Object(_name), data(_data){};
+        std::unique_ptr<Transformation> &_data)
+        : Object(_name), data(std::move(_data)){};
 
     void accept(Visitor &visitor) override { visitor.visitCamera(*this); };
 
     ~Camera() override = default;
 
 protected:
-    Transformation data;
+    std::unique_ptr<Transformation> data;
 };

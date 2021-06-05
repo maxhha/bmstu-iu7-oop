@@ -27,7 +27,7 @@ void FileObjectSaverVisitor::visitCamera(Camera &camera)
     out << YAML::Key << "name" << YAML::Value << getName<Camera>(camera);
     out << YAML::Key << "transformation" << YAML::Value << YAML::BeginSeq;
 
-    for (const auto &row : getData<Camera, Transformation>(camera).getMatrix())
+    for (const auto &row : getData<Camera, Transformation>(camera)->getMatrix())
     {
         out << YAML::Flow << YAML::BeginSeq;
 
@@ -48,11 +48,9 @@ void FileObjectSaverVisitor::visitModel(Model &model)
     out << YAML::Key << "type" << YAML::Value << "Model";
     out << YAML::Key << "name" << YAML::Value << getName<Model>(model);
 
-    auto data = getData<Model, ModelData>(model);
-
     out << YAML::Key << "points" << YAML::Value << YAML::BeginSeq;
 
-    for (auto &p : data.getPoints())
+    for (auto &p : getData<Model, ModelData>(model)->getPoints())
     {
         out << YAML::Flow << YAML::BeginSeq;
         out << p.getX() << p.getY() << p.getZ();
@@ -63,7 +61,7 @@ void FileObjectSaverVisitor::visitModel(Model &model)
 
     out << YAML::Key << "edges" << YAML::Value << YAML::BeginSeq;
 
-    for (auto &edge : data.getEdges())
+    for (auto &edge : getData<Model, ModelData>(model)->getEdges())
     {
         out << YAML::Flow << YAML::BeginSeq;
         out << edge.getStartPoint() << edge.getEndPoint();

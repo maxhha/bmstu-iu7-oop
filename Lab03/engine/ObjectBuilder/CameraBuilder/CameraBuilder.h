@@ -6,11 +6,11 @@
 class CameraBuilder : public ObjectBuilder
 {
 public:
-    void setTransformation(const std::vector<std::vector<double>> &t) { transformation = Transformation(t); };
+    void setTransformation(const std::vector<std::vector<double>> &t) { transformation = std::make_unique<Transformation>(t); };
     std::shared_ptr<Object> build() override;
 
     virtual ~CameraBuilder() = default;
 
 private:
-    Transformation transformation;
+    std::unique_ptr<Transformation> transformation;
 };

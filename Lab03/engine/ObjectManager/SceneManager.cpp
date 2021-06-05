@@ -92,10 +92,10 @@ void SceneManager::transform(const std::string &target, const Transformation &tr
 
     if (camera)
     {
-        getData<Camera, Transformation>(*camera).compose(transform);
+        getData<Camera, Transformation>(*camera)->compose(transform);
     }
     else if (model)
     {
-        getData<Model, ModelData>(*model).transform(transform);
+        getData<Model, ModelData>(*model)->transform(transform);
     }
 }

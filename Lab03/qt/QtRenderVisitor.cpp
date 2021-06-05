@@ -19,11 +19,9 @@ void QtRenderVisitor::visitModel(Model &model)
 {
     qDebug() << "Render model \"" << getName(model).c_str() << "\"";
 
-    auto modelData = getData<Model, ModelData>(model);
+    const auto points = getData<Model, ModelData>(model)->getPoints();
 
-    const auto points = modelData.getPoints();
-
-    for (const auto &edge : modelData.getEdges())
+    for (const auto &edge : getData<Model, ModelData>(model)->getEdges())
     {
         auto p1 = transformation.transform(points[edge.getStartPoint()]);
         auto p2 = transformation.transform(points[edge.getEndPoint()]);
@@ -39,6 +37,6 @@ void QtRenderVisitor::render(const SceneTree &tree, const std::weak_ptr<Camera> 
     view->scene()->clear();
     if (camera.expired())
         return;
-    transformation = getData<Camera, Transformation>(*camera.lock());
+    transformation = *getData<Camera, Transformation>(*camera.lock());
     visitSceneTree(const_cast<SceneTree &>(tree));
 }

@@ -21,5 +21,5 @@ protected:
     template <class T>
     const std::string &getName(const T &obj) { return obj.getName(); };
     template <class T, typename D>
-    D &getData(T &obj) { return obj.data; };
+    std::unique_ptr<D> &getData(T &obj) { return obj.data; };
 };

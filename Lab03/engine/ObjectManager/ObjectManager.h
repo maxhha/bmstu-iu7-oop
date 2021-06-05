@@ -22,7 +22,7 @@ protected:
     const std::string &getName(Object &obj) { return obj.getName(); };
     void setName(Object &obj, const std::string &name) { obj.setName(name); };
     template <class T, typename D>
-    D &getData(T &obj) { return obj.data; };
+    std::unique_ptr<D> &getData(T &obj) { return obj.data; };
 
     std::shared_ptr<SceneTree> tree;
 };

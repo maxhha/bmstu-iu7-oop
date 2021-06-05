@@ -11,13 +11,13 @@ class Model : public Object
 public:
     Model(
         const std::string &_name,
-        const ModelData &_data)
-        : Object(_name), data(_data){};
+        std::unique_ptr<ModelData> &_data)
+        : Object(_name), data(std::move(_data)){};
 
     void accept(Visitor &visitor) override { visitor.visitModel(*this); }
 
     ~Model() override = default;
 
 protected:
-    ModelData data;
+    std::unique_ptr<ModelData> data;
 };

@@ -7,12 +7,13 @@
 class ModelBuilder : public ObjectBuilder
 {
 public:
-    void addPoint(double x, double y, double z) { modelData.addPoint(x, y, z); };
-    void addEdge(int p1, int p2) { modelData.addEdge(p1, p2); };
+    ModelBuilder(): modelData(std::make_unique<ModelData>()){};
+    void addPoint(double x, double y, double z) { modelData->addPoint(x, y, z); };
+    void addEdge(int p1, int p2) { modelData->addEdge(p1, p2); };
     std::shared_ptr<Object> build() override;
 
     ~ModelBuilder() override = default;
 
 private:
-    ModelData modelData;
+    std::unique_ptr<ModelData> modelData;
 };
