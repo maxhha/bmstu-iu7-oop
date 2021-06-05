@@ -11,6 +11,20 @@ public:
     ~RenderCommand() override = default;
 };
 
+class SaveSceneTreeCommand : public Command
+{
+public:
+    SaveSceneTreeCommand(std::shared_ptr<Engine> &_engine, std::string _target, std::string _filename)
+        : Command(_engine), target(_target), filename(_filename){};
+    void execute() override;
+
+    ~SaveSceneTreeCommand() override = default;
+
+private:
+    std::string target;
+    std::string filename;
+};
+
 class LoadSceneTreeCommand : public Command
 {
 public:

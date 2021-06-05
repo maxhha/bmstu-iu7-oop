@@ -229,3 +229,42 @@ void MainWindow::on_buttonLoadModel_clicked()
 
     execute(cmd);
 }
+
+void MainWindow::on_buttonSaveScene_clicked()
+{
+    QString filename = QFileDialog::getSaveFileName(this);
+
+    SaveSceneTreeCommand cmd(engine, "root", filename.toStdString());
+
+    execute(cmd);
+}
+
+void MainWindow::on_buttonLoadScene_clicked()
+{
+    QString filename = QFileDialog::getOpenFileName(this);
+
+    LoadSceneTreeCommand cmd(engine, "root", filename.toStdString());
+
+    execute(cmd);
+}
+
+
+
+void MainWindow::on_buttonAddCamera_clicked()
+{
+    bool ok;
+    QString name = QInputDialog::getText(
+        this,
+        QString::fromUtf8("Создать камеру"),
+        QString::fromUtf8("Имя"),
+        QLineEdit::Normal,
+        QString(),
+        &ok);
+
+    if (!ok)
+        return;
+
+    AddCameraCommand cmd(engine, "root", name.toStdString());
+
+    execute(cmd);
+}

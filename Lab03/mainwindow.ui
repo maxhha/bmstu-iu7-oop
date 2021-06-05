@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>800</width>
-    <height>600</height>
+    <height>699</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -62,7 +62,7 @@
         <item row="1" column="0" colspan="2">
          <widget class="QPushButton" name="buttonLoadScene">
           <property name="text">
-           <string>Загрузаить сцену</string>
+           <string>Загрузить сцену</string>
           </property>
          </widget>
         </item>

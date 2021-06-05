@@ -8,6 +8,12 @@ void RenderCommand::execute()
     engine->getScreenManager()->render(*engine->getObjectManager()->getSceneTree());
 }
 
+void SaveSceneTreeCommand::execute()
+{
+    auto obj = engine->getObjectManager()->get(target);
+    engine->getObjectSaverSolution()->create("FileSceneTree")->save(filename, *obj);
+}
+
 void LoadSceneTreeCommand::execute()
 {
     auto obj = engine->getObjectLoaderSolution()->create("FileSceneTree")->load(filename);

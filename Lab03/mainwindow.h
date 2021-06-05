@@ -38,6 +38,12 @@ private slots:
 
     void on_buttonLoadModel_clicked();
 
+    void on_buttonSaveScene_clicked();
+
+    void on_buttonLoadScene_clicked();
+
+    void on_buttonAddCamera_clicked();
+
 private:
     Ui::MainWindow *ui;
     std::shared_ptr<Engine> engine;
