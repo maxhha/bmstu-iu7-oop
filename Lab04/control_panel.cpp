@@ -16,6 +16,13 @@ ControlPanel::ControlPanel(QObject *parent)
 }
 
 void ControlPanel::set_new_target(int floor) {
+
+  if (cur_floor == floor)
+  {
+      qDebug() << "Already on this floor.";
+      return;
+  }
+
   is_target[floor - 1] = true;
 
   if (cur_target == -1) {
@@ -59,10 +66,12 @@ void ControlPanel::pass_floor(int floor) {
   if (WATCH != current_state && WAIT != current_state)
     return;
 
-  qDebug() << "Panel is watching cabin moving...";
 
-  if (WATCH == current_state)
-       cur_floor = floor;
+
+  if (WATCH == current_state) {
+    qDebug() << "Panel is watching cabin moving...";
+    cur_floor = floor;
+  }
 
   current_state = WATCH;
 }
