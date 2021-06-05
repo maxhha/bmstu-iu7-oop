@@ -33,7 +33,7 @@ void MainWindow::execute(Command &command)
 
     ui->sceneTreeWidget->clear();
 
-    engine->getObjectManager()->accept(visitor);
+    engine->getObjectManager()->getSceneTree()->accept(visitor);
 }
 
 using VecStr = std::vector<std::string>;
@@ -100,7 +100,7 @@ MainWindow::MainWindow(QWidget *parent)
 
     QtSceneVisitor visitor(ui->sceneTreeWidget);
 
-    engine->getObjectManager()->accept(visitor);
+    engine->getObjectManager()->getSceneTree()->accept(visitor);
 }
 
 MainWindow::~MainWindow()
@@ -226,4 +226,6 @@ void MainWindow::on_buttonLoadModel_clicked()
     QString filename = QFileDialog::getOpenFileName(this);
 
     LoadModelCommand cmd(engine, "root", filename.toStdString());
+
+    execute(cmd);
 }

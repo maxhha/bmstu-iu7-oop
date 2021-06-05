@@ -5,7 +5,7 @@
 
 void RenderCommand::execute()
 {
-    engine->getScreenManager()->render(engine->getObjectManager()->getSceneTree());
+    engine->getScreenManager()->render(*engine->getObjectManager()->getSceneTree());
 }
 
 void LoadSceneTreeCommand::execute()

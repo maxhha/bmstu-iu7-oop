@@ -4,7 +4,7 @@
 #include <engine/Object/Model.h>
 #include <engine/Object/Camera.h>
 
-void SceneManager::appendChild(const std::string &target, const std::shared_ptr<Object> &object)
+void SceneManager::appendChild(const std::string &target, const std::shared_ptr<Object> object)
 {
     auto parent = get(target);
     parent->appendChild(object);
