@@ -1,12 +1,12 @@
 #pragma once
 
-#include "ObjectMediator.h"
+#include "ObjectManager.h"
 
-class SceneMediator : public ObjectMediator
+class SceneManager : public ObjectManager
 {
 public:
-    SceneMediator()
-        : ObjectMediator(std::make_shared<SceneTree>("root")){};
+    SceneManager()
+        : ObjectManager(std::make_shared<SceneTree>("root")){};
 
     std::shared_ptr<Object> get(const std::string &name) override;
     void rename(const std::string &target, const std::string &newName) override;
@@ -16,5 +16,5 @@ public:
     void appendChild(const std::string &target, const std::shared_ptr<Object> &object) override;
     void accept(Visitor &visitor) override { tree->accept(visitor); };
 
-    ~SceneMediator() override = default;
+    ~SceneManager() override = default;
 };

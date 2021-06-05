@@ -4,10 +4,10 @@
 #include "engine/Object/SceneTree/SceneTree.h"
 #include "engine/Transformation/Transformation.h"
 
-class ObjectMediator
+class ObjectManager
 {
 public:
-    explicit ObjectMediator(std::shared_ptr<SceneTree> _tree) : tree(_tree){};
+    explicit ObjectManager(std::shared_ptr<SceneTree> _tree) : tree(_tree){};
 
     const SceneTree &getSceneTree() { return *tree; }
     virtual std::shared_ptr<Object> get(const std::string &name) = 0;
@@ -17,7 +17,7 @@ public:
     virtual void appendChild(const std::string &target, const std::shared_ptr<Object> &object) = 0;
     virtual void accept(Visitor &visitor) = 0;
 
-    virtual ~ObjectMediator() = default;
+    virtual ~ObjectManager() = default;
 
 protected:
     const std::string &getName(Object &obj) { return obj.getName(); };

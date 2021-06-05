@@ -20,7 +20,7 @@ SOURCES += \
     engine/ObjectLoader/ModelLoader/ModelLoader.cpp \
     engine/ObjectBuilder/ModelBuilder/ModelBuilder.cpp \
     engine/Transformation/Transformation.cpp \
-    engine/ObjectMediator/SceneMediator.cpp \
+    engine/ObjectManager/SceneManager.cpp \
     engine/Object/ObjectIterator.cpp \
     engine/ScreenManager/ScreenManager.cpp \
     engine/Screen/Screen.cpp \

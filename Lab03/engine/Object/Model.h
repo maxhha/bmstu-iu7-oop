@@ -6,7 +6,7 @@
 class Model : public Object
 {
     friend class Visitor;
-    friend class ObjectMediator;
+    friend class ObjectManager;
 
 public:
     Model(

@@ -33,7 +33,7 @@ void MainWindow::execute(Command &command)
 
     ui->sceneTreeWidget->clear();
 
-    engine->getObjectMediator()->accept(visitor);
+    engine->getObjectManager()->accept(visitor);
 }
 
 using VecStr = std::vector<std::string>;
@@ -63,9 +63,9 @@ MainWindow::MainWindow(QWidget *parent)
     //                                                                 25.0, 0.0, 0.0, 50.0,
     //                                                                 0.0, 0.0, 50.0, 0.0,
     //                                                                 0.0, 0.0, 0.0, 1.0}));
-    // engine->getObjectMediator()->appendChild("root", object);
-    // engine->getObjectMediator()->appendChild("root", camera);
-    // engine->getObjectMediator()->appendChild("root", camera1);
+    // engine->getObjectManager()->appendChild("root", object);
+    // engine->getObjectManager()->appendChild("root", camera);
+    // engine->getObjectManager()->appendChild("root", camera1);
     // engine->getScreenManager()->addScreen(0, 0, 100, 100);
     // engine->getScreenManager()->addScreen(120, 0, 100, 100);
     // engine->getScreenManager()->addScreen(0, 120, 100, 100);
@@ -75,14 +75,14 @@ MainWindow::MainWindow(QWidget *parent)
 
     // engine->getScreenManager()->removeScreen(1);
 
-    // engine->getObjectSaverSolution()->create("FileSceneTree")->save("../Lab03/temp.yml", engine->getObjectMediator()->getSceneTree());
+    // engine->getObjectSaverSolution()->create("FileSceneTree")->save("../Lab03/temp.yml", engine->getObjectManager()->getSceneTree());
 
     auto object = engine->getObjectLoaderSolution()->create("FileSceneTree")->load("../Lab03/temp.yml");
-    engine->getObjectMediator()->appendChild("root", object);
+    engine->getObjectManager()->appendChild("root", object);
 
     {
-        auto camera0 = std::dynamic_pointer_cast<Camera>(engine->getObjectMediator()->get("cam0"));
-        auto camera1 = std::dynamic_pointer_cast<Camera>(engine->getObjectMediator()->get("cam1"));
+        auto camera0 = std::dynamic_pointer_cast<Camera>(engine->getObjectManager()->get("cam0"));
+        auto camera1 = std::dynamic_pointer_cast<Camera>(engine->getObjectManager()->get("cam1"));
 
         engine->getScreenManager()->addScreen(0, 0, 100, 100);
         engine->getScreenManager()->addScreen(120, 0, 100, 100);
@@ -93,14 +93,14 @@ MainWindow::MainWindow(QWidget *parent)
         engine->getScreenManager()->setCamera(2, camera1);
     }
 
-    //    engine->getObjectMediator()->remove("cam0");
+    //    engine->getObjectManager()->remove("cam0");
 
     RenderCommand(engine)
         .execute();
 
     QtSceneVisitor visitor(ui->sceneTreeWidget);
 
-    engine->getObjectMediator()->accept(visitor);
+    engine->getObjectManager()->accept(visitor);
 }
 
 MainWindow::~MainWindow()
@@ -190,23 +190,24 @@ void MainWindow::on_sceneTreeWidget_customContextMenuRequested(const QPoint &pos
     auto renameAction = new QAction(QString::fromUtf8("Изменить имя"), menu);
     auto removeAction = new QAction(QString::fromUtf8("Удалить"), menu);
 
-    connect(renameAction, &QAction::triggered, [=]() -> void {
-       bool ok;
-       QString newName = QInputDialog::getText(
-                   this,
-                   QString::fromUtf8("Введите новое имя"),
-                   QString::fromUtf8("Имя"),
-                   QLineEdit::Normal,
-                   QString::fromStdString(target),
-                   &ok);
+    connect(renameAction, &QAction::triggered, [=]() -> void
+            {
+                bool ok;
+                QString newName = QInputDialog::getText(
+                    this,
+                    QString::fromUtf8("Введите новое имя"),
+                    QString::fromUtf8("Имя"),
+                    QLineEdit::Normal,
+                    QString::fromStdString(target),
+                    &ok);
 
-       if (!ok)
-           return;
+                if (!ok)
+                    return;
 
-       RenameObjectCommand cmd(engine, target, newName.toStdString());
+                RenameObjectCommand cmd(engine, target, newName.toStdString());
 
-       execute(cmd);
-    });
+                execute(cmd);
+            });
 
     connect(removeAction, &QAction::triggered, [=]() -> void
             {

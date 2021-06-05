@@ -1,16 +1,16 @@
-#include "SceneMediator.h"
+#include "SceneManager.h"
 #include <engine/Exception/Exceptions.h>
 #include <fmt/format.h>
 #include <engine/Object/Model.h>
 #include <engine/Object/Camera.h>
 
-void SceneMediator::appendChild(const std::string &target, const std::shared_ptr<Object> &object)
+void SceneManager::appendChild(const std::string &target, const std::shared_ptr<Object> &object)
 {
     auto parent = get(target);
     parent->appendChild(object);
 }
 
-std::shared_ptr<Object> SceneMediator::get(const std::string &name)
+std::shared_ptr<Object> SceneManager::get(const std::string &name)
 {
     std::shared_ptr<Object> parent;
 
@@ -38,7 +38,7 @@ std::shared_ptr<Object> SceneMediator::get(const std::string &name)
     return parent;
 }
 
-void SceneMediator::rename(const std::string &target, const std::string &newName)
+void SceneManager::rename(const std::string &target, const std::string &newName)
 {
     auto obj = get(target);
     setName(*obj, newName);
@@ -46,7 +46,7 @@ void SceneMediator::rename(const std::string &target, const std::string &newName
 
 #include <QDebug>
 
-void SceneMediator::remove(const std::string &target)
+void SceneManager::remove(const std::string &target)
 {
     qDebug() << "remove" << target.c_str();
 
@@ -83,7 +83,7 @@ void SceneMediator::remove(const std::string &target)
     }
 }
 
-void SceneMediator::transform(const std::string &target, const Transformation &transform)
+void SceneManager::transform(const std::string &target, const Transformation &transform)
 {
     auto obj = get(target);
 

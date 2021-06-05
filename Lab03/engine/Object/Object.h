@@ -8,11 +8,11 @@
 #include <engine/Transformation/Transformation.h>
 #include "ObjectIterator.h"
 
-class ObjectMediator;
+class ObjectManager;
 
 class Object
 {
-    friend class ObjectMediator;
+    friend class ObjectManager;
 
 public:
     Object() = delete;

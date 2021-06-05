@@ -1,7 +1,7 @@
 #include <engine/ObjectLoader/ModelLoader/FileModelLoader.h>
 #include <engine/ObjectLoader/SceneTreeLoader/FileSceneTreeLoader.h>
 #include <engine/ObjectSaver/SceneTreeSaver/FileSceneTreeSaver.h>
-#include <engine/ObjectMediator/SceneMediator.h>
+#include <engine/ObjectManager/SceneManager.h>
 #include <engine/Exception/Exceptions.h>
 #include <fmt/format.h>
 #include "QtEngine.h"
@@ -65,9 +65,9 @@ std::shared_ptr<ObjectSaverSolution> QtEngine::createObjectSaverSolution()
     return solution;
 }
 
-std::shared_ptr<ObjectMediator> QtEngine::createObjectMediator()
+std::shared_ptr<ObjectManager> QtEngine::createObjectManager()
 {
-    return std::make_shared<SceneMediator>();
+    return std::make_shared<SceneManager>();
 }
 
 std::shared_ptr<ScreenManager> QtEngine::createScreenManager()
