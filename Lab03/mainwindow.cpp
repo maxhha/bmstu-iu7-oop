@@ -248,8 +248,6 @@ void MainWindow::on_buttonLoadScene_clicked()
     execute(cmd);
 }
 
-
-
 void MainWindow::on_buttonAddCamera_clicked()
 {
     bool ok;

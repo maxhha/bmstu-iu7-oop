@@ -123,7 +123,7 @@ void Cabin::stop() {
 }
 
 void Cabin::pend() {
-    if (STOP != current_state)
+    if (STOP != current_state && PENDING != current_state)
         return;
 
     qDebug() << "Fetch call";
