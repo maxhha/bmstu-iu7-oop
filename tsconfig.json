@@ -1,8 +1,0 @@
-{
-    "compilerOptions": {
-        "target": "esnext",
-        "allowSyntheticDefaultImports": true,
-        "jsx": "react",
-        "moduleResolution": "node"
-    }
-}
